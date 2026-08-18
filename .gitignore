@@ -1,0 +1,20 @@
+# Secrets & local configuration
+app/config/config.local.php
+.env
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+.vscode/
+*.log
+
+# Dependencies (if added later)
+vendor/
+node_modules/
+
+# Uploads (user-generated) — keep out of repo
+public/uploads/*
+!public/uploads/.gitkeep

@@ -1,0 +1,79 @@
+# =====================================================================
+#  MancWay Mobile Mechanics — Apache / Hostinger .htaccess
+#  Place in public_html/
+# =====================================================================
+
+# Default document
+DirectoryIndex index.php index.html
+
+# Disable directory listing
+Options -Indexes
+
+# --- Force HTTPS -----------------------------------------------------
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{HTTPS} !=on
+    RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+    # Pretty URLs (optional, graceful): /services -> /services.php
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(services|areas|booking|contact|testimonials|about|faq)/?$ $1.php [L,QSA]
+
+    # Single service: /service/<slug> -> /service.php?slug=<slug>
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^service/([a-z0-9-]+)/?$ service.php?slug=$1 [L,QSA]
+
+    # Single area: /area/<slug> -> /areas.php?slug=<slug>
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^area/([a-z0-9-]+)/?$ areas.php?slug=$1 [L,QSA]
+</IfModule>
+
+# --- Security headers ------------------------------------------------
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "geolocation=(), microphone=(), camera=()"
+</IfModule>
+
+# --- Block sensitive files ------------------------------------------
+<FilesMatch "^\.(?!well-known)">
+    Require all denied
+</FilesMatch>
+<FilesMatch "\.(sql|md|env|sh|json|lock|lockb)$">
+    Require all denied
+</FilesMatch>
+
+# Protect config / private app if accidentally placed inside public_html
+RedirectMatch 403 ^/(\.git|app|database|node_modules|vendor)/
+RedirectMatch 403 /\.env
+
+# --- MIME for SVG ----------------------------------------------------
+<IfModule mod_mime.c>
+    AddType image/svg+xml svg svgz
+</IfModule>
+
+# --- Compression -----------------------------------------------------
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/css text/javascript application/javascript application/json image/svg+xml
+</IfModule>
+
+# --- Caching --------------------------------------------------------
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/css "access plus 7 days"
+    ExpiresByType application/javascript "access plus 7 days"
+    ExpiresByType image/svg+xml "access plus 30 days"
+    ExpiresByType image/png "access plus 30 days"
+    ExpiresByType image/jpeg "access plus 30 days"
+    ExpiresByType image/webp "access plus 30 days"
+    ExpiresByType image/x-icon "access plus 1 year"
+</IfModule>
+
+# Custom error pages
+ErrorDocument 404 /404.php

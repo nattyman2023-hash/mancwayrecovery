@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /setup.php
+Sitemap: https://mancway.co.uk/sitemap.xml.php
