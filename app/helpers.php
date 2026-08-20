@@ -104,10 +104,14 @@ function valid_postcode(string $postcode): bool
     return (bool) preg_match('/^[A-Z]{1,2}[0-9][A-Z0-9]?\s?[0-9][A-Z]{2}$/i', trim($postcode));
 }
 
-/** Build an absolute asset URL. */
+/** Build an absolute asset URL, cache-busted by the file's last-modified time. */
 function asset(string $path): string
 {
-    return APP_URL . '/assets/' . ltrim($path, '/');
+    $path = ltrim($path, '/');
+    $url  = APP_URL . '/assets/' . $path;
+    $file = APP_ROOT . '/public/assets/' . $path;
+    $mtime = is_file($file) ? filemtime($file) : false;
+    return $mtime ? $url . '?v=' . $mtime : $url;
 }
 
 /** Build an absolute site URL. */
