@@ -4,8 +4,8 @@ declare(strict_types=1);
  * Public site header partial.
  * Set these before including: $page_title, $page_description, $page_canonical, $active
  */
-$page_title       = $page_title       ?? site_name() . ' — Mobile Mechanic in Manchester';
-$page_description = $page_description ?? setting('tagline', "Manchester's trusted mobile mechanic. Servicing, MOT prep, brakes, diagnostics & breakdown cover across Greater Manchester — we come to you.");
+$page_title       = $page_title       ?? site_name() . ' — Vehicle Recovery in Manchester';
+$page_description = $page_description ?? setting('tagline', "Manchester's trusted vehicle recovery. Breakdown, accident and specialist recovery across Greater Manchester — we come to you, day or night.");
 $page_canonical   = $page_canonical   ?? '';
 $active           = $active           ?? '';
 $nav = [
@@ -41,7 +41,7 @@ $nav = [
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "AutoRepair",
+      "@type": "AutomotiveBusiness",
       "name": <?= json_encode(site_name()) ?>,
       "image": <?= json_encode(url('/assets/img/logo.svg')) ?>,
       "telephone": <?= json_encode(site_phone()) ?>,
@@ -73,7 +73,7 @@ $nav = [
                     <path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.8 2.8-2.4-2.4 2.8-2.8z"/>
                 </svg>
             </span>
-            <span class="brand-text">Manc<span class="brand-accent">Way</span><span class="brand-sub">Mobile Mechanics</span></span>
+            <span class="brand-text">Manc<span class="brand-accent">Way</span><span class="brand-sub">Vehicle Recovery</span></span>
         </a>
         <nav class="main-nav" aria-label="Primary">
             <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Menu">
@@ -87,8 +87,11 @@ $nav = [
             </ul>
         </nav>
         <div class="nav-cta">
-            <a class="btn btn-ghost" href="tel:<?= e(setting('phone_href', site_phone())) ?>"><?= e(site_phone()) ?></a>
-            <a class="btn btn-primary" href="<?= e(url('/booking.php')) ?>">Book a Mechanic</a>
+            <a class="nav-phone" href="tel:<?= e(setting('phone_href', site_phone())) ?>">
+                <span class="nav-phone-label">24/7 Recovery Line</span>
+                <span class="nav-phone-number"><?= e(site_phone()) ?></span>
+            </a>
+            <a class="btn btn-primary" href="<?= e(url('/booking.php')) ?>">Book Recovery</a>
         </div>
     </div>
 </header>

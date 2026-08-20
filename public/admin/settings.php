@@ -46,7 +46,7 @@ require APP_DIR . '/views/layout/admin_header.php';
     <section class="panel">
         <div class="panel-head"><h2>Business details</h2></div>
         <div class="form-row">
-            <div class="field"><label for="business_name">Business name</label><input type="text" id="business_name" name="business_name" value="<?= sv($s,'business_name','MancWay Mobile Mechanics') ?>"></div>
+            <div class="field"><label for="business_name">Business name</label><input type="text" id="business_name" name="business_name" value="<?= sv($s,'business_name','MancWay Recovery') ?>"></div>
             <div class="field"><label for="tagline">Tagline</label><input type="text" id="tagline" name="tagline" value="<?= sv($s,'tagline') ?>"></div>
         </div>
         <div class="form-row">

@@ -1,4 +1,4 @@
-/* MancWay Mobile Mechanics — site JS */
+/* MancWay Recovery — site JS */
 (function () {
   'use strict';
 

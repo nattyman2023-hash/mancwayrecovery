@@ -1,5 +1,5 @@
 -- =====================================================================
---  MancWay Mobile Mechanics — seed data
+--  MancWay Recovery — seed data
 --  Run AFTER schema.sql.
 --  NOTE: No admin user is inserted here for security. Create the admin
 --  account by visiting  https://<your-domain>/setup.php  once the site
@@ -7,30 +7,23 @@
 -- =====================================================================
 SET NAMES utf8mb4;
 
+-- Safe to re-run: clears previously seeded content before reinserting.
+DELETE FROM services;
+DELETE FROM testimonials;
+DELETE FROM settings;
+
 -- ---------------------------------------------------------------------
 -- Services
 -- ---------------------------------------------------------------------
 INSERT INTO services (slug, title, icon, short_desc, description, price_from, sort_order, is_active) VALUES
-('full-service',         'Full Service',           'cogs',      'Comprehensive annual vehicle service.',
- 'A thorough annual service covering oil and filter change, full multipoint inspection, brake check, fluid top-ups and a road test — keeping your car healthy and its resale value high.', 149.00, 1, 1),
-('interim-service',      'Interim Service',        'wrench',    'Keep things running between full services.',
- 'A mid-year check covering oil and filter change plus a 30-point inspection. Ideal for higher-mileage drivers to stay ahead of wear and tear.', 89.00, 2, 1),
-('mot-preparation',      'MOT Preparation',        'clipboard', 'Get ready to pass first time.',
- 'We check your car against MOT failure points — lights, brakes, tyres, suspension, emissions — and fix minor issues on the spot so you pass first time.', 60.00, 3, 1),
-('brakes',               'Brakes',                 'disc',      'Pads, discs and diagnostics.',
- 'Brake pad and disc replacement, brake fluid change and ABS diagnostics. Genuine-quality parts fitted at your home or workplace.', 79.00, 4, 1),
-('diagnostics',          'Diagnostics',            'search',    'Find and fix that warning light.',
- 'Full OBD-II diagnostic scan, fault-code analysis and a clear written report. We explain what is urgent and what can wait — no guesswork, no upsell.', 45.00, 5, 1),
-('battery-alternator',   'Battery & Alternator',   'bolt',      'Won''t start? We come to you.',
- 'Battery testing, replacement and alternator/charging-system checks. Same-day mobile fitting across Greater Manchester.', 65.00, 6, 1),
-('timing-belt-cambelt',  'Timing Belt / Cambelt',  'cog',       'Timing-belt replacement to schedule.',
- 'Cambelt and water-pump replacement to manufacturer intervals. Avoid costly engine damage — book before your deadline.', 299.00, 7, 1),
-('clutch',               'Clutch Replacement',     'gears',     'New clutch, fitted mobile.',
- 'Clutch kit supply and fit, including dual-mass flywheel inspection. Quality kits, honest pricing, done at your convenience.', 380.00, 8, 1),
-('tyres-alignment',      'Tyres & Alignment',      'tyre',      'Mobile tyre fit and tracking.',
- 'Mobile tyre fitting, wheel balancing and 4-wheel alignment. We bring the workshop to you.', 25.00, 9, 1),
-('mobile-breakdown',     'Mobile Breakdown',       'truck',     'Roadside help across Greater Manchester.',
- 'Broken down or won''t start? Our mobile mechanic will reach you across Greater Manchester and get you moving — or recover you safely.', 49.00, 10, 1);
+('breakdown-recovery',   'Breakdown Recovery',                              'truck',   'Fast roadside recovery when your car won''t start or move.',
+ 'Broken down at the roadside, at home, or won''t start? We reach you across Greater Manchester and either get you moving again or recover the vehicle safely to a garage, home or compound of your choice.', 60.00, 1, 1),
+('accident-recovery',    'Accident Recovery',                               'shield',  'Careful recovery after a collision.',
+ 'Recovery for vehicles involved in a collision — to a bodyshop, insurer-approved compound, or your home. Handled carefully and discreetly, with clear communication throughout.', 75.00, 2, 1),
+('vehicle-transport',    'Long-Distance Vehicle Transport',                 'map',     'Nationwide transport for cars, vans and non-runners.',
+ 'Moving a vehicle between two locations — dealer-to-dealer, house move, or getting a non-runner to a specialist garage. We quote based on the exact pickup and drop-off locations.', 120.00, 3, 1),
+('specialist-recovery',  'Specialist Recovery (4x4 / Off-Road / Motorbike)', 'bike',    'Winching and recovery for vehicles standard tow trucks can''t handle.',
+ 'Specialist recovery and winching for 4x4s, off-road vehicles and motorbikes — including vehicles stuck off-road or in difficult access locations.', 90.00, 4, 1);
 
 -- ---------------------------------------------------------------------
 -- Areas served
@@ -50,11 +43,11 @@ INSERT INTO areas (name, slug, postcodes, sort_order, is_active) VALUES
 -- Site settings (edit later in admin -> Settings)
 -- ---------------------------------------------------------------------
 INSERT INTO settings (`key`, value) VALUES
-('business_name', 'MancWay Mobile Mechanics'),
-('tagline',       'Manchester''s Trusted Mobile Mechanic — We Come to You'),
+('business_name', 'MancWay Recovery'),
+('tagline',       'Manchester''s Trusted Vehicle Recovery — We Come to You'),
 ('phone',         '0161 000 0000'),
 ('phone_href',    '01610000000'),
-('email',         'info@mancway.co.uk'),
+('email',         'info@mancwayrecovery.co.uk'),
 ('address',       'Manchester, Greater Manchester, UK'),
 ('hours_weekday', 'Mon–Fri: 7:30am – 6:00pm'),
 ('hours_weekend', 'Sat: 8:00am – 2:00pm · Sun: Closed'),
@@ -63,7 +56,7 @@ INSERT INTO settings (`key`, value) VALUES
 ('facebook',  ''),
 ('instagram', ''),
 ('whatsapp', ''),
-('admin_email', 'info@mancway.co.uk'),
+('admin_email', 'info@mancwayrecovery.co.uk'),
 ('vat_number', ''),
 ('company_number', '');
 
@@ -71,9 +64,9 @@ INSERT INTO settings (`key`, value) VALUES
 -- Sample testimonials (approved, shown publicly — replace with real ones)
 -- ---------------------------------------------------------------------
 INSERT INTO testimonials (customer_name, rating, service_used, content, location, is_approved, sort_order, created_at) VALUES
-('Sarah M.', 5, 'Full Service', 'Booked a full service at home — the mechanic arrived on time, did a thorough job and explained everything. Saved me a trip to the garage on a rainy Saturday. Brilliant.', 'Chorlton, M21', 1, 1, NOW()),
-('David O.', 5, 'MOT Preparation', 'Failed my MOT last year on minor bits. This time MancWay prepped it and I passed first go. Honest and fairly priced.', 'Stockport, SK4', 1, 2, NOW()),
-('Priya K.', 5, 'Diagnostics', 'Engine management light came on the day before a long drive. They came out, diagnosed a faulty sensor and replaced it on the spot. Lifesavers.', 'Salford, M5', 1, 3, NOW()),
-('Tom H.', 4, 'Brakes', 'New front pads and discs fitted at my workplace during my shift. No fuss. Would recommend.', 'Bolton, BL2', 1, 4, NOW()),
-('Aisha B.', 5, 'Mobile Breakdown', 'Wouldn''t start on a Monday morning. Called and someone was with me within the hour. Great service, fair price.', 'Oldham, OL8', 1, 5, NOW());
+('Sarah M.', 5, 'Breakdown Recovery', 'Broke down on the way to work — called MancWay and someone was with me within the hour. Recovered safely to my garage, no fuss. Brilliant.', 'Chorlton, M21', 1, 1, NOW()),
+('David O.', 5, 'Accident Recovery', 'Had a minor collision and needed the car recovered to my insurer''s compound. They were quick, careful and kept me updated the whole time.', 'Stockport, SK4', 1, 2, NOW()),
+('Priya K.', 5, 'Long-Distance Vehicle Transport', 'Needed a car moved from Manchester to Leeds for a specialist repair. Arrived exactly when quoted, no damage, fair price.', 'Salford, M5', 1, 3, NOW()),
+('Tom H.', 4, 'Breakdown Recovery', 'Wouldn''t start one morning before work. Recovered to my usual garage within the hour. Would recommend.', 'Bolton, BL2', 1, 4, NOW()),
+('Aisha B.', 5, 'Specialist Recovery', 'Got stuck off-road and needed a winch-out. Turned up with the right kit and got us moving safely. Great service, fair price.', 'Oldham, OL8', 1, 5, NOW());
 

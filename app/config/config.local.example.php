@@ -1,6 +1,6 @@
 <?php
 /**
- * MancWay Mobile Mechanics — local configuration.
+ * MancWay Recovery — local configuration.
  *
  * HOW TO USE:
  *   1. Copy this file to: app/config/config.local.php
@@ -19,7 +19,7 @@ return [
     'APP_ENV'        => 'production',
 
     // Your live site URL, NO trailing slash.
-    'APP_URL'        => 'https://mancway.co.uk',
+    'APP_URL'        => 'https://mancwayrecovery.co.uk',
 
     // MySQL (create this DB + user in hPanel → MySQL Databases)
     'DB_HOST'        => 'localhost',
@@ -32,6 +32,6 @@ return [
     'SESSION_SECRET' => 'CHANGE_ME_TO_A_LONG_RANDOM_STRING',
 
     // Where booking / contact notifications are sent.
-    'MAIL_TO'        => 'info@mancway.co.uk',
-    'MAIL_FROM'      => 'no-reply@mancway.co.uk',
+    'MAIL_TO'        => 'info@mancwayrecovery.co.uk',
+    'MAIL_FROM'      => 'no-reply@mancwayrecovery.co.uk',
 ];

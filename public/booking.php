@@ -75,8 +75,8 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
 $success = flash('success');
 $errors  = flash('errors', []);
 
-$page_title       = 'Book a Mobile Mechanic — Manchester | ' . site_name();
-$page_description = 'Book a mobile mechanic online. Servicing, MOT prep, brakes, diagnostics and breakdown cover at your home or workplace across Greater Manchester.';
+$page_title       = 'Book Vehicle Recovery — Manchester | ' . site_name();
+$page_description = 'Book vehicle recovery online. Breakdown, accident and specialist recovery, plus long-distance transport, across Greater Manchester.';
 $page_canonical   = url('/booking.php');
 $active = 'booking';
 require APP_DIR . '/views/layout/header.php';
@@ -85,7 +85,7 @@ require APP_DIR . '/views/layout/header.php';
     <section class="section"><div class="container narrow center success-box">
         <div class="success-ico">✔</div>
         <h1>Booking received!</h1>
-        <p>Thank you. Your booking reference is <strong><?= e($success) ?></strong>. One of our mechanics will be in touch shortly to confirm your appointment.</p>
+        <p>Thank you. Your booking reference is <strong><?= e($success) ?></strong>. One of our recovery team will be in touch shortly to confirm.</p>
         <p class="muted">We've sent the details to our team. Keep your reference handy in case you need to contact us about this booking.</p>
         <p class="mt-2">
             <a class="btn btn-primary" href="<?= e(url('/')) ?>">Back to home</a>
@@ -95,8 +95,8 @@ require APP_DIR . '/views/layout/header.php';
 <?php else: ?>
     <section class="page-hero"><div class="container">
         <span class="pill">Booking</span>
-        <h1>Book a mobile mechanic</h1>
-        <p class="lead">Tell us about your car and we'll come to you. It takes under a minute.</p>
+        <h1>Book vehicle recovery</h1>
+        <p class="lead">Tell us what's happened and we'll come to you. It takes under a minute.</p>
     </div></section>
     <section class="section"><div class="container grid grid-2-1"><div>
         <?php if ($errors): ?><div class="alert alert-error">Please correct the highlighted fields below.</div><?php endif; ?>
@@ -146,7 +146,7 @@ require APP_DIR . '/views/layout/header.php';
                 </select>
             </div>
             <div class="field<?= isset($errors['address']) ? ' has-error' : '' ?>">
-                <label for="address">Address where we should attend *</label>
+                <label for="address">Pickup address / breakdown location *</label>
                 <input type="text" id="address" name="address" value="<?= old('address') ?>" required>
                 <?= field_error($errors, 'address') ?>
             </div>
@@ -175,7 +175,7 @@ require APP_DIR . '/views/layout/header.php';
             </div>
             <div class="field">
                 <label for="notes">Notes <span class="muted">(optional)</span></label>
-                <textarea id="notes" name="notes" rows="4" maxlength="2000" placeholder="Tell us what's happening with the car…"><?= old('notes') ?></textarea>
+                <textarea id="notes" name="notes" rows="4" maxlength="2000" placeholder="Tell us what happened, and where the vehicle needs to go if it's not staying local…"><?= old('notes') ?></textarea>
             </div>
             <button type="submit" class="btn btn-primary btn-lg btn-block">Send booking request</button>
             <p class="form-foot muted">By submitting you agree to be contacted about your booking. We never share your details.</p>
@@ -189,8 +189,8 @@ require APP_DIR . '/views/layout/header.php';
         <h3>What happens next?</h3>
         <ol class="steps">
             <li>We confirm your booking by phone or email.</li>
-            <li>Your mechanic arrives at the agreed time.</li>
-            <li>We carry out the work and you pay on completion.</li>
+            <li>Our recovery driver arrives at the agreed time.</li>
+            <li>We recover your vehicle and you pay on completion.</li>
         </ol>
         <p class="muted"><?= e(setting('hours_weekday')) ?><br><?= e(setting('hours_weekend')) ?></p>
     </aside>

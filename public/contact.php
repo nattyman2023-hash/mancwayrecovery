@@ -39,7 +39,7 @@ $success = flash('success');
 $errors = flash('errors', []);
 
 $page_title       = 'Contact Us — ' . site_name();
-$page_description = 'Get in touch with MancWay Mobile Mechanics. Call, message or book a mobile mechanic across Greater Manchester.';
+$page_description = 'Get in touch with MancWay Recovery. Call, message or book vehicle recovery across Greater Manchester.';
 $page_canonical   = url('/contact.php');
 $active = 'contact';
 require APP_DIR . '/views/layout/header.php';
@@ -100,7 +100,7 @@ require APP_DIR . '/views/layout/header.php';
             <hr>
             <p><strong>Opening hours</strong></p>
             <p class="muted"><?= e(setting('hours_weekday')) ?><br><?= e(setting('hours_weekend')) ?></p>
-            <a class="btn btn-primary btn-block mt" href="<?= e(url('/booking.php')) ?>">Book a mechanic</a>
+            <a class="btn btn-primary btn-block mt" href="<?= e(url('/booking.php')) ?>">Book recovery</a>
         </aside>
     </div></section>
 <?php endif; ?>

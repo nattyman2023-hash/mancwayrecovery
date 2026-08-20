@@ -6,7 +6,7 @@ $reviews = db()->query('SELECT * FROM testimonials WHERE is_approved = 1 ORDER B
 $avg = count($reviews) ? round(array_sum(array_column($reviews, 'rating')) / count($reviews), 1) : 5;
 
 $page_title       = 'Reviews — ' . site_name();
-$page_description = 'Read genuine customer reviews of MancWay Mobile Mechanics across Greater Manchester. Real feedback on our mobile car servicing, MOT prep, brakes and breakdown cover.';
+$page_description = 'Read genuine customer reviews of MancWay Recovery across Greater Manchester. Real feedback on our breakdown, accident and specialist vehicle recovery.';
 $page_canonical   = url('/testimonials.php');
 $active = 'testimonials';
 require APP_DIR . '/views/layout/header.php';
@@ -22,6 +22,7 @@ require APP_DIR . '/views/layout/header.php';
 
 <section class="section">
     <div class="container">
+        <span class="eyebrow">Customer stories</span>
         <div class="grid grid-3">
             <?php foreach ($reviews as $r): ?>
                 <figure class="review">
@@ -36,7 +37,7 @@ require APP_DIR . '/views/layout/header.php';
 
 <section class="cta-band">
     <div class="container cta-inner">
-        <div><h2>Join our happy customers</h2><p>Book your mobile mechanic service today.</p></div>
+        <div><h2>Join our happy customers</h2><p>Book your vehicle recovery today.</p></div>
         <div class="cta-buttons"><a class="btn btn-primary btn-lg" href="<?= e(url('/booking.php')) ?>">Book Online</a></div>
     </div>
 </section>

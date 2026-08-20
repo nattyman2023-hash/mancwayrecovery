@@ -1,6 +1,6 @@
-# MancWay Mobile Mechanics — Production Website
+# MancWay Recovery — Production Website
 
-A dynamic, database-driven website for a mobile mechanic business, built with
+A dynamic, database-driven website for a vehicle recovery business, built with
 plain **PHP 8** + **MySQL** and designed to run on **Hostinger shared hosting**.
 No static demo, no WordPress — a real, admin-managed, production-ready site.
 
@@ -98,7 +98,7 @@ Create `/home/u514321141/app/config/config.local.php` (copy from
 <?php
 return [
     'APP_ENV'        => 'production',
-    'APP_URL'        => 'https://mancway.co.uk',   // your real domain
+    'APP_URL'        => 'https://mancwayrecovery.co.uk',   // your real domain
     'DB_HOST'        => 'localhost',
     'DB_NAME'        => 'u514321141_mancway',
     'DB_USER'        => 'u514321141_mancway',
@@ -106,7 +106,7 @@ return [
     'DB_CHARSET'     => 'utf8mb4',
     'SESSION_SECRET' => 'a-long-random-string-here',
     'MAIL_TO'        => 'you@example.com',          // where bookings go
-    'MAIL_FROM'      => 'no-reply@mancway.co.uk',
+    'MAIL_FROM'      => 'no-reply@mancwayrecovery.co.uk',
 ];
 ```
 
@@ -116,12 +116,12 @@ return [
 3. The `.htaccess` forces HTTPS automatically
 
 ### 6. Run the one-time setup
-1. Visit `https://mancway.co.uk/setup.php` in your browser
+1. Visit `https://mancwayrecovery.co.uk/setup.php` in your browser
 2. Create your admin account (username + a strong password of 10+ characters)
 3. **Delete `public_html/setup.php`** afterwards (for security)
 
 ### 7. Log in & personalise
-1. Visit `https://mancway.co.uk/admin/login.php`
+1. Visit `https://mancwayrecovery.co.uk/admin/login.php`
 2. Sign in with the account you just created
 3. Go to **Settings** and update: phone, email, hours, social links, address
 4. Edit **Services** and **Areas** to match your real offering & pricing
@@ -177,5 +177,5 @@ Then visit http://localhost:8000 — but you'll need a local MySQL and a
 
 ---
 
-Built and maintained for MancWay Mobile Mechanics.
+Built and maintained for MancWay Recovery.
 

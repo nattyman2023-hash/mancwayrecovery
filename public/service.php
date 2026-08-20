@@ -17,8 +17,8 @@ if (!$service) {
     exit;
 }
 
-$page_title       = $service['title'] . ' — Mobile Mechanic Manchester | ' . site_name();
-$page_description = $service['short_desc'] ?: 'Book ' . $service['title'] . ' at your home or workplace across Greater Manchester.';
+$page_title       = $service['title'] . ' — Vehicle Recovery Manchester | ' . site_name();
+$page_description = $service['short_desc'] ?: 'Book ' . $service['title'] . ' across Greater Manchester — fast, insured, fixed prices.';
 $page_canonical   = url('/service.php?slug=' . $service['slug']);
 $active = 'services';
 require APP_DIR . '/views/layout/header.php';
@@ -27,7 +27,7 @@ require APP_DIR . '/views/layout/header.php';
 <section class="page-hero">
     <div class="container">
         <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="<?= e(url('/')) ?>">Home</a> › <a href="<?= e(url('/services.php')) ?>">Services</a> › <span><?= e($service['title']) ?></span></nav>
-        <span class="pill"><?= e($service['icon']) ?></span>
+        <span class="pill">Recovery Service</span>
         <h1><?= e($service['title']) ?></h1>
         <p class="lead"><?= e($service['short_desc']) ?></p>
         <div class="hero-cta">
@@ -44,19 +44,19 @@ require APP_DIR . '/views/layout/header.php';
             <p><?= nl2br(e($service['description'] ?: $service['short_desc'])) ?></p>
             <h3>What's included</h3>
             <ul class="ticks">
-                <li>Mobile appointment at your home or workplace</li>
-                <li>Qualified, insured mechanic</li>
-                <li>OEM-equivalent quality parts</li>
+                <li>Rapid dispatch to your location, 24/7</li>
+                <li>Experienced, fully insured recovery operator</li>
+                <li>Modern recovery equipment for safe loading &amp; transport</li>
                 <li>Upfront, fixed pricing — no surprises</li>
-                <li>Warranty on work carried out</li>
+                <li>Clear communication from pickup to drop-off</li>
             </ul>
             <h3>Good to know</h3>
-            <p>Final pricing depends on your vehicle and parts required — you'll always be told the exact cost before any work starts. Get in touch for a precise quote.</p>
+            <p>Final pricing depends on distance and vehicle type — you'll always be told the exact cost before we set off. Get in touch for a precise quote.</p>
         </div>
         <aside class="card side-cta">
             <h3>Book <?= e($service['title']) ?></h3>
             <p class="price">From <?= e(format_price($service['price_from'])) ?></p>
-            <p>Choose a date and we'll come to you.</p>
+            <p>Call now or request online and we'll come to you.</p>
             <a class="btn btn-primary btn-block btn-lg" href="<?= e(url('/booking.php?service=' . $service['slug'])) ?>">Book online</a>
             <hr>
             <p class="muted">Prefer to talk?</p>
@@ -68,7 +68,7 @@ require APP_DIR . '/views/layout/header.php';
 
 <section class="cta-band">
     <div class="container cta-inner">
-        <div><h2>Ready to book?</h2><p>Online booking takes less than a minute.</p></div>
+        <div><h2>Need us now?</h2><p>Request online in under a minute, or call for immediate dispatch.</p></div>
         <div class="cta-buttons"><a class="btn btn-primary btn-lg" href="<?= e(url('/booking.php?service=' . $service['slug'])) ?>">Book <?= e($service['title']) ?></a></div>
     </div>
 </section>

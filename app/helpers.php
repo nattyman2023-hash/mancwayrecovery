@@ -66,7 +66,7 @@ function setting(string $key, $default = '')
 /** Output the brand/business name. */
 function site_name(): string
 {
-    return setting('business_name', 'MancWay Mobile Mechanics');
+    return setting('business_name', 'MancWay Recovery');
 }
 
 /** Output the primary phone number. */

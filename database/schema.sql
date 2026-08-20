@@ -1,5 +1,5 @@
 -- =====================================================================
---  MancWay Mobile Mechanics — MySQL schema
+--  MancWay Recovery — MySQL schema
 --  Import via phpMyAdmin (hPanel → MySQL Databases → phpMyAdmin → Import)
 --  Database: u514321141_mancway
 -- =====================================================================
