@@ -64,14 +64,64 @@ function setting(string $key, $default = '')
 }
 
 /**
+ * Store integration credentials separately from editable website settings.
+ * The table is created lazily so existing installations do not need another
+ * manual import before saving a key from the admin panel.
+ */
+function ensure_integration_secrets_table(): void
+{
+    db()->exec(
+        "CREATE TABLE IF NOT EXISTS integration_secrets (
+            `key`        VARCHAR(80) NOT NULL,
+            `value`      TEXT NOT NULL,
+            updated_at   DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            PRIMARY KEY (`key`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
+    );
+}
+
+function integration_secret(string $key, string $default = ''): string
+{
+    try {
+        $stmt = db()->prepare('SELECT `value` FROM integration_secrets WHERE `key` = ? LIMIT 1');
+        $stmt->execute([$key]);
+        $value = $stmt->fetchColumn();
+        return $value === false ? $default : (string)$value;
+    } catch (Throwable $e) {
+        // Existing databases may not have the table until the first save.
+        return $default;
+    }
+}
+
+function save_integration_secret(string $key, string $value): void
+{
+    ensure_integration_secrets_table();
+    db()->prepare(
+        'INSERT INTO integration_secrets (`key`, `value`) VALUES (?, ?)
+         ON DUPLICATE KEY UPDATE `value` = VALUES(`value`)'
+    )->execute([$key, $value]);
+}
+
+function delete_integration_secret(string $key): void
+{
+    ensure_integration_secrets_table();
+    db()->prepare('DELETE FROM integration_secrets WHERE `key` = ?')->execute([$key]);
+}
+
+/**
  * Return the DVLA key without exposing where it came from.
- * A server/environment value wins; the admin setting is a convenient fallback.
+ * A server/environment value wins; the dedicated secret is the persistent
+ * admin-managed value, with the old settings row kept as a fallback.
  */
 function dvla_api_key(): string
 {
     $serverKey = trim(DVLA_API_KEY);
     if ($serverKey !== '' && !str_contains($serverKey, 'PASTE_') && !str_contains($serverKey, 'CHANGE_ME')) {
         return $serverKey;
+    }
+    $secretKey = trim(integration_secret('dvla_api_key', ''));
+    if ($secretKey !== '') {
+        return $secretKey;
     }
     return trim((string) setting('dvla_api_key', ''));
 }

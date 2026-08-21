@@ -10,7 +10,7 @@ No static demo, no WordPress — a real, admin-managed, production-ready site.
 |------|------------------|
 | Public site | Home, Services list, Service detail, Areas, Booking form, Contact form, Testimonials, About, FAQ, 404, sitemap, robots |
 | Admin panel | Dashboard, CRM enquiries (workflow + dispatch), Recovery Vehicles, Bookings (view + status), Messages inbox, Services CRUD, Areas CRUD, Testimonials (approve/edit), Settings, Change password |
-| Database | `services`, `areas`, `bookings`, `recovery_vehicles`, `messages`, `testimonials`, `settings`, `admins` |
+| Database | `services`, `areas`, `bookings`, `recovery_vehicles`, `messages`, `testimonials`, `settings`, `integration_secrets`, `admins` |
 
 Everything on the public site (services, areas, reviews, contact details) is
 **stored in MySQL and edited from the admin panel** — no code changes needed to
@@ -132,8 +132,9 @@ Add the key to `app/config/config.local.php` on the server, or set the
 `DVLA_API_KEY` environment variable. Do not put the key in JavaScript, HTML,
 Git, or a publicly accessible `.env` file. PHP cURL must be enabled on the
 hosting account. Once you can access the CRM, you can also save or replace the
-key from **Admin → Settings → API integrations**; a server-level key takes
-priority. Vehicle registration is the only required vehicle field on the
+key from **Admin → Settings → API integrations**. Admin-saved keys go into the
+separate `integration_secrets` table, so starter-content imports cannot
+overwrite them; a server-level key takes priority. Vehicle registration is the only required vehicle field on the
 booking form; make/model are filled when DVLA provides them and remain editable
 when it does not.
 

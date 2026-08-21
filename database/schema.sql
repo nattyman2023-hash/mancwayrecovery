@@ -121,6 +121,16 @@ CREATE TABLE IF NOT EXISTS settings (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ---------------------------------------------------------------------
+-- Integration secrets (kept separate from editable website settings)
+-- ---------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS integration_secrets (
+  `key`      VARCHAR(80) NOT NULL,
+  `value`    TEXT NOT NULL,
+  updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ---------------------------------------------------------------------
 -- Admin users (created via setup.php on first run)
 -- ---------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS admins (

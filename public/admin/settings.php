@@ -33,8 +33,12 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
     $submittedDvlaKey = trim((string)($_POST['dvla_api_key'] ?? ''));
     if (!empty($_POST['clear_dvla_api_key'])) {
         $upd->execute(['dvla_api_key', '']);
+        try { delete_integration_secret('dvla_api_key'); }
+        catch (Throwable $e) { error_log('Could not clear the DVLA integration secret.'); }
     } elseif ($submittedDvlaKey !== '') {
         $upd->execute(['dvla_api_key', $submittedDvlaKey]);
+        try { save_integration_secret('dvla_api_key', $submittedDvlaKey); }
+        catch (Throwable $e) { error_log('Could not save the DVLA integration secret.'); }
     }
     redirect_with(url('/admin/settings.php'), ['flash' => 'Settings saved.']);
 }
@@ -42,6 +46,13 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
 $rows = db()->query('SELECT `key`, value FROM settings')->fetchAll();
 $s = [];
 foreach ($rows as $r) { $s[$r['key']] = $r['value']; }
+// Copy a legacy key once into dedicated integration storage. Do not overwrite
+// a newer dedicated value with an older settings row.
+$legacyDvlaKey = trim((string)($s['dvla_api_key'] ?? ''));
+if ($legacyDvlaKey !== '' && integration_secret('dvla_api_key', '') === '') {
+    try { save_integration_secret('dvla_api_key', $legacyDvlaKey); }
+    catch (Throwable $e) { error_log('Could not migrate the DVLA key to integration storage.'); }
+}
 function sv(array $s, string $k, string $def=''): string { return e($s[$k] ?? $def); }
 $serverDvlaConfigured = DVLA_API_KEY !== '' && !str_contains(DVLA_API_KEY, 'PASTE_') && !str_contains(DVLA_API_KEY, 'CHANGE_ME');
 $dvlaConfigured = dvla_api_key() !== '';
@@ -78,7 +89,7 @@ require APP_DIR . '/views/layout/admin_header.php';
     </section>
     <section class="panel">
         <div class="panel-head"><h2>API integrations</h2></div>
-        <p class="muted">DVLA vehicle lookup status: <strong><?= $dvlaConfigured ? 'Configured' : 'Not configured' ?></strong>. The key is never shown after saving.</p>
+        <p class="muted">DVLA vehicle lookup status: <strong><?= $dvlaConfigured ? 'Configured' : 'Not configured' ?></strong>. The key is never shown after saving and is stored separately from editable website content.</p>
         <?php if ($serverDvlaConfigured): ?><p class="muted">A server-level DVLA key is active and takes priority over this admin setting.</p><?php endif; ?>
         <div class="field">
             <label for="dvla_api_key">DVLA Vehicle Enquiry API key</label>
