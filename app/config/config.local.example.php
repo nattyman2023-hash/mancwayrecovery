@@ -39,4 +39,10 @@ return [
     // DVLA Vehicle Enquiry Service key. Keep this server-side; never add it
     // to public JavaScript or the booking form.
     'DVLA_API_KEY'   => 'PASTE_DVLA_VES_KEY_HERE',
+
+    // Optional DeepSeek assistant key. You can also save this securely from
+    // CRM → Settings → API integrations. Never add it to public JavaScript.
+    'DEEPSEEK_API_KEY' => '',
+    'DEEPSEEK_API_URL' => 'https://api.deepseek.com',
+    'DEEPSEEK_MODEL'   => 'deepseek-v4-flash',
 ];

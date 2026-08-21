@@ -34,6 +34,7 @@
             <p><?= e(setting('service_radius')) ?></p>
         </div>
     </footer>
+    <?php require APP_DIR . '/views/partials/chat-widget.php'; ?>
     <script src="<?= e(asset('js/main.js')) ?>" defer></script>
 </body>
 </html>

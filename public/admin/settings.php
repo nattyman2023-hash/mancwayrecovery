@@ -47,7 +47,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
         $confirm = $_POST['confirm_password'] ?? '';
         if (strlen($new) < 10) $err['new_password'] = 'Password must be at least 10 characters.';
         elseif ($new !== $confirm) $err['confirm_password'] = 'Passwords do not match.';
-        if (!$err) {
+    if (!$err) {
             $hash = password_hash($new, PASSWORD_DEFAULT);
             db()->prepare('UPDATE admins SET password_hash=? WHERE id=?')->execute([$hash, (int)$_SESSION['admin_id']]);
             redirect_with(url('/admin/settings.php'), ['flash' => 'Password changed.']);
@@ -75,6 +75,15 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
         try { save_integration_secret('dvla_api_key', $submittedDvlaKey); }
         catch (Throwable $e) { error_log('Could not save the DVLA integration secret.'); }
     }
+
+    $submittedDeepseekKey = trim((string)($_POST['deepseek_api_key'] ?? ''));
+    if (!empty($_POST['clear_deepseek_api_key'])) {
+        try { delete_integration_secret('deepseek_api_key'); }
+        catch (Throwable $e) { error_log('Could not clear the DeepSeek integration secret.'); }
+    } elseif ($submittedDeepseekKey !== '') {
+        try { save_integration_secret('deepseek_api_key', $submittedDeepseekKey); }
+        catch (Throwable $e) { error_log('Could not save the DeepSeek integration secret.'); }
+    }
     redirect_with(url('/admin/settings.php'), ['flash' => 'Settings saved.']);
 }
 
@@ -91,6 +100,8 @@ if ($legacyDvlaKey !== '' && integration_secret('dvla_api_key', '') === '') {
 function sv(array $s, string $k, string $def=''): string { return e($s[$k] ?? $def); }
 $serverDvlaConfigured = DVLA_API_KEY !== '' && !str_contains(DVLA_API_KEY, 'PASTE_') && !str_contains(DVLA_API_KEY, 'CHANGE_ME');
 $dvlaConfigured = dvla_api_key() !== '';
+$serverDeepseekConfigured = DEEPSEEK_API_KEY !== '' && !str_contains(DEEPSEEK_API_KEY, 'PASTE_') && !str_contains(DEEPSEEK_API_KEY, 'CHANGE_ME');
+$deepseekConfigured = deepseek_api_key() !== '';
 
 $contactError = flash('contact_error');
 $admin_title = 'Settings';
@@ -138,6 +149,18 @@ require APP_DIR . '/views/layout/admin_header.php';
             <small class="muted">Leave blank to keep the current key. This setting is used only by the server-side vehicle lookup.</small>
         </div>
         <label class="field-check"><input type="checkbox" name="clear_dvla_api_key" value="1"> Clear the saved admin setting</label>
+        <hr>
+        <p class="muted">DeepSeek chat assistant status: <strong><?= $deepseekConfigured ? 'Configured' : 'Fallback replies active' ?></strong>. Add a key to enable business-aware AI responses; the browser only talks to your server.</p>
+        <?php if ($serverDeepseekConfigured): ?><p class="muted">A server-level DeepSeek key is active and takes priority over this admin setting.</p><?php endif; ?>
+        <div class="field">
+            <label for="deepseek_api_key">DeepSeek API key</label>
+            <div class="password-field">
+                <input type="password" id="deepseek_api_key" name="deepseek_api_key" value="" autocomplete="new-password" placeholder="Paste a new DeepSeek API key to save or replace it">
+                <button type="button" class="password-toggle" data-password-toggle data-password-target="deepseek_api_key" aria-controls="deepseek_api_key" aria-pressed="false" aria-label="Show DeepSeek API key">Show</button>
+            </div>
+            <small class="muted">Leave blank to keep the current key. The assistant uses <?= e(deepseek_model()) ?> through the server-side API proxy.</small>
+        </div>
+        <label class="field-check"><input type="checkbox" name="clear_deepseek_api_key" value="1"> Clear the saved DeepSeek key</label>
     </section>
     <section class="panel">
         <div class="panel-head"><h2>Online presence</h2></div>

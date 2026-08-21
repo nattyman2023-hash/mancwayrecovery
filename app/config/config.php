@@ -49,6 +49,9 @@ define('MAIL_TO',        (string) cfg('MAIL_TO', ''));
 define('MAIL_FROM',      (string) cfg('MAIL_FROM', ''));
 define('DVLA_API_KEY',   trim((string) cfg('DVLA_API_KEY', '')));
 define('DVLA_API_URL',   'https://driver-vehicle-licensing.api.gov.uk/vehicle-enquiry/v1/vehicles');
+define('DEEPSEEK_API_KEY', trim((string) cfg('DEEPSEEK_API_KEY', '')));
+define('DEEPSEEK_API_URL', rtrim((string) cfg('DEEPSEEK_API_URL', 'https://api.deepseek.com'), '/'));
+define('DEEPSEEK_MODEL',   trim((string) cfg('DEEPSEEK_MODEL', 'deepseek-v4-flash')));
 define('IS_DEV',         APP_ENV === 'development');
 
 // Error reporting — show errors in dev, hide & log in production.

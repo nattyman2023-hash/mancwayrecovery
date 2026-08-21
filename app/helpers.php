@@ -126,6 +126,23 @@ function dvla_api_key(): string
     return trim((string) setting('dvla_api_key', ''));
 }
 
+/** Return the server-side DeepSeek key without exposing it to the browser. */
+function deepseek_api_key(): string
+{
+    $serverKey = trim(DEEPSEEK_API_KEY);
+    if ($serverKey !== '' && !str_contains($serverKey, 'PASTE_') && !str_contains($serverKey, 'CHANGE_ME')) {
+        return $serverKey;
+    }
+    return trim(integration_secret('deepseek_api_key', ''));
+}
+
+/** Return the configured DeepSeek model, defaulting to the current fast model. */
+function deepseek_model(): string
+{
+    $configured = trim(DEEPSEEK_MODEL);
+    return $configured !== '' ? $configured : 'deepseek-v4-flash';
+}
+
 /** Output the brand/business name. */
 function site_name(): string
 {

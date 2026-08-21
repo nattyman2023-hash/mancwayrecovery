@@ -13,7 +13,13 @@ $active = 'home';
 require APP_DIR . '/views/layout/header.php';
 ?>
 
-<section class="hero hero-photo" style="--hero-image: url('<?= e(asset('img/recovery-roadside.png')) ?>');">
+<section class="hero hero-photo" data-hero-slideshow data-hero-interval="6500" aria-label="MancWay Recovery in action">
+    <div class="hero-slides" aria-hidden="true">
+        <div class="hero-slide is-active" data-hero-slide="0" style="background-image:url('<?= e(asset('img/recovery-roadside.png')) ?>')"></div>
+        <div class="hero-slide" data-hero-slide="1" data-hero-image="<?= e(asset('img/recovery-assistance.png')) ?>"></div>
+        <div class="hero-slide" data-hero-slide="2" data-hero-image="<?= e(asset('img/recovery-transport.png')) ?>"></div>
+        <div class="hero-slide" data-hero-slide="3" data-hero-image="<?= e(asset('img/recovery-dusk.png')) ?>"></div>
+    </div>
     <div class="container hero-inner">
         <div class="hero-text">
             <span class="hero-badge">24/7 recovery dispatch — Greater Manchester</span>
@@ -42,6 +48,17 @@ require APP_DIR . '/views/layout/header.php';
             <a class="hero-quick" href="<?= e(url('/contact.php')) ?>"><span>💬 Send a message</span><span>→</span></a>
             <p class="hero-card-foot"><?= e(setting('hours_weekday')) ?></p>
         </div>
+    </div>
+    <div class="hero-slide-controls" data-hero-controls aria-label="Hero slideshow controls">
+        <button type="button" class="hero-slide-control" data-hero-prev aria-label="Previous recovery photo">‹</button>
+        <div class="hero-slide-dots" role="tablist" aria-label="Recovery photos">
+            <button type="button" class="hero-slide-dot is-active" data-hero-dot="0" role="tab" aria-selected="true" aria-label="Show recovery photo 1"></button>
+            <button type="button" class="hero-slide-dot" data-hero-dot="1" role="tab" aria-selected="false" aria-label="Show recovery photo 2"></button>
+            <button type="button" class="hero-slide-dot" data-hero-dot="2" role="tab" aria-selected="false" aria-label="Show recovery photo 3"></button>
+            <button type="button" class="hero-slide-dot" data-hero-dot="3" role="tab" aria-selected="false" aria-label="Show recovery photo 4"></button>
+        </div>
+        <button type="button" class="hero-slide-control" data-hero-next aria-label="Next recovery photo">›</button>
+        <button type="button" class="hero-slide-pause" data-hero-pause aria-label="Pause slideshow">Pause</button>
     </div>
 </section>
 
