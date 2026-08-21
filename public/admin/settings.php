@@ -45,6 +45,7 @@ require APP_DIR . '/views/layout/admin_header.php';
     <?= csrf_field() ?><input type="hidden" name="action" value="save">
     <section class="panel">
         <div class="panel-head"><h2>Business details</h2></div>
+        <p class="muted">Website forms are saved in the CRM and inbox first. Email notifications currently go to <strong><?= e(site_notification_email() ?: 'No valid notification email configured') ?></strong>; the server-level <code>MAIL_TO</code> value takes priority when set.</p>
         <div class="form-row">
             <div class="field"><label for="business_name">Business name</label><input type="text" id="business_name" name="business_name" value="<?= sv($s,'business_name','MancWay Recovery') ?>"></div>
             <div class="field"><label for="tagline">Tagline</label><input type="text" id="tagline" name="tagline" value="<?= sv($s,'tagline') ?>"></div>
@@ -92,4 +93,3 @@ require APP_DIR . '/views/layout/admin_header.php';
     </form>
 </section>
 <?php require APP_DIR . '/views/layout/admin_footer.php';
-

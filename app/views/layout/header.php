@@ -2,20 +2,70 @@
 declare(strict_types=1);
 /**
  * Public site header partial.
- * Set these before including: $page_title, $page_description, $page_canonical, $active
+ * Set these before including: $page_title, $page_description, $page_canonical,
+ * $active and optionally $page_schema for page-specific structured data.
  */
 $page_title       = $page_title       ?? site_name() . ' — Vehicle Recovery in Manchester';
 $page_description = $page_description ?? setting('tagline', "Manchester's trusted vehicle recovery. Breakdown, accident and specialist recovery across Greater Manchester — we come to you, day or night.");
 $page_canonical   = $page_canonical   ?? '';
 $active           = $active           ?? '';
+$page_schema      = $page_schema      ?? [];
 $nav = [
     'home'         => ['Home',         url('/')],
-    'services'     => ['Services',     url('/services.php')],
-    'areas'        => ['Areas',        url('/areas.php')],
+    'services'     => ['Services',     url('/services')],
+    'areas'        => ['Areas',        url('/areas')],
     'testimonials' => ['Reviews',      url('/testimonials.php')],
     'about'        => ['About',        url('/about.php')],
     'faq'          => ['FAQ',          url('/faq.php')],
 ];
+$business_schema = [
+    '@type'       => 'AutomotiveBusiness',
+    '@id'         => rtrim(APP_URL, '/') . '/#business',
+    'name'        => site_name(),
+    'url'         => APP_URL,
+    'image'       => [asset('img/logo.jpeg'), asset('img/recovery-hero.jpg')],
+    'logo'        => asset('img/logo.jpeg'),
+    'telephone'   => site_phone(),
+    'email'       => site_email(),
+    'priceRange'  => '££',
+    'description' => $page_description,
+    'areaServed'  => ['@type' => 'AdministrativeArea', 'name' => 'Greater Manchester'],
+    'serviceType' => ['Breakdown recovery', 'Accident recovery', 'Vehicle transport', 'Specialist recovery'],
+    'address'     => [
+        '@type'           => 'PostalAddress',
+        'addressLocality' => 'Manchester',
+        'addressRegion'   => 'Greater Manchester',
+        'addressCountry'  => 'GB',
+    ],
+    'contactPoint' => [[
+        '@type'             => 'ContactPoint',
+        'telephone'         => site_phone(),
+        'contactType'       => 'customer service',
+        'areaServed'        => 'GB',
+        'availableLanguage' => 'English',
+    ]],
+    'openingHoursSpecification' => [[
+        '@type'     => 'OpeningHoursSpecification',
+        'dayOfWeek' => ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+        'opens'     => '00:00',
+        'closes'    => '23:59',
+    ]],
+];
+$schema_nodes = [$business_schema];
+if (is_array($page_schema) && $page_schema) {
+    if (isset($page_schema['@graph'])) {
+        $extra_nodes = $page_schema['@graph'];
+    } else {
+        $page_schema_node = $page_schema;
+        unset($page_schema_node['@context']);
+        $extra_nodes = [$page_schema_node];
+    }
+    $schema_nodes = array_merge($schema_nodes, $extra_nodes);
+}
+$schema_json = json_encode(
+    ['@context' => 'https://schema.org', '@graph' => $schema_nodes],
+    JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT
+);
 ?>
 <!DOCTYPE html>
 <html lang="en-GB">
@@ -24,6 +74,7 @@ $nav = [
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= e($page_title) ?></title>
     <meta name="description" content="<?= e($page_description) ?>">
+    <meta name="robots" content="index,follow,max-image-preview:large">
     <?php if ($page_canonical): ?><link rel="canonical" href="<?= e($page_canonical) ?>"><?php endif; ?>
     <meta name="theme-color" content="#0b1f3a">
     <link rel="icon" type="image/jpeg" href="<?= e(asset('img/logo.jpeg')) ?>">
@@ -31,15 +82,17 @@ $nav = [
     <meta property="og:title" content="<?= e($page_title) ?>">
     <meta property="og:description" content="<?= e($page_description) ?>">
     <meta property="og:type" content="website">
+    <meta property="og:locale" content="en_GB">
     <meta property="og:site_name" content="<?= e(site_name()) ?>">
-    <meta property="og:url" content="<?= e(rtrim(APP_URL, '/') . ($_SERVER['REQUEST_URI'] ?? '/')) ?>">
+    <meta property="og:url" content="<?= e($page_canonical ?: APP_URL) ?>">
     <meta property="og:image" content="<?= e(asset('img/logo.jpeg')) ?>">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="<?= e(asset('css/style.css')) ?>">
-    <script type="application/ld+json">
+    <script type="application/ld+json"><?= $schema_json ?></script>
+    <?php if (false): ?><script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "AutomotiveBusiness",
@@ -62,7 +115,7 @@ $nav = [
         "opens": "07:30","closes": "18:00"
       }]
     }
-    </script>
+    </script><?php endif; ?>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>

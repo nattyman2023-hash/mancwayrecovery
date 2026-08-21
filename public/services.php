@@ -2,12 +2,25 @@
 declare(strict_types=1);
 require __DIR__ . '/../app/bootstrap.php';
 
+$request_path = (string) parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH);
+if ($request_path === '/services.php') {
+    redirect(url('/services'));
+}
+
 $services = db()->query('SELECT * FROM services WHERE is_active = 1 ORDER BY sort_order')->fetchAll();
 
 $page_title       = 'Our Services — Vehicle Recovery Manchester | ' . site_name();
 $page_description = 'Vehicle recovery services across Greater Manchester: breakdown recovery, accident recovery, long-distance vehicle transport and specialist 4x4/off-road/motorbike recovery.';
-$page_canonical   = url('/services.php');
+$page_canonical   = url('/services');
 $active = 'services';
+$page_schema = [
+    '@context' => 'https://schema.org',
+    '@type' => 'CollectionPage',
+    'name' => 'Vehicle recovery services',
+    'description' => $page_description,
+    'url' => $page_canonical,
+    'isPartOf' => ['@id' => rtrim(APP_URL, '/') . '/#business'],
+];
 require APP_DIR . '/views/layout/header.php';
 ?>
 
@@ -30,7 +43,7 @@ require APP_DIR . '/views/layout/header.php';
                     <p><?= e($s['short_desc']) ?></p>
                     <div class="service-foot">
                         <span class="price">From <?= e(format_price($s['price_from'])) ?></span>
-                        <a class="link" href="<?= e(url('/service.php?slug=' . $s['slug'])) ?>">Details →</a>
+                    <a class="link" href="<?= e(url('/services/' . $s['slug'])) ?>">Details →</a>
                     </div>
                     <a class="btn btn-outline btn-block" href="<?= e(url('/booking.php?service=' . $s['slug'])) ?>">Request this service</a>
                 </article>

@@ -130,6 +130,14 @@ p{margin:.5em 0}
 .card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow)}
 .service-card{display:flex;flex-direction:column;gap:.4rem}
 .service-ico{font-size:1.8rem;width:56px;height:56px;display:grid;place-items:center;border-radius:var(--radius-sm);background:rgba(245,166,35,.14);margin-bottom:.4rem}
+.location-services{gap:12px}
+.location-service-card{display:flex;flex-direction:column;gap:.35rem;padding:18px;color:var(--navy);text-decoration:none;transition:transform .18s,box-shadow .18s,border-color .18s}
+.location-service-card:hover{color:var(--navy);border-color:var(--amber);transform:translateY(-2px);box-shadow:var(--shadow)}
+.location-service-card .service-ico{width:42px;height:42px;font-size:1.35rem;margin:0 0 .25rem}
+.location-service-card strong{font-size:.96rem}
+.location-service-card>span:last-child{color:var(--muted);font-size:.82rem;line-height:1.45}
+.location-aside{align-self:start}
+.location-postcodes{font-weight:800;color:var(--navy);line-height:1.65}
 .service-foot{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:.6rem;border-top:1px solid var(--line)}
 .price{color:var(--navy);font-weight:800}
 .price-tag{background:var(--navy);color:#fff;font-weight:800;padding:.5rem 1rem;border-radius:999px}

@@ -31,7 +31,8 @@ return [
     // A long random string used to harden sessions.
     'SESSION_SECRET' => 'CHANGE_ME_TO_A_LONG_RANDOM_STRING',
 
-    // Where booking / contact notifications are sent.
+    // Where booking / contact notifications are sent. If blank, the
+    // admin_email setting in the database is used instead.
     'MAIL_TO'        => 'info@mancwayrecovery.co.uk',
     'MAIL_FROM'      => 'no-reply@mancwayrecovery.co.uk',
 ];

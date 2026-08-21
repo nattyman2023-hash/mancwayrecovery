@@ -78,12 +78,12 @@ require APP_DIR . '/views/layout/header.php';
                     <p><?= e($s['short_desc']) ?></p>
                     <div class="service-foot">
                         <span class="price">From <?= e(format_price($s['price_from'])) ?></span>
-                        <a class="link" href="<?= e(url('/service.php?slug=' . $s['slug'])) ?>">Details →</a>
+                        <a class="link" href="<?= e(url('/services/' . $s['slug'])) ?>">Details →</a>
                     </div>
                 </article>
             <?php endforeach; ?>
         </div>
-        <p class="center mt-2"><a class="btn btn-outline" href="<?= e(url('/services.php')) ?>">View all services</a></p>
+        <p class="center mt-2"><a class="btn btn-outline" href="<?= e(url('/services')) ?>">View all services</a></p>
     </div>
 </section>
 
@@ -115,7 +115,7 @@ require APP_DIR . '/views/layout/header.php';
         <div class="section-head"><span class="eyebrow">Coverage</span><h2>Areas we cover</h2><p>Vehicle recovery across Greater Manchester — and beyond for long-distance transport.</p></div>
         <div class="chips">
             <?php foreach ($areas as $a): ?>
-                <a class="chip" href="<?= e(url('/areas.php')) ?>"><?= e($a['name']) ?></a>
+                <a class="chip" href="<?= e(url('/areas/' . $a['slug'])) ?>"><?= e($a['name']) ?></a>
             <?php endforeach; ?>
         </div>
     </div>

@@ -6,7 +6,6 @@ $page_title       = 'FAQ — Vehicle Recovery Manchester | ' . site_name();
 $page_description = 'Frequently asked questions about vehicle recovery: pricing, booking, what to expect, payment and coverage across Greater Manchester.';
 $page_canonical   = url('/faq.php');
 $active = 'faq';
-require APP_DIR . '/views/layout/header.php';
 
 $faqs = [
     ['What is vehicle recovery?', 'Vehicle recovery means we come to your car, wherever it is, and safely load and transport it — whether that\'s after a breakdown, an accident, or to move it somewhere specific. No towing it yourself, no waiting rooms.'],
@@ -20,6 +19,14 @@ $faqs = [
     ['How quickly can you come out?', 'For breakdowns and accidents we aim to reach you as quickly as possible, 24/7, across Greater Manchester. For planned transport jobs, you choose the date and time that suits you.'],
     ['Do I need to be there?', 'It helps, but as long as we can access the vehicle and you\'re contactable by phone, we can often carry out the recovery without you present. We\'ll confirm the details when you book.'],
 ];
+$page_schema = [
+    '@context' => 'https://schema.org',
+    '@type' => 'FAQPage',
+    'mainEntity' => array_map(static function (array $faq): array {
+        return ['@type' => 'Question', 'name' => $faq[0], 'acceptedAnswer' => ['@type' => 'Answer', 'text' => $faq[1]]];
+    }, $faqs),
+];
+require APP_DIR . '/views/layout/header.php';
 ?>
 
 <section class="page-hero">

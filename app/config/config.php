@@ -38,7 +38,7 @@ function cfg(string $key, $default = null)
 }
 
 define('APP_ENV',        (string) cfg('APP_ENV', 'production'));
-define('APP_URL',        rtrim((string) cfg('APP_URL', 'https://mancway.co.uk'), '/'));
+define('APP_URL',        rtrim((string) cfg('APP_URL', 'https://mancwayrecovery.co.uk'), '/'));
 define('DB_HOST',        (string) cfg('DB_HOST', 'localhost'));
 define('DB_NAME',        (string) cfg('DB_NAME', ''));
 define('DB_USER',        (string) cfg('DB_USER', ''));

@@ -40,6 +40,15 @@ require APP_DIR . '/views/layout/admin_header.php';
         <a class="btn btn-amber btn-sm" href="<?= e(url('/admin/crm.php')) ?>">Open CRM</a>
     </div>
 </section>
+<?php else: ?>
+<section class="crm-dashboard-banner crm-dashboard-banner-setup">
+    <div>
+        <p class="eyebrow-caps">Dispatch Center</p>
+        <h2>CRM migration still needs importing</h2>
+        <p class="muted">Bookings are being saved, but vehicle assignment and the dispatch workflow activate after <code>database/migration_crm.sql</code> is imported.</p>
+    </div>
+    <div class="crm-dashboard-metrics"><a class="btn btn-amber btn-sm" href="<?= e(url('/admin/crm.php')) ?>">View CRM setup</a></div>
+</section>
 <?php endif; ?>
 <div class="stat-grid grid grid-4">
     <a class="stat-card stat-link" href="<?= e(url('/admin/bookings.php')) ?>">

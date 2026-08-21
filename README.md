@@ -107,7 +107,7 @@ return [
     'DB_PASS'        => 'YOUR_DB_PASSWORD',
     'DB_CHARSET'     => 'utf8mb4',
     'SESSION_SECRET' => 'a-long-random-string-here',
-    'MAIL_TO'        => 'you@example.com',          // where bookings go
+    'MAIL_TO'        => 'you@example.com',          // optional override; otherwise Admin Settings > admin email is used
     'MAIL_FROM'      => 'no-reply@mancwayrecovery.co.uk',
 ];
 ```
@@ -156,8 +156,9 @@ return [
 - [ ] Real services & pricing entered in **Admin → Services**
 - [ ] Sample reviews replaced in **Admin → Testimonials**
 - [ ] `public/robots.txt` `Sitemap:` line set to your real domain
-- [ ] Test a booking end-to-end (you should get an email)
-- [ ] Google Search Console: submit `https://yourdomain/sitemap.xml.php`
+- [ ] Test a booking and contact form end-to-end (CRM/inbox record plus email)
+- [ ] Google Search Console: submit `https://yourdomain/sitemap.xml`
+- [ ] Check each dedicated local page, e.g. `/areas/bolton` and `/areas/stockport`
 
 ## Customising the look
 

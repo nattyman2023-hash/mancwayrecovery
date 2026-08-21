@@ -26,6 +26,10 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
         $body .= '<strong>Phone:</strong> ' . e($phone ?: '—') . '<br><strong>Subject:</strong> ' . e($subject ?: '—') . '</p>';
         $body .= '<p><strong>Message:</strong><br>' . nl2br(e($message)) . '</p>';
         send_site_email('New contact message — ' . ($subject ?: 'no subject'), $body, $email);
+        $customerBody  = '<h2>Thanks for contacting MancWay</h2>';
+        $customerBody .= '<p>We have received your message and will get back to you as soon as we can.</p>';
+        $customerBody .= '<p>If your vehicle needs urgent recovery, call <a href="tel:' . e(setting('phone_href', site_phone())) . '">' . e(site_phone()) . '</a>.</p>';
+        send_customer_email($email, 'We received your message — ' . site_name(), $customerBody);
         redirect_with(url('/contact.php?done=1'), ['success' => true]);
     }
     foreach (['name','email','phone','subject','message'] as $f) {

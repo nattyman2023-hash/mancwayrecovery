@@ -11,11 +11,12 @@
             <div class="footer-col">
                 <h3 class="footer-h">Explore</h3>
                 <ul class="footer-links">
-                    <li><a href="<?= e(url('/services.php')) ?>">Services</a></li>
-                    <li><a href="<?= e(url('/areas.php')) ?>">Areas Served</a></li>
+                    <li><a href="<?= e(url('/services')) ?>">Services</a></li>
+                    <li><a href="<?= e(url('/areas')) ?>">Areas Served</a></li>
                     <li><a href="<?= e(url('/testimonials.php')) ?>">Reviews</a></li>
                     <li><a href="<?= e(url('/about.php')) ?>">About Us</a></li>
                     <li><a href="<?= e(url('/faq.php')) ?>">FAQ</a></li>
+                    <li><a href="<?= e(url('/admin/crm.php')) ?>">CRM Login</a></li>
                 </ul>
             </div>
             <div class="footer-col">

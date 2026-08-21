@@ -14,7 +14,7 @@ require APP_DIR . '/views/layout/header.php';
         <p>Sorry — we couldn't find that page. It may have moved or no longer exists.</p>
         <p class="mt-2">
             <a class="btn btn-primary" href="<?= e(url('/')) ?>">Back to home</a>
-            <a class="btn btn-outline" href="<?= e(url('/services.php')) ?>">View services</a>
+            <a class="btn btn-outline" href="<?= e(url('/services')) ?>">View services</a>
             <a class="btn btn-outline" href="tel:<?= e(setting('phone_href', site_phone())) ?>">Call <?= e(site_phone()) ?></a>
         </p>
     </div>

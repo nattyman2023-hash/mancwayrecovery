@@ -61,6 +61,13 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
         $body .= '<p><strong>Notes:</strong><br>' . nl2br(e($notes ?: '—')) . '</p>';
         $body .= '<p>Manage this booking in the admin panel → Bookings.</p>';
         send_site_email('New booking ' . $reference . ' — ' . $svcName, $body, $email);
+        if ($email !== '') {
+            $customerBody  = '<h2>Booking request received</h2>';
+            $customerBody .= '<p>Thanks, ' . e($name) . '. We have received your recovery request and will contact you to confirm the details.</p>';
+            $customerBody .= '<p><strong>Reference:</strong> ' . e($reference) . '<br><strong>Service:</strong> ' . e($svcName) . '<br><strong>Requested:</strong> ' . e($pdate) . ' ' . e($ptime) . '</p>';
+            $customerBody .= '<p>If you need to speak to us now, call <a href="tel:' . e(setting('phone_href', site_phone())) . '">' . e(site_phone()) . '</a>.</p>';
+            send_customer_email($email, 'Your MancWay recovery request ' . $reference, $customerBody);
+        }
         redirect_with(url('/booking.php?done=' . $reference), ['success' => $reference]);
     }
 
@@ -197,6 +204,5 @@ require APP_DIR . '/views/layout/header.php';
     </div></section>
 <?php endif; ?>
 <?php require APP_DIR . '/views/layout/footer.php'; ?>
-
 
 

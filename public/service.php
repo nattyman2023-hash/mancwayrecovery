@@ -3,6 +3,10 @@ declare(strict_types=1);
 require __DIR__ . '/../app/bootstrap.php';
 
 $slug = trim($_GET['slug'] ?? '');
+$request_path = (string) parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH);
+if ($request_path === '/service.php' && $slug !== '') {
+    redirect(url('/services/' . rawurlencode($slug)));
+}
 $stmt = db()->prepare('SELECT * FROM services WHERE slug = ? AND is_active = 1 LIMIT 1');
 $stmt->execute([$slug]);
 $service = $stmt->fetch();
@@ -12,21 +16,45 @@ if (!$service) {
     $page_title = 'Service not found';
     $active = 'services';
     require APP_DIR . '/views/layout/header.php';
-    echo '<section class="section"><div class="container center"><h1>Service not found</h1><p>The service you\'re looking for isn\'t available.</p><p><a class="btn btn-primary" href="' . e(url('/services.php')) . '">View all services</a></p></div></section>';
+    echo '<section class="section"><div class="container center"><h1>Service not found</h1><p>The service you\'re looking for isn\'t available.</p><p><a class="btn btn-primary" href="' . e(url('/services')) . '">View all services</a></p></div></section>';
     require APP_DIR . '/views/layout/footer.php';
     exit;
 }
 
 $page_title       = $service['title'] . ' — Vehicle Recovery Manchester | ' . site_name();
 $page_description = $service['short_desc'] ?: 'Book ' . $service['title'] . ' across Greater Manchester — fast, insured, fixed prices.';
-$page_canonical   = url('/service.php?slug=' . $service['slug']);
+$page_canonical   = url('/services/' . $service['slug']);
 $active = 'services';
+$page_schema = [
+    '@context' => 'https://schema.org',
+    '@graph' => [
+        [
+            '@type' => 'Service',
+            '@id' => $page_canonical . '#service',
+            'name' => $service['title'],
+            'serviceType' => $service['title'],
+            'description' => $page_description,
+            'provider' => ['@id' => rtrim(APP_URL, '/') . '/#business'],
+            'areaServed' => ['@type' => 'AdministrativeArea', 'name' => 'Greater Manchester'],
+            'offers' => ['@type' => 'Offer', 'priceCurrency' => 'GBP', 'price' => (string)$service['price_from'], 'url' => $page_canonical],
+            'url' => $page_canonical,
+        ],
+        [
+            '@type' => 'BreadcrumbList',
+            'itemListElement' => [
+                ['@type' => 'ListItem', 'position' => 1, 'name' => 'Home', 'item' => url('/')],
+                ['@type' => 'ListItem', 'position' => 2, 'name' => 'Services', 'item' => url('/services')],
+                ['@type' => 'ListItem', 'position' => 3, 'name' => $service['title'], 'item' => $page_canonical],
+            ],
+        ],
+    ],
+];
 require APP_DIR . '/views/layout/header.php';
 ?>
 
 <section class="page-hero">
     <div class="container">
-        <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="<?= e(url('/')) ?>">Home</a> › <a href="<?= e(url('/services.php')) ?>">Services</a> › <span><?= e($service['title']) ?></span></nav>
+        <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="<?= e(url('/')) ?>">Home</a> › <a href="<?= e(url('/services')) ?>">Services</a> › <span><?= e($service['title']) ?></span></nav>
         <span class="pill">Recovery Service</span>
         <h1><?= e($service['title']) ?></h1>
         <p class="lead"><?= e($service['short_desc']) ?></p>
