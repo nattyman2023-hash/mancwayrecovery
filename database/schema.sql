@@ -2,23 +2,19 @@
 --  MancWay Recovery — MySQL schema
 --  Import via phpMyAdmin (hPanel → MySQL Databases → phpMyAdmin → Import)
 --  Database: u514321141_mancway
+--
+--  IMPORTANT: This file is intentionally non-destructive. It may be run
+--  against an existing database without deleting admins, bookings, messages,
+--  settings or other CRM data. Use migration files for later schema changes.
 -- =====================================================================
 SET NAMES utf8mb4;
 SET time_zone = '+00:00';
 SET foreign_key_checks = 0;
 
-DROP TABLE IF EXISTS bookings;
-DROP TABLE IF EXISTS messages;
-DROP TABLE IF EXISTS testimonials;
-DROP TABLE IF EXISTS services;
-DROP TABLE IF EXISTS areas;
-DROP TABLE IF EXISTS settings;
-DROP TABLE IF EXISTS admins;
-
 -- ---------------------------------------------------------------------
 -- Services offered
 -- ---------------------------------------------------------------------
-CREATE TABLE services (
+CREATE TABLE IF NOT EXISTS services (
   id          INT UNSIGNED NOT NULL AUTO_INCREMENT,
   slug        VARCHAR(160) NOT NULL,
   title       VARCHAR(160) NOT NULL,
@@ -37,7 +33,7 @@ CREATE TABLE services (
 -- ---------------------------------------------------------------------
 -- Areas served (Greater Manchester boroughs)
 -- ---------------------------------------------------------------------
-CREATE TABLE areas (
+CREATE TABLE IF NOT EXISTS areas (
   id         INT UNSIGNED NOT NULL AUTO_INCREMENT,
   name       VARCHAR(120) NOT NULL,
   slug       VARCHAR(160) NOT NULL,
@@ -52,7 +48,7 @@ CREATE TABLE areas (
 -- ---------------------------------------------------------------------
 -- Bookings (booking form submissions)
 -- ---------------------------------------------------------------------
-CREATE TABLE bookings (
+CREATE TABLE IF NOT EXISTS bookings (
   id             INT UNSIGNED NOT NULL AUTO_INCREMENT,
   reference      VARCHAR(12)  NOT NULL,
   name           VARCHAR(120) NOT NULL,
@@ -81,7 +77,7 @@ CREATE TABLE bookings (
 -- ---------------------------------------------------------------------
 -- Contact messages
 -- ---------------------------------------------------------------------
-CREATE TABLE messages (
+CREATE TABLE IF NOT EXISTS messages (
   id         INT UNSIGNED NOT NULL AUTO_INCREMENT,
   name       VARCHAR(120) NOT NULL,
   email      VARCHAR(190) NOT NULL,
@@ -99,7 +95,7 @@ CREATE TABLE messages (
 -- ---------------------------------------------------------------------
 -- Customer testimonials (only is_approved=1 are shown publicly)
 -- ---------------------------------------------------------------------
-CREATE TABLE testimonials (
+CREATE TABLE IF NOT EXISTS testimonials (
   id            INT UNSIGNED NOT NULL AUTO_INCREMENT,
   customer_name VARCHAR(120) NOT NULL,
   rating        TINYINT UNSIGNED NOT NULL DEFAULT 5,
@@ -116,7 +112,7 @@ CREATE TABLE testimonials (
 -- ---------------------------------------------------------------------
 -- Key/value site settings (managed from admin → Settings)
 -- ---------------------------------------------------------------------
-CREATE TABLE settings (
+CREATE TABLE IF NOT EXISTS settings (
   id    INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `key` VARCHAR(80) NOT NULL,
   value TEXT,
@@ -127,7 +123,7 @@ CREATE TABLE settings (
 -- ---------------------------------------------------------------------
 -- Admin users (created via setup.php on first run)
 -- ---------------------------------------------------------------------
-CREATE TABLE admins (
+CREATE TABLE IF NOT EXISTS admins (
   id            INT UNSIGNED NOT NULL AUTO_INCREMENT,
   username      VARCHAR(60)  NOT NULL,
   password_hash VARCHAR(255) NOT NULL,

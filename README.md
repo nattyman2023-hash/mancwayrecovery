@@ -66,8 +66,12 @@ MancWay/
 ### 2. Import the schema + seed
 1. hPanel → **phpMyAdmin** → select your database → **Import**
 2. Import `database/schema.sql` first
-3. Then import `database/seed.sql`
+3. Then import `database/seed.sql` once for starter content
 4. Then import `database/migration_crm.sql` to enable the CRM and recovery fleet
+
+`schema.sql` is non-destructive and can be re-imported without dropping live
+accounts, bookings, messages or settings. Avoid re-importing `seed.sql` after
+customising production content; it is starter data, not a reset or backup file.
 
 ### 3. Upload the files
 Upload with the **hPanel File Manager** or FTP (e.g. FileZilla):

@@ -7,15 +7,15 @@
 -- =====================================================================
 SET NAMES utf8mb4;
 
--- Safe to re-run: clears previously seeded content before reinserting.
-DELETE FROM services;
-DELETE FROM testimonials;
-DELETE FROM settings;
+-- This is starter content, not a live reset script. Do not re-import it after
+-- customising production content unless you intentionally want to refresh the
+-- sample testimonials. Settings are preserved so API keys and business
+-- details do not disappear when starter data is imported again.
 
 -- ---------------------------------------------------------------------
 -- Services
 -- ---------------------------------------------------------------------
-INSERT INTO services (slug, title, icon, short_desc, description, price_from, sort_order, is_active) VALUES
+INSERT IGNORE INTO services (slug, title, icon, short_desc, description, price_from, sort_order, is_active) VALUES
 ('breakdown-recovery',   'Breakdown Recovery',                              'truck',   'Fast roadside recovery when your car won''t start or move.',
  'Broken down at the roadside, at home, or won''t start? We reach you across Greater Manchester and either get you moving again or recover the vehicle safely to a garage, home or compound of your choice.', 60.00, 1, 1),
 ('accident-recovery',    'Accident Recovery',                               'shield',  'Careful recovery after a collision.',
@@ -28,7 +28,7 @@ INSERT INTO services (slug, title, icon, short_desc, description, price_from, so
 -- ---------------------------------------------------------------------
 -- Areas served
 -- ---------------------------------------------------------------------
-INSERT INTO areas (name, slug, postcodes, sort_order, is_active) VALUES
+INSERT IGNORE INTO areas (name, slug, postcodes, sort_order, is_active) VALUES
 ('Manchester City', 'manchester-city', 'M1, M2, M3, M4, M11–M15, M20, M21', 1, 1),
 ('Salford',         'salford',          'M5, M6, M7, M27, M28, M30, M38', 2, 1),
 ('Trafford',        'trafford',         'M16, M17, M21, M22, M23, M32, M33, M41', 3, 1),
@@ -42,7 +42,7 @@ INSERT INTO areas (name, slug, postcodes, sort_order, is_active) VALUES
 -- ---------------------------------------------------------------------
 -- Site settings (edit later in admin -> Settings)
 -- ---------------------------------------------------------------------
-INSERT INTO settings (`key`, value) VALUES
+INSERT IGNORE INTO settings (`key`, value) VALUES
 ('business_name', 'MancWay Recovery'),
 ('tagline',       'Manchester''s Trusted Vehicle Recovery — We Come to You'),
 ('phone',         '0161 000 0000'),
@@ -69,4 +69,3 @@ INSERT INTO testimonials (customer_name, rating, service_used, content, location
 ('Priya K.', 5, 'Long-Distance Vehicle Transport', 'Needed a car moved from Manchester to Leeds for a specialist repair. Arrived exactly when quoted, no damage, fair price.', 'Salford, M5', 1, 3, NOW()),
 ('Tom H.', 4, 'Breakdown Recovery', 'Wouldn''t start one morning before work. Recovered to my usual garage within the hour. Would recommend.', 'Bolton, BL2', 1, 4, NOW()),
 ('Aisha B.', 5, 'Specialist Recovery', 'Got stuck off-road and needed a winch-out. Turned up with the right kit and got us moving safely. Great service, fair price.', 'Oldham, OL8', 1, 5, NOW());
-
