@@ -46,7 +46,7 @@ p{margin:.5em 0}
 .pill{display:inline-block;background:rgba(245,166,35,.14);color:var(--amber-d);font-weight:700;font-size:.8rem;padding:.35rem .8rem;border-radius:999px;letter-spacing:.04em;text-transform:uppercase}
 .hero-badge{display:inline-flex;align-items:center;gap:.5em;background:rgba(245,166,35,.16);color:var(--amber);font-weight:700;font-size:.78rem;padding:.4rem .85rem;border-radius:999px;letter-spacing:.03em;text-transform:uppercase;border:1px solid rgba(245,166,35,.35)}
 .hero-badge::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--amber);flex:none;box-shadow:0 0 0 3px rgba(245,166,35,.25)}
-.tag{display:inline-block;background:var(--amber);color:var(--navy);font-weight:800;font-size:.72rem;padding:.3rem .65rem;border-radius:var(--radius-sm);letter-spacing:.04em;text-transform:uppercase;margin-bottom:.6rem}
+.tag{display:inline-block;align-self:flex-start;background:var(--amber);color:var(--navy);font-weight:800;font-size:.72rem;padding:.3rem .65rem;border-radius:var(--radius-sm);letter-spacing:.04em;text-transform:uppercase;margin-bottom:.6rem}
 
 .grid{display:grid;gap:24px}
 .grid-2{grid-template-columns:1fr 1fr}

@@ -136,6 +136,27 @@ function format_price($price): string
     return '£' . number_format($price, 0);
 }
 
+/** Map a service's stored icon keyword to a display glyph. */
+function icon_emoji(string $key): string
+{
+    $map = [
+        'truck'      => '🚚',
+        'shield'     => '🛡️',
+        'map'        => '🗺️',
+        'bike'       => '🏍️',
+        'wrench'     => '🔧',
+        'cog'        => '⚙️',
+        'cogs'       => '⚙️',
+        'clipboard'  => '📋',
+        'disc'       => '🛞',
+        'search'     => '🔍',
+        'bolt'       => '🔋',
+        'gears'      => '⚙️',
+        'tyre'       => '🛞',
+    ];
+    return $map[$key] ?? '🚗';
+}
+
 /** Render a star rating string. */
 function render_stars(int $rating): string
 {

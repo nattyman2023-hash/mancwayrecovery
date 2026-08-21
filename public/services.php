@@ -25,7 +25,7 @@ require APP_DIR . '/views/layout/header.php';
             <?php foreach ($services as $s): ?>
                 <article class="card service-card">
                     <?php if ((int)$s['sort_order'] === 1): ?><span class="tag">Most requested</span><?php endif; ?>
-                    <div class="service-ico"><?= e($s['icon']) ?></div>
+                    <div class="service-ico"><?= icon_emoji($s['icon']) ?></div>
                     <h3><?= e($s['title']) ?></h3>
                     <p><?= e($s['short_desc']) ?></p>
                     <div class="service-foot">
