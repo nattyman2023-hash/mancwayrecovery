@@ -41,6 +41,24 @@
     });
   }
 
+  // Let users check password and API-key text before submitting, without
+  // changing how the value is posted or stored.
+  function setupPasswordToggles() {
+    document.querySelectorAll('[data-password-toggle]').forEach(function (button) {
+      var targetId = button.getAttribute('data-password-target') || '';
+      var input = document.getElementById(targetId);
+      if (!input) return;
+
+      button.addEventListener('click', function () {
+        var showing = input.type === 'text';
+        input.type = showing ? 'password' : 'text';
+        button.textContent = showing ? 'Show' : 'Hide';
+        button.setAttribute('aria-pressed', showing ? 'false' : 'true');
+        button.setAttribute('aria-label', showing ? 'Show value' : 'Hide value');
+      });
+    });
+  }
+
   // Look up vehicle details through the server-side DVLA proxy. The API key
   // never reaches the browser; the existing make/model inputs stay editable.
   function setupVehicleLookup() {
@@ -138,8 +156,8 @@
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function () { setupNavToggles(); setupYear(); setupConfirm(); setupVehicleLookup(); });
+    document.addEventListener('DOMContentLoaded', function () { setupNavToggles(); setupYear(); setupConfirm(); setupPasswordToggles(); setupVehicleLookup(); });
   } else {
-    setupNavToggles(); setupYear(); setupConfirm(); setupVehicleLookup();
+    setupNavToggles(); setupYear(); setupConfirm(); setupPasswordToggles(); setupVehicleLookup();
   }
 })();

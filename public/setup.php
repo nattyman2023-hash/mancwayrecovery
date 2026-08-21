@@ -91,11 +91,17 @@ require APP_DIR . '/views/layout/admin_header.php';
                 <div class="form-row">
                     <div class="field">
                         <label for="password">Password *</label>
-                        <input type="password" id="password" name="password" required minlength="10">
+                        <div class="password-field">
+                            <input type="password" id="password" name="password" required minlength="10">
+                            <button type="button" class="password-toggle" data-password-toggle data-password-target="password" aria-controls="password" aria-pressed="false" aria-label="Show password">Show</button>
+                        </div>
                     </div>
                     <div class="field">
                         <label for="confirm">Confirm password *</label>
-                        <input type="password" id="confirm" name="confirm" required minlength="10">
+                        <div class="password-field">
+                            <input type="password" id="confirm" name="confirm" required minlength="10">
+                            <button type="button" class="password-toggle" data-password-toggle data-password-target="confirm" aria-controls="confirm" aria-pressed="false" aria-label="Show password">Show</button>
+                        </div>
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary btn-lg btn-block">Create admin account</button>

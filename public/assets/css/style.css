@@ -184,6 +184,10 @@ p{margin:.5em 0}
 .field-check{justify-content:flex-end}
 .field label{font-weight:600;font-size:.92rem;color:var(--navy)}
 .field input,.field select,.field textarea{padding:.7rem .8rem;border:1.5px solid var(--line);border-radius:var(--radius-sm);font:inherit;font-size:1rem;background:#fff;color:var(--ink);width:100%}
+.password-field{position:relative}
+.password-field input{padding-right:4.8rem}
+.password-toggle{position:absolute;top:50%;right:.45rem;transform:translateY(-50%);padding:.35rem .45rem;border:0;background:transparent;color:var(--amber-d);font:inherit;font-size:.82rem;font-weight:800;cursor:pointer;border-radius:4px}
+.password-toggle:hover,.password-toggle:focus-visible{background:rgba(245,166,35,.14);color:var(--navy);outline:none}
 .field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--amber);box-shadow:0 0 0 3px rgba(245,166,35,.18)}
 .has-error input,.has-error select,.has-error textarea{border-color:var(--err)}
 .field-error{color:var(--err);font-size:.82rem;font-weight:600}

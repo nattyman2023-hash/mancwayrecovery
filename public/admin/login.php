@@ -51,7 +51,10 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
                 </div>
                 <div class="field">
                     <label for="password">Password</label>
-                    <input type="password" id="password" name="password" autocomplete="current-password" required>
+                    <div class="password-field">
+                        <input type="password" id="password" name="password" autocomplete="current-password" required>
+                        <button type="button" class="password-toggle" data-password-toggle data-password-target="password" aria-controls="password" aria-pressed="false" aria-label="Show password">Show</button>
+                    </div>
                 </div>
                 <button type="submit" class="btn btn-primary btn-lg btn-block">Sign in</button>
             </form>

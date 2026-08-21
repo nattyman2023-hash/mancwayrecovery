@@ -82,7 +82,10 @@ require APP_DIR . '/views/layout/admin_header.php';
         <?php if ($serverDvlaConfigured): ?><p class="muted">A server-level DVLA key is active and takes priority over this admin setting.</p><?php endif; ?>
         <div class="field">
             <label for="dvla_api_key">DVLA Vehicle Enquiry API key</label>
-            <input type="password" id="dvla_api_key" name="dvla_api_key" value="" autocomplete="new-password" placeholder="Paste a new DVLA API key to save or replace it">
+            <div class="password-field">
+                <input type="password" id="dvla_api_key" name="dvla_api_key" value="" autocomplete="new-password" placeholder="Paste a new DVLA API key to save or replace it">
+                <button type="button" class="password-toggle" data-password-toggle data-password-target="dvla_api_key" aria-controls="dvla_api_key" aria-pressed="false" aria-label="Show API key">Show</button>
+            </div>
             <small class="muted">Leave blank to keep the current key. This setting is used only by the server-side vehicle lookup.</small>
         </div>
         <label class="field-check"><input type="checkbox" name="clear_dvla_api_key" value="1"> Clear the saved admin setting</label>
@@ -108,8 +111,8 @@ require APP_DIR . '/views/layout/admin_header.php';
     <form method="post" class="form" novalidate>
         <?= csrf_field() ?><input type="hidden" name="action" value="password">
         <div class="form-row">
-            <div class="field<?= isset($err['new_password'])?' has-error':'' ?>"><label for="new_password">New password *</label><input type="password" id="new_password" name="new_password" minlength="10" required><?= field_error($err, 'new_password') ?></div>
-            <div class="field<?= isset($err['confirm_password'])?' has-error':'' ?>"><label for="confirm_password">Confirm *</label><input type="password" id="confirm_password" name="confirm_password" minlength="10" required><?= field_error($err, 'confirm_password') ?></div>
+            <div class="field<?= isset($err['new_password'])?' has-error':'' ?>"><label for="new_password">New password *</label><div class="password-field"><input type="password" id="new_password" name="new_password" minlength="10" required><button type="button" class="password-toggle" data-password-toggle data-password-target="new_password" aria-controls="new_password" aria-pressed="false" aria-label="Show password">Show</button></div><?= field_error($err, 'new_password') ?></div>
+            <div class="field<?= isset($err['confirm_password'])?' has-error':'' ?>"><label for="confirm_password">Confirm *</label><div class="password-field"><input type="password" id="confirm_password" name="confirm_password" minlength="10" required><button type="button" class="password-toggle" data-password-toggle data-password-target="confirm_password" aria-controls="confirm_password" aria-pressed="false" aria-label="Show password">Show</button></div><?= field_error($err, 'confirm_password') ?></div>
         </div>
         <button type="submit" class="btn btn-primary">Change password</button>
     </form>
