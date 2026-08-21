@@ -40,6 +40,7 @@ try {
 if (!$crmReady) {
     $admin_title  = 'CRM — Enquiries';
     $active_admin = 'crm';
+    $admin_actions_html = '<a class="btn btn-primary btn-sm" href="' . e(url('/admin/bookings.php?new=1')) . '"><span class="mw-icon">add</span> New booking</a>';
     require APP_DIR . '/views/layout/admin_header.php';
     ?>
     <?php if ($migrationError): ?><div class="alert alert-error"><?= e($migrationError) ?></div><?php endif; ?>
@@ -112,6 +113,7 @@ $primaryVehicle = $vehicles[0] ?? null;
 
 $admin_title  = 'CRM — Enquiries';
 $active_admin = 'crm';
+$admin_actions_html = '<a class="btn btn-primary btn-sm" href="' . e(url('/admin/bookings.php?new=1')) . '"><span class="mw-icon">add</span> New booking</a>';
 require APP_DIR . '/views/layout/admin_header.php';
 ?>
 <?php if ($flash): ?><div class="alert alert-success"><?= e($flash) ?></div><?php endif; ?>
