@@ -30,7 +30,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
     if ($name === '' || mb_strlen($name) > 120)      $errors['name'] = 'Please enter your full name.';
     if ($email !== '' && !valid_email($email))        $errors['email'] = 'Please enter a valid email address.';
     if (!valid_phone($phone))                         $errors['phone'] = 'Please enter a valid phone number.';
-    if ($vmake === '')                                $errors['vehicle_make'] = 'Please enter your vehicle make (e.g. Ford).';
+    if ($vreg === '')                                 $errors['vehicle_reg'] = 'Please enter the vehicle registration.';
     if ($address === '')                              $errors['address'] = 'Please enter your address.';
     if (!valid_postcode($postcode))                   $errors['postcode'] = 'Please enter a valid UK postcode.';
     if ($pdate === '' || strtotime($pdate) < strtotime(date('Y-m-d'))) $errors['preferred_date'] = 'Please choose a valid date (today or later).';
@@ -127,23 +127,24 @@ require APP_DIR . '/views/layout/header.php';
                 <input type="email" id="email" name="email" value="<?= old('email') ?>">
                 <?= field_error($errors, 'email') ?>
             </div>
-            <div class="field vehicle-lookup" data-vehicle-lookup data-endpoint="<?= e(url('/api/dvla-vehicle.php')) ?>">
-                <label for="vehicle_reg">Vehicle registration</label>
+            <div class="field vehicle-lookup<?= isset($errors['vehicle_reg']) ? ' has-error' : '' ?>" data-vehicle-lookup data-endpoint="<?= e(url('/api/dvla-vehicle.php')) ?>">
+                <label for="vehicle_reg">Vehicle registration *</label>
                 <div class="vehicle-lookup-row">
-                    <input type="text" id="vehicle_reg" name="vehicle_reg" value="<?= old('vehicle_reg') ?>" placeholder="e.g. AB12 CDE" autocomplete="off" autocapitalize="characters" spellcheck="false">
+                    <input type="text" id="vehicle_reg" name="vehicle_reg" value="<?= old('vehicle_reg') ?>" placeholder="e.g. AB12 CDE" autocomplete="off" autocapitalize="characters" spellcheck="false" required>
                     <button type="button" class="btn btn-outline vehicle-lookup-button" data-vehicle-lookup-button>Find details</button>
                 </div>
-                <p class="vehicle-lookup-help">Enter the registration and we’ll fill in the details DVLA holds.</p>
+                <p class="vehicle-lookup-help">Registration is enough to send your request. We’ll fill in any details DVLA holds.</p>
                 <p class="vehicle-lookup-status" data-vehicle-lookup-status role="status" aria-live="polite"></p>
+                <?= field_error($errors, 'vehicle_reg') ?>
             </div>
             <div class="form-row">
                 <div class="field<?= isset($errors['vehicle_make']) ? ' has-error' : '' ?>">
-                    <label for="vehicle_make">Vehicle make *</label>
-                    <input type="text" id="vehicle_make" name="vehicle_make" value="<?= old('vehicle_make') ?>" placeholder="e.g. Ford" required>
+                    <label for="vehicle_make">Vehicle make <span class="muted">(optional)</span></label>
+                    <input type="text" id="vehicle_make" name="vehicle_make" value="<?= old('vehicle_make') ?>" placeholder="Filled from DVLA where available">
                     <?= field_error($errors, 'vehicle_make') ?>
                 </div>
                 <div class="field">
-                    <label for="vehicle_model">Vehicle model</label>
+                    <label for="vehicle_model">Vehicle model <span class="muted">(optional)</span></label>
                     <input type="text" id="vehicle_model" name="vehicle_model" value="<?= old('vehicle_model') ?>" placeholder="e.g. Focus 1.6">
                 </div>
             </div>

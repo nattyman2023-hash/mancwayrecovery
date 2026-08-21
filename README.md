@@ -127,8 +127,9 @@ Add the key to `app/config/config.local.php` on the server, or set the
 Git, or a publicly accessible `.env` file. PHP cURL must be enabled on the
 hosting account. Once you can access the CRM, you can also save or replace the
 key from **Admin → Settings → API integrations**; a server-level key takes
-priority. If no key is present, the form continues to work with manual vehicle
-entry.
+priority. Vehicle registration is the only required vehicle field on the
+booking form; make/model are filled when DVLA provides them and remain editable
+when it does not.
 
 ### 5. Enable SSL & set the domain
 1. hPanel → **SSL** → install free **Let's Encrypt SSL** for your domain
