@@ -83,11 +83,15 @@ $nav = [
             </ul>
         </nav>
         <div class="nav-cta">
+            <span class="nav-status" aria-label="Available 24 hours a day, 7 days a week">
+                <span class="nav-status-dot" aria-hidden="true"></span>
+                <span><strong>Available now</strong><small>24/7 recovery</small></span>
+            </span>
             <a class="nav-phone" href="tel:<?= e(setting('phone_href', site_phone())) ?>">
                 <span class="nav-phone-label">24/7 Recovery Line</span>
                 <span class="nav-phone-number"><?= e(site_phone()) ?></span>
             </a>
-            <a class="btn btn-primary" href="<?= e(url('/booking.php')) ?>">Book Recovery</a>
+            <a class="btn btn-primary nav-book" href="<?= e(url('/booking.php')) ?>"><span>Book Recovery</span><span class="nav-book-arrow" aria-hidden="true">→</span></a>
         </div>
     </div>
 </header>
