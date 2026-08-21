@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Customer Stories | RecoveryPro CRM</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .fill-icon {
+            font-variation-settings: 'FILL' 1;
+        }
+        /* Custom scrollbar for side nav */
+        .side-nav-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        .side-nav-scroll::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-fixed": "#271901",
+                        "surface-bright": "#f8f9ff",
+                        "on-background": "#0b1c30",
+                        "inverse-surface": "#213145",
+                        "status-provisional": "#F97316",
+                        "surface-steel": "#F1F5F9",
+                        "on-primary-fixed": "#131b2e",
+                        "secondary": "#855300",
+                        "on-tertiary-container": "#98805d",
+                        "on-secondary-fixed": "#2a1700",
+                        "status-conflict": "#EF4444",
+                        "surface-container": "#e5eeff",
+                        "surface-charcoal": "#1E293B",
+                        "on-tertiary-fixed-variant": "#574425",
+                        "outline": "#76777d",
+                        "surface-dim": "#cbdbf5",
+                        "on-primary": "#ffffff",
+                        "surface-container-high": "#dce9ff",
+                        "on-tertiary": "#ffffff",
+                        "inverse-primary": "#bec6e0",
+                        "primary-fixed-dim": "#bec6e0",
+                        "surface": "#f8f9ff",
+                        "status-confirmed": "#10B981",
+                        "primary": "#000000",
+                        "tertiary-container": "#271901",
+                        "surface-tint": "#565e74",
+                        "background": "#f8f9ff",
+                        "secondary-container": "#fea619",
+                        "secondary-fixed": "#ffddb8",
+                        "outline-variant": "#c6c6cd",
+                        "on-surface": "#0b1c30",
+                        "surface-container-highest": "#d3e4fe",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed-variant": "#3f465c",
+                        "on-secondary-container": "#684000",
+                        "tertiary-fixed": "#fcdeb5",
+                        "surface-container-low": "#eff4ff",
+                        "secondary-fixed-dim": "#ffb95f",
+                        "on-secondary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "tertiary-fixed-dim": "#dec29a",
+                        "surface-variant": "#d3e4fe",
+                        "status-completed": "#8B5CF6",
+                        "primary-container": "#131b2e",
+                        "on-primary-container": "#7c839b",
+                        "on-surface-variant": "#45464d",
+                        "on-secondary-fixed-variant": "#653e00",
+                        "on-error": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "status-cancelled": "#94A3B8",
+                        "primary-fixed": "#dae2fd",
+                        "tertiary": "#000000",
+                        "status-in-progress": "#3B82F6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "16px",
+                        "grid-margin": "24px",
+                        "density-comfortable": "16px",
+                        "unit": "4px",
+                        "density-compact": "8px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "data-mono": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "body-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "data-mono": ["12px", {"lineHeight": "16px", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen flex flex-col md:flex-row overflow-x-hidden">
+<!-- SideNavBar -->
+<aside class="bg-surface-container-lowest dark:bg-inverse-surface text-primary dark:text-inverse-primary border-r border-outline-variant docked left-0 h-full w-64 flex-col h-screen overflow-y-auto hidden md:flex sticky top-0 side-nav-scroll">
+<div class="p-grid-margin mb-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-primary-container rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container" data-icon="recovery_convertible">cc_attribution</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md text-primary">Dispatch Center</h1>
+<p class="font-label-caps text-label-caps text-on-surface-variant opacity-70">Recovery Unit 01</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 flex flex-col px-3 gap-1">
+<!-- Determined Dashboard to be the closest top-level home, but actually this page is about customer insight/reports -->
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-surface-charcoal transition-all duration-200 ease-in-out font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+                Dashboard
+            </a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-surface-charcoal transition-all duration-200 ease-in-out font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_month">calendar_month</span>
+                Calendar
+            </a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-primary dark:text-inverse-primary border-l-4 border-status-provisional bg-surface-container-high transition-all duration-200 ease-in-out font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+                Customers
+            </a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-surface-charcoal transition-all duration-200 ease-in-out font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined" data-icon="local_shipping">local_shipping</span>
+                Vehicles
+            </a>
+<!-- Simplified nav for UI brevity while respecting JSON content -->
+<div class="mt-4 mb-2 px-4 text-outline font-label-caps text-[10px] uppercase">Finances</div>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-surface-charcoal transition-all duration-200 ease-in-out font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined" data-icon="receipt_long">receipt_long</span>
+                Invoices
+            </a>
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-surface-charcoal transition-all duration-200 ease-in-out font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+                Payments
+            </a>
+</nav>
+<div class="mt-auto p-4 border-t border-outline-variant">
+<a class="flex items-center gap-4 px-4 py-3 rounded-lg text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-surface-charcoal transition-all duration-200 ease-in-out font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+                Settings
+            </a>
+</div>
+</aside>
+<!-- Content Canvas -->
+<main class="flex-1 min-w-0 flex flex-col relative pb-20 md:pb-0">
+<!-- TopNavBar -->
+<header class="bg-surface dark:bg-surface-charcoal text-primary dark:text-inverse-primary border-b border-outline-variant dark:border-outline shadow-sm docked full-width top-0 sticky z-40 flex items-center justify-between px-grid-margin h-16 w-full">
+<div class="flex items-center gap-4">
+<span class="font-headline-md text-headline-md font-black text-primary dark:text-inverse-primary">RecoveryPro CRM</span>
+<div class="hidden md:flex items-center bg-surface-container-low rounded-lg px-3 py-1.5 ml-4">
+<span class="material-symbols-outlined text-outline text-sm" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-sm w-48" placeholder="Search reviews..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-low transition-colors p-2 rounded-full active:scale-95 duration-150" data-icon="notifications">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-low transition-colors p-2 rounded-full active:scale-95 duration-150" data-icon="sms">sms</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-low transition-colors p-2 rounded-full active:scale-95 duration-150" data-icon="help_outline">help_outline</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a business manager in a crisp white shirt, photographed with high-end corporate lighting. The background is a blurred, high-tech fleet operations center with blue and charcoal tones. The image is clean, dependable, and conveys professional authority in the industrial sector." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBpBpm1hbTE8ZnGCw86PQOwhXdekQXh53LloGkqlgslqlLrk71vFGzUuH0Ope0SBL72A4TlPcyyKXcjBoIniEayjdzrNLrx09PYWw7kHCVwGygWglgMV6d0Efif8WAVg28StewWCpd_2YLb2VUMmgqdJ21k9L5xdSlZN3Yy1QS4vm7a-VvoAm47ejniRPyBtsdgWS_2Zz3LrHiYgAJgjgU15iaYSkTd4lZF8h05v4clJ6a9B9kAi4RhFOW09wG_JZKwF5wZH8Qqjn0"/>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<div class="p-grid-margin lg:p-12 max-w-7xl mx-auto w-full">
+<!-- Page Header & Summary Section -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter mb-12">
+<div class="lg:col-span-8">
+<h2 class="font-display-lg text-display-lg mb-2">Customer Testimonials</h2>
+<p class="text-on-surface-variant max-w-2xl font-body-md">Real stories from the road. See how our recovery units are making a difference for stranded drivers and fleet partners across the country.</p>
+</div>
+<div class="lg:col-span-4 bg-white border border-outline-variant rounded-xl p-6 shadow-sm flex flex-col justify-center items-center text-center">
+<div class="flex items-center gap-1 mb-2">
+<span class="material-symbols-outlined text-secondary-container text-4xl fill-icon" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-display-lg text-display-lg">4.9</span>
+<span class="text-on-surface-variant font-body-sm mt-2">/ 5.0</span>
+</div>
+<p class="font-label-caps text-label-caps uppercase tracking-widest text-outline">Google Business Rating</p>
+<div class="flex gap-0.5 mt-2">
+<span class="material-symbols-outlined text-secondary-container text-sm fill-icon" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary-container text-sm fill-icon" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary-container text-sm fill-icon" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary-container text-sm fill-icon" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary-container text-sm fill-icon" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="text-body-sm text-on-surface-variant mt-3">Based on 1,248 verified reviews</p>
+</div>
+</div>
+<!-- Bento Grid Section: Featured Story & Widgets -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter mb-12">
+<!-- Large Featured Story -->
+<div class="md:col-span-2 bg-surface-charcoal text-white rounded-xl overflow-hidden relative group h-[400px]">
+<div class="absolute inset-0 opacity-40 mix-blend-overlay pointer-events-none">
+<div class="w-full h-full bg-gradient-to-t from-black via-transparent to-transparent"></div>
+</div>
+<div class="absolute inset-0">
+<img class="w-full h-full object-cover" data-alt="A wide-angle cinematic shot of a heavy-duty flatbed recovery truck operating at night on a rainy highway. The scene is illuminated by amber emergency lights reflecting on the wet asphalt. The mood is heroic and dependable, emphasizing modern industrial power and professional vehicle rescue services in challenging conditions." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9zylLIuNxmJ_42L3CtKaN6k8UfWpeRzf5MUL4xLhvsJY_IzZ9DY6IJXC4RKVD043E3SQmQlvUrGAZY5XZoPR5H2vNbhe56F8QO_OSW0eKtdC12WwUFUrpV_Km0bGgqVytCieKZBWgbbgwcdf7S9-UYvF8IRCc-HZ6j_gU1y7Ez4QVE64RbaqyCnYysHS5cnIZWH8aI6TIqzmv1jAdOQmcmaS9ZwKSW4h8xpo-lH6VP-VSrZFh1weHlNxQJlkcEBND0E8FygRszWw"/>
+</div>
+<div class="absolute bottom-0 left-0 p-8 w-full">
+<span class="bg-status-provisional text-white text-[10px] font-bold px-2 py-0.5 rounded uppercase mb-4 inline-block">Featured Story</span>
+<h3 class="font-headline-md text-headline-md mb-4 leading-tight">"Stranded at 3 AM on the M4. RecoveryPro was there in 15 minutes. Absolute life savers."</h3>
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full border-2 border-white/20 p-0.5">
+<img class="w-full h-full rounded-full object-cover" data-alt="A portrait of a satisfied middle-aged customer, smiling with relief next to their vehicle. The lighting is warm and natural, capturing a moment of genuine gratitude. The background features the subtle blur of a recovery vehicle's tail lift. The style is documentary-realism with high clarity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtFfh3pYvwzh1fBUY_AiAe9RdU8eHgfxxdpDEqxrYab4RQqOW7le4VRerXF1pcbEOkOMq2sMPXuz6yInYPZj4pRMYCfKLb8RkzD8rifoUwMu5yGBbe2rH9iANVlzVmElQek1vmMAuUawpgw4iN2stJvpPrSW_gsynJLEccT-sB-BCVfW50h72h8XXVH676-rcdGDdkR5cpuo_GfyfJQtf7eTMGUPNThamG-HMKlmME9F8hhXSe3dTNEpEZ_-Y9tcE0M8fvbi11HUc"/>
+</div>
+<div>
+<p class="font-label-caps text-label-caps">David Henderson</p>
+<p class="text-[11px] opacity-70">Logistics Manager, West-Fleet</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Google Feed Widget Mini -->
+<div class="bg-white border border-outline-variant rounded-xl flex flex-col overflow-hidden">
+<div class="p-4 border-b border-outline-variant flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" data-icon="forum">forum</span>
+<span class="font-label-caps text-label-caps">Google Live Feed</span>
+</div>
+<div class="w-2 h-2 rounded-full bg-status-confirmed animate-pulse"></div>
+</div>
+<div class="flex-1 overflow-y-auto p-4 space-y-4 max-h-[340px] side-nav-scroll">
+<!-- Review Item -->
+<div class="space-y-2">
+<div class="flex justify-between items-start">
+<p class="font-label-caps text-[10px] text-on-surface-variant">2 HOURS AGO</p>
+<div class="flex gap-0.5">
+<span class="material-symbols-outlined text-secondary-container text-[10px] fill-icon" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary-container text-[10px] fill-icon" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary-container text-[10px] fill-icon" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary-container text-[10px] fill-icon" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary-container text-[10px] fill-icon" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<p class="text-body-sm italic">"Very professional service. The driver was knowledgeable and handled my car with extreme care."</p>
+<p class="font-label-caps text-[11px] text-primary">— Sarah M.</p>
+</div>
+<hr class="border-outline-variant/30"/>
+<!-- Review Item -->
+<div class="space-y-2">
+<div class="flex justify-between items-start">
+<p class="font-label-caps text-[10px] text-on-surface-variant">5 HOURS AGO</p>
+<div class="flex gap-0.5">
+<span class="material-symbols-outlined text-secondary-container text-[10px] fill-icon" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary-container text-[10px] fill-icon" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary-container text-[10px] fill-icon" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary-container text-[10px] fill-icon" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary-container text-[10px] fill-icon" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<p class="text-body-sm italic">"Fastest dispatch in the region. Fair pricing and no hidden costs."</p>
+<p class="font-label-caps text-[11px] text-primary">— Marcus Roadside</p>
+</div>
+<hr class="border-outline-variant/30"/>
+<!-- Review Item -->
+<div class="space-y-2">
+<div class="flex justify-between items-start">
+<p class="font-label-caps text-[10px] text-on-surface-variant">1 DAY AGO</p>
+<div class="flex gap-0.5">
+<span class="material-symbols-outlined text-secondary-container text-[10px] fill-icon" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary-container text-[10px] fill-icon" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary-container text-[10px] fill-icon" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary-container text-[10px] fill-icon" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary-container text-[10px] fill-icon" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<p class="text-body-sm italic">"I've used several recovery firms for our business fleet, but these guys are the most reliable by far."</p>
+<p class="font-label-caps text-[11px] text-primary">— J. Thompson</p>
+</div>
+</div>
+<button class="w-full bg-surface-steel text-on-surface py-3 font-label-caps text-label-caps hover:bg-surface-container transition-colors uppercase tracking-widest flex items-center justify-center gap-2">
+                        Read All Reviews <span class="material-symbols-outlined text-sm" data-icon="open_in_new">open_in_new</span>
+</button>
+</div>
+</div>
+<!-- Customer Stories Feed -->
+<div class="space-y-8">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-md text-headline-md">Individual Customer Stories</h3>
+<div class="flex gap-2">
+<button class="p-2 border border-outline-variant rounded hover:bg-surface-container transition-colors"><span class="material-symbols-outlined" data-icon="filter_list">filter_list</span></button>
+<button class="p-2 border border-outline-variant rounded hover:bg-surface-container transition-colors"><span class="material-symbols-outlined" data-icon="grid_view">grid_view</span></button>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-gutter">
+<!-- Story Card 1 -->
+<div class="bg-white border border-outline-variant rounded-xl p-6 flex flex-col md:flex-row gap-6 hover:shadow-md transition-shadow">
+<div class="w-full md:w-32 h-48 md:h-32 flex-shrink-0 bg-surface-steel rounded overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A detailed closeup of a premium luxury vehicle being carefully secured onto a specialized recovery truck. The lighting is crisp and detailed, highlighting the metallic finish of the car and the industrial grade webbing of the straps. The scene is shot in a clean, daylight setting to emphasize precision and care." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnbSGmMj65SqdLGxuHhcuMR3cf2qRf0uNEh5XpQxTKtfIj59LXys4KTh2Dj6TmjBEMqDgSwFZGQZE3dO4pLCtKpl_EDfeU4KiIpUzSgQXGKq6bN3CeNy5v6ds66YlqklBtOSua8eDNAl1NzDL7Nava8UfJvyk1Lmx2oyfyUvhoXpj6gPAjARloE0hwQBvWWOQIlAqNg9n-iAqZ9_KNHLyB7TqeAOxb15RGJim5wReSW_hxZZOeTqydYnwhHeBDbRHV1Wy4y0elLjU"/>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-headline-md text-headline-md leading-none">Safe Transit for My Classic</h4>
+<span class="text-on-surface-variant font-data-mono text-data-mono">Job #8821</span>
+</div>
+<div class="flex gap-0.5 mb-3">
+<span class="material-symbols-outlined text-secondary-container text-xs fill-icon" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary-container text-xs fill-icon" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary-container text-xs fill-icon" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary-container text-xs fill-icon" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary-container text-xs fill-icon" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="text-on-surface-variant text-body-sm line-clamp-3 mb-4">"I was extremely worried about moving my 1967 Mustang to the showroom, but RecoveryPro used a specialized spec-lift and covered transport. Not a single scratch. Truly professional equipment and staff."</p>
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-primary-container flex items-center justify-center text-[10px] text-on-primary-container font-bold">RL</div>
+<span class="text-body-sm font-semibold">Robert L.</span>
+<span class="mx-2 text-outline-variant">•</span>
+<span class="text-body-sm text-on-surface-variant italic">Vintage Auto Restorer</span>
+</div>
+</div>
+</div>
+<!-- Story Card 2 -->
+<div class="bg-white border border-outline-variant rounded-xl p-6 flex flex-col md:flex-row gap-6 hover:shadow-md transition-shadow">
+<div class="w-full md:w-32 h-48 md:h-32 flex-shrink-0 bg-surface-steel rounded overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="An industrial-style photograph of a large logistics delivery van being towed by a heavy recovery unit during a bright morning. The scene conveys reliability and business continuity. The lighting is high-contrast, professional, and clean, showing the strength and capability of the recovery fleet." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWAn5JJfPpwEfSlICy9pG89osygAy6KvV6GqLRiPix51cPl86rrijcJO-aSLcye3z6RPKWva4RwK1e8TPNKgu-quoVZ7MiXLC2g8kCNA9nCacHilH5qmimqNOr9diOhbtGJpt3OWqUOC4aAGbFPmKF681HzhVmh6OsmgoqP4V0Hm7lwWn1ARuJ_XuicZH8aC72QAwfejxkvlG4_5D59ApFcXtFvEyz1xllQZt1cStBQ298luedGQsuqxWlPpkGK5i5_JCZVzL23lg"/>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-headline-md text-headline-md leading-none">Fleet Support on Speed-dial</h4>
+<span class="text-on-surface-variant font-data-mono text-data-mono">Job #9042</span>
+</div>
+<div class="flex gap-0.5 mb-3">
+<span class="material-symbols-outlined text-secondary-container text-xs fill-icon" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary-container text-xs fill-icon" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary-container text-xs fill-icon" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary-container text-xs fill-icon" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-secondary-container text-xs fill-icon" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="text-on-surface-variant text-body-sm line-clamp-3 mb-4">"We manage 15 delivery vans. Breakdowns used to kill our schedule. Now, we just tap the app, and RecoveryPro gets our drivers back to the depot or to a garage within the hour. Business-critical service."</p>
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-status-in-progress flex items-center justify-center text-[10px] text-white font-bold">EK</div>
+<span class="text-body-sm font-semibold">Elena K.</span>
+<span class="mx-2 text-outline-variant">•</span>
+<span class="text-body-sm text-on-surface-variant italic">Operations Lead</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Call to Action / Bottom Stat -->
+<div class="mt-16 bg-primary-container rounded-2xl p-8 lg:p-12 text-center relative overflow-hidden">
+<!-- Background visual noise/pattern -->
+<div class="absolute inset-0 opacity-10 pointer-events-none flex flex-wrap gap-4 p-4 overflow-hidden">
+<span class="material-symbols-outlined text-6xl" data-icon="local_shipping">local_shipping</span>
+<span class="material-symbols-outlined text-6xl" data-icon="person_pin_circle">person_pin_circle</span>
+<span class="material-symbols-outlined text-6xl" data-icon="verified">verified</span>
+<span class="material-symbols-outlined text-6xl" data-icon="support_agent">support_agent</span>
+</div>
+<div class="relative z-10">
+<h3 class="font-display-lg text-display-lg text-white mb-4">Ready to experience superior recovery?</h3>
+<p class="text-on-primary-container max-w-xl mx-auto mb-8 font-body-md">Join over 10,000 satisfied customers who trust RecoveryPro CRM for their roadside and logistical needs.</p>
+<div class="flex flex-col sm:flex-row justify-center gap-4">
+<button class="bg-secondary-container text-on-secondary-container px-8 py-3 rounded font-label-caps text-label-caps uppercase tracking-wider hover:scale-105 transition-transform">Book a Service Now</button>
+<button class="border border-on-primary-container text-white px-8 py-3 rounded font-label-caps text-label-caps uppercase tracking-wider hover:bg-white/10 transition-colors">Contact Sales</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile) -->
+<nav class="fixed bottom-0 left-0 w-full md:hidden flex justify-around py-2 px-4 bg-surface dark:bg-surface-charcoal border-t border-outline-variant shadow-lg z-50">
+<a class="flex flex-col items-center justify-center text-on-surface-variant active:bg-surface-container scale-95 duration-100 p-2" href="#">
+<span class="material-symbols-outlined" data-icon="local_shipping">local_shipping</span>
+<span class="font-label-caps text-[10px] uppercase">Jobs</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant active:bg-surface-container scale-95 duration-100 p-2" href="#">
+<span class="material-symbols-outlined" data-icon="map">map</span>
+<span class="font-label-caps text-[10px] uppercase">Map</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant active:bg-surface-container scale-95 duration-100 p-2" href="#">
+<span class="material-symbols-outlined" data-icon="forum">forum</span>
+<span class="font-label-caps text-[10px] uppercase">Chat</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant active:bg-surface-container scale-95 duration-100 p-2" href="#">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="font-label-caps text-[10px] uppercase">Alerts</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary dark:text-secondary-fixed-dim active:bg-surface-container scale-95 duration-100 p-2" href="#">
+<span class="material-symbols-outlined fill-icon" data-icon="menu" style="font-variation-settings: 'FILL' 1;">menu</span>
+<span class="font-label-caps text-[10px] uppercase font-bold">Menu</span>
+</a>
+</nav>
+<script>
+        // Micro-interaction for active star rating
+        document.querySelectorAll('.material-symbols-outlined').forEach(icon => {
+            if (icon.textContent === 'star') {
+                icon.addEventListener('mouseenter', () => {
+                    icon.classList.add('scale-125');
+                    icon.style.transition = 'transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                });
+                icon.addEventListener('mouseleave', () => {
+                    icon.classList.remove('scale-125');
+                });
+            }
+        });
+    </script>
+</body></html>

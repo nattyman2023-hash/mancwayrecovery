@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "inverse-on-surface": "#eaf1ff",
+                "on-error-container": "#93000a",
+                "on-tertiary-fixed": "#271901",
+                "surface-bright": "#f8f9ff",
+                "on-background": "#0b1c30",
+                "inverse-surface": "#213145",
+                "status-provisional": "#F97316",
+                "surface-steel": "#F1F5F9",
+                "on-primary-fixed": "#131b2e",
+                "secondary": "#855300",
+                "on-tertiary-container": "#98805d",
+                "on-secondary-fixed": "#2a1700",
+                "status-conflict": "#EF4444",
+                "surface-container": "#e5eeff",
+                "surface-charcoal": "#1E293B",
+                "on-tertiary-fixed-variant": "#574425",
+                "outline": "#76777d",
+                "surface-dim": "#cbdbf5",
+                "on-primary": "#ffffff",
+                "surface-container-high": "#dce9ff",
+                "on-tertiary": "#ffffff",
+                "inverse-primary": "#bec6e0",
+                "primary-fixed-dim": "#bec6e0",
+                "surface": "#f8f9ff",
+                "status-confirmed": "#10B981",
+                "primary": "#000000",
+                "tertiary-container": "#271901",
+                "surface-tint": "#565e74",
+                "background": "#f8f9ff",
+                "secondary-container": "#fea619",
+                "secondary-fixed": "#ffddb8",
+                "outline-variant": "#c6c6cd",
+                "on-surface": "#0b1c30",
+                "surface-container-highest": "#d3e4fe",
+                "surface-container-lowest": "#ffffff",
+                "on-primary-fixed-variant": "#3f465c",
+                "on-secondary-container": "#684000",
+                "tertiary-fixed": "#fcdeb5",
+                "surface-container-low": "#eff4ff",
+                "secondary-fixed-dim": "#ffb95f",
+                "on-secondary": "#ffffff",
+                "error": "#ba1a1a",
+                "tertiary-fixed-dim": "#dec29a",
+                "surface-variant": "#d3e4fe",
+                "status-completed": "#8B5CF6",
+                "primary-container": "#131b2e",
+                "on-primary-container": "#7c839b",
+                "on-surface-variant": "#45464d",
+                "on-secondary-fixed-variant": "#653e00",
+                "on-error": "#ffffff",
+                "error-container": "#ffdad6",
+                "status-cancelled": "#94A3B8",
+                "primary-fixed": "#dae2fd",
+                "tertiary": "#000000",
+                "status-in-progress": "#3B82F6"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+            },
+            "spacing": {
+                "gutter": "16px",
+                "grid-margin": "24px",
+                "density-comfortable": "16px",
+                "unit": "4px",
+                "density-compact": "8px"
+            },
+            "fontFamily": {
+                "label-caps": ["Inter"],
+                "body-sm": ["Inter"],
+                "body-md": ["Inter"],
+                "display-lg": ["Inter"],
+                "headline-md": ["Inter"],
+                "data-mono": ["JetBrains Mono"]
+            },
+            "fontSize": {
+                "label-caps": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                "body-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                "data-mono": ["12px", {"lineHeight": "16px", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .shimmer {
+            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0) 100%);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite linear;
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9ff;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background">
+<!-- Top Navigation Bar -->
+<nav class="bg-surface docked full-width top-0 sticky z-40 border-b border-outline-variant shadow-sm flex items-center justify-between px-grid-margin h-16 w-full">
+<div class="flex items-center gap-4">
+<span class="font-headline-md text-headline-md font-black text-primary">RecoveryPro CRM</span>
+<span class="hidden md:block text-on-surface-variant font-body-md text-body-md opacity-50">/</span>
+<span class="hidden md:block text-primary font-bold font-body-md text-body-md">About MancWay</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex items-center bg-surface-container-low px-4 py-2 rounded border border-outline-variant">
+<span class="material-symbols-outlined text-on-surface-variant mr-2">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-sm font-body-sm w-48" placeholder="Search documentation..." type="text"/>
+</div>
+<div class="flex gap-4">
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-low p-2 transition-colors">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-low p-2 transition-colors">sms</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-low p-2 transition-colors">help_outline</button>
+</div>
+<img class="w-10 h-10 rounded-full border-2 border-primary" data-alt="A professional headshot of a female logistics manager in a modern office environment. She is wearing a dark navy suit, looking confident and smiling slightly. The background is a blurred high-tech dispatch center with monitors showing maps and fleet data. Lighting is bright, clean, and professional, maintaining a high-contrast corporate aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyDn77Il9TJx_JDKmpD8KAM6by6VhRjAeyuFnPXWCYRC728KmnwkiXUFiU4IpGPu4kaMNDnN08Zu5ts2chA8VX6Kudty4EB4DuWvHNZzs7NOkR_Y1bGrfFxTfNIDWY7f6DDWSlAwNCEM-OqBdU9S0y3FQH1fXbxBycRYMkqQWp5orrXfoF30ME0joxxHW2bVFbi1Qhf3ZLtw5cHSl2Ukc_fKt9QyUTtLsS4pq0n9pprFDEevKF0n82jLaZ62XvTNK_e8ZjEgOApqM"/>
+</div>
+</nav>
+<div class="flex min-h-screen">
+<!-- Side Navigation (Desktop) -->
+<aside class="bg-surface-container-lowest dark:bg-inverse-surface border-r border-outline-variant docked left-0 h-full w-64 flex flex-col hidden md:flex sticky top-16">
+<div class="p-6 border-b border-outline-variant">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 bg-primary rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary">cc_attribution</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-primary uppercase">Dispatch Center</p>
+<p class="text-on-surface-variant text-xs font-medium">Recovery Unit 01</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 py-4 overflow-y-auto">
+<!-- Navigation Items -->
+<a class="flex items-center px-6 py-3 text-on-surface-variant hover:bg-surface-container transition-all duration-200" href="#">
+<span class="material-symbols-outlined mr-4">dashboard</span>
+<span class="font-label-caps text-label-caps">Dashboard</span>
+</a>
+<a class="flex items-center px-6 py-3 text-primary dark:text-inverse-primary border-l-4 border-status-provisional bg-surface-container-high transition-all duration-200" href="#">
+<span class="material-symbols-outlined mr-4">info</span>
+<span class="font-label-caps text-label-caps">About Us</span>
+</a>
+<a class="flex items-center px-6 py-3 text-on-surface-variant hover:bg-surface-container transition-all duration-200" href="#">
+<span class="material-symbols-outlined mr-4">local_shipping</span>
+<span class="font-label-caps text-label-caps">Fleet</span>
+</a>
+<a class="flex items-center px-6 py-3 text-on-surface-variant hover:bg-surface-container transition-all duration-200" href="#">
+<span class="material-symbols-outlined mr-4">groups</span>
+<span class="font-label-caps text-label-caps">Team</span>
+</a>
+<a class="flex items-center px-6 py-3 text-on-surface-variant hover:bg-surface-container transition-all duration-200" href="#">
+<span class="material-symbols-outlined mr-4">verified</span>
+<span class="font-label-caps text-label-caps">Accreditation</span>
+</a>
+<div class="my-4 mx-6 border-t border-outline-variant opacity-30"></div>
+<a class="flex items-center px-6 py-3 text-on-surface-variant hover:bg-surface-container transition-all duration-200" href="#">
+<span class="material-symbols-outlined mr-4">settings</span>
+<span class="font-label-caps text-label-caps">Settings</span>
+</a>
+</nav>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 w-full overflow-x-hidden">
+<!-- Hero Section -->
+<section class="relative w-full h-[500px] flex items-center justify-center overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="A cinematic wide shot of a high-end vehicle recovery truck parked on a bridge overlooking the Manchester skyline at dusk. The city lights are beginning to twinkle in the background. The truck is pristine, dark navy with subtle chrome accents. The scene is illuminated by long-exposure light trails from passing cars, creating a sense of speed and reliability in a modern industrial setting." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCFV8ny92hH3l8Q26GMsnmwHPlf1KkYFOUbH8E1T9cPn4vSyqBMFQas0tJbWLDx1lLTsgw2s6Sb0_eFp-Ph8U2WyNPnQjRai9Z9FKuXbImkZ6juu5DrVrrGRv2gXeYt_frnc5Dq9Y05S_VvzVNdxHQmPVmOC3fBK0bOXGJImeSn1_yd7Tb7nsRSzmLYtYAnd288HjxIiD9_aAfrq700M4G8_Ci-b07oxoB1iTpimURX6TjEJUzh4zd7WoSSR6UZDzr_jK0mGouR8ac')">
+<div class="absolute inset-0 bg-primary opacity-60"></div>
+</div>
+<div class="relative z-10 text-center px-grid-margin max-w-4xl">
+<h1 class="font-display-lg text-display-lg text-on-primary mb-4">Moving Greater Manchester Forward</h1>
+<p class="font-body-md text-on-primary opacity-90 mb-8 max-w-2xl mx-auto">MancWay is more than a recovery service; we are the logistical backbone of the region's transport network, providing authoritative and dependable solutions since 1998.</p>
+<div class="flex flex-wrap justify-center gap-4">
+<button class="bg-secondary-container text-on-secondary-container font-label-caps text-label-caps px-8 py-4 rounded hover:bg-secondary-fixed transition-colors flex items-center gap-2">
+                            OUR HISTORY <span class="material-symbols-outlined">arrow_downward</span>
+</button>
+<div class="flex items-center gap-2 px-6 py-4 bg-white/10 backdrop-blur-md rounded border border-white/20">
+<span class="material-symbols-outlined text-status-confirmed" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span class="text-white font-label-caps text-label-caps">PAS 43 ACCREDITED</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Mission & Story Bento -->
+<section class="p-grid-margin bg-surface">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter max-w-[1400px] mx-auto">
+<!-- Our Mission -->
+<div class="md:col-span-7 bg-white p-density-comfortable border border-outline-variant shadow-sm flex flex-col justify-between">
+<div>
+<span class="text-status-provisional font-label-caps text-label-caps mb-4 block">OUR MISSION</span>
+<h2 class="font-display-lg text-display-lg text-primary mb-6">Dependability Under Pressure</h2>
+<p class="font-body-md text-on-surface-variant leading-relaxed mb-6">
+                                Founded on the principles of precision and rapid response, MancWay exists to eliminate the stress of vehicular failure. We operate with a fleet-first mentality, ensuring that every driver, every vehicle, and every dispatcher is synchronized through the RecoveryPro CRM system. Our goal is a 30-minute response time across the M60 corridor, maintained through industrial-grade efficiency.
+                            </p>
+</div>
+<div class="grid grid-cols-3 gap-4 border-t border-outline-variant pt-6 mt-6">
+<div>
+<p class="font-display-lg text-primary">25+</p>
+<p class="font-label-caps text-label-caps text-on-surface-variant">YEARS EXPERIENCE</p>
+</div>
+<div>
+<p class="font-display-lg text-primary">12k</p>
+<p class="font-label-caps text-label-caps text-on-surface-variant">ANNUAL RECOVERIES</p>
+</div>
+<div>
+<p class="font-display-lg text-primary">4.9/5</p>
+<p class="font-label-caps text-label-caps text-on-surface-variant">TRUST SCORE</p>
+</div>
+</div>
+</div>
+<!-- Visual Highlight -->
+<div class="md:col-span-5 relative group overflow-hidden border border-outline-variant shadow-sm h-[400px]">
+<div class="w-full h-full bg-cover bg-center transition-transform duration-700 group-hover:scale-110" data-alt="A macro close-up of a high-visibility PAS 43 accreditation badge and a modern digital dispatch tablet mounted in the cabin of a recovery vehicle. The sunlight catches the metallic surfaces and the clean glass of the tablet. The environment is orderly and professional, emphasizing high-tech logistics and strict safety standards." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC5pCWLbkkJXumOZIlR3obcA4_gZ6iTZtE8ac9kzl8igkRfkOzSV2GDV0dAjoDHRQum9X4WZxj1wJ592sYfbeqs3sTPM4HuW4VAcatSdq8WE8rBviH_6MixULp3zXqrvr8hpIPiDBqVaO6cUuYTXTY8nai0M5zx7eVioFtr8lk4L-DwmLyoloxM1jf0FK4shm1HAAzpQ-kuKTGXqfI6Cw6LmMaUuXU3NGynk022uhw2smt_GmNVzoB-kaUpMG7_ec10oed5bl9DPg8')"></div>
+<div class="absolute bottom-0 left-0 right-0 bg-primary/80 backdrop-blur-sm p-6 text-on-primary">
+<p class="font-label-caps text-label-caps opacity-70">QUALITY ASSURANCE</p>
+<p class="font-headline-md text-headline-md">ISO 9001 &amp; PAS 43 Verified</p>
+</div>
+</div>
+<!-- Fleet Highlights -->
+<div class="md:col-span-12 mt-4">
+<h3 class="font-headline-md text-headline-md text-primary mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-status-in-progress">local_shipping</span>
+                            The MancWay Fleet
+                        </h3>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter">
+<!-- Fleet Card -->
+<div class="bg-white border-l-4 border-status-in-progress p-density-comfortable border border-y border-r border-outline-variant shadow-sm">
+<p class="font-data-mono text-data-mono text-on-surface-variant mb-2">CAT A: SPEC-LIFT</p>
+<h4 class="font-headline-md text-headline-md text-primary mb-4">Rapid Response</h4>
+<p class="font-body-sm text-on-surface-variant mb-4">Optimized for urban recovery and multi-story carparks.</p>
+<div class="flex justify-between items-center text-on-surface-variant">
+<span class="font-label-caps text-[10px]">UNITS: 14</span>
+<span class="material-symbols-outlined text-sm">settings_input_component</span>
+</div>
+</div>
+<!-- Fleet Card -->
+<div class="bg-white border-l-4 border-status-completed p-density-comfortable border border-y border-r border-outline-variant shadow-sm">
+<p class="font-data-mono text-data-mono text-on-surface-variant mb-2">CAT B: FLATBED</p>
+<h4 class="font-headline-md text-headline-md text-primary mb-4">Heavy Recovery</h4>
+<p class="font-body-sm text-on-surface-variant mb-4">6-ton capacity with hydraulic sliding beds for low vehicles.</p>
+<div class="flex justify-between items-center text-on-surface-variant">
+<span class="font-label-caps text-[10px]">UNITS: 08</span>
+<span class="material-symbols-outlined text-sm">precision_manufacturing</span>
+</div>
+</div>
+<!-- Fleet Card -->
+<div class="bg-white border-l-4 border-status-provisional p-density-comfortable border border-y border-r border-outline-variant shadow-sm">
+<p class="font-data-mono text-data-mono text-on-surface-variant mb-2">CAT C: ROTATOR</p>
+<h4 class="font-headline-md text-headline-md text-primary mb-4">Specialist Ops</h4>
+<p class="font-body-sm text-on-surface-variant mb-4">Extreme recovery for overturned heavy goods vehicles.</p>
+<div class="flex justify-between items-center text-on-surface-variant">
+<span class="font-label-caps text-[10px]">UNITS: 02</span>
+<span class="material-symbols-outlined text-sm">construction</span>
+</div>
+</div>
+<!-- Fleet Card -->
+<div class="bg-white border-l-4 border-status-confirmed p-density-comfortable border border-y border-r border-outline-variant shadow-sm">
+<p class="font-data-mono text-data-mono text-on-surface-variant mb-2">CAT D: SERVICE</p>
+<h4 class="font-headline-md text-headline-md text-primary mb-4">On-Site Repair</h4>
+<p class="font-body-sm text-on-surface-variant mb-4">Fully equipped mobile workshops for road-side fixes.</p>
+<div class="flex justify-between items-center text-on-surface-variant">
+<span class="font-label-caps text-[10px]">UNITS: 05</span>
+<span class="material-symbols-outlined text-sm">build</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Team Section -->
+<section class="bg-surface-steel py-16 px-grid-margin">
+<div class="max-w-[1400px] mx-auto">
+<div class="mb-12">
+<span class="text-status-in-progress font-label-caps text-label-caps mb-2 block">OUR PEOPLE</span>
+<h2 class="font-display-lg text-display-lg text-primary">The Architects of Order</h2>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<!-- Team Member -->
+<div class="group">
+<div class="relative overflow-hidden mb-4 border border-outline-variant">
+<img class="w-full aspect-[4/5] object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A portrait of a male director in his late 40s, wearing a high-visibility executive vest over a tailored shirt. He is standing in front of a wall of dispatch monitors. The lighting is sharp, emphasizing his authoritative yet approachable demeanor. The background shows blurred data visualizations in deep blues and greys." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBBQVJ1BxWQuXxq9eLnWPP5Erj4smX3BggCACKOa-7OHtjhay9ACQ_IGwW6EhWzkxm5duRV91oS809HT8EozMFwIiODoBk7vLZ76cKZwAB0XQLa7c7SRHBEb4EINjL3hyy5lvrGZ19iDkJC7PQ5PKTgKt_85az_S6q4wdoTRmxFe2LDI3K_-HxRVJHS7Wpb-8qlpZ7wliuULpc7GiE-_qjn_ApIYxo7fUJEOirTeE9NBAojrukslHMC2iIieG4FnPyjy6eRPce7MDM"/>
+<div class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary">Marcus Thorne</h3>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-2">FOUNDER &amp; CEO</p>
+<p class="font-body-sm text-on-surface-variant">25 years in logistics management and recovery operations.</p>
+</div>
+<!-- Team Member -->
+<div class="group">
+<div class="relative overflow-hidden mb-4 border border-outline-variant">
+<img class="w-full aspect-[4/5] object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A professional portrait of a woman in her 30s, the Operations Manager, holding a digital tablet. She has a focused expression, wearing a smart-casual blazer. The setting is a bright, modern logistics office with large windows. The lighting is clean and professional, using a cool white and steel grey palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJozyT_lDPCnprTS8g0q3KdZNghKWrQB79sUMv-kThUJknhLCRPVttf3a6x7ZF9dhx8k1kt6_CSA9PmOkUeeewfMWlhIXxdKZuUvG77N98Q0AlUvxGQQwWEHjf-a8oR2BvWUzDRkgYOE2uZljlYr4IxgF3jM1nIxYLROmq_MwYEMgImwxAx3yGgCdlcrtzbkbC46pCxS1YLLpo_T8NsX2BgZVju9xpEbZCEbplKQqDRZ-kWdBRr0_HCfLjah5FPZJqugdUvvTmklk"/>
+<div class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary">Elena Rodriguez</h3>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-2">OPERATIONS DIRECTOR</p>
+<p class="font-body-sm text-on-surface-variant">Expert in fleet synchronization and regional dispatch strategy.</p>
+</div>
+<!-- Team Member -->
+<div class="group">
+<div class="relative overflow-hidden mb-4 border border-outline-variant">
+<img class="w-full aspect-[4/5] object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A portrait of a senior recovery technician in high-visibility workwear, leaning against a clean, modern recovery truck. He looks experienced and dependable. The background is a crisp industrial garage. The color palette is dominated by Safety Amber, deep navy, and industrial grey." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqsPiCmAUM3LXjdkp86cu-lFP395hhwKOuuW5JHRzrgHrTj1FyXfiAaYXqcIfQfxqB5tadwzpK7ZKd2xX8SbTENL9Eca7S7HlsWRH5Hv9XHdYGlTbwWziMTDUoO8lEjFpN2Q-6RkhWmYJpdRJSYrJci8HOdRb3ZZ1B3Vflw0SdvHgIaHFqMllMdoiPzBiiZPlecO4DEUrKritszZAAaeXLIALbXHkztFPDgu8lNLipVNFFPhO7QS-Ra6lWUTYLbn1O9rtlr7huaMY"/>
+<div class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary">Dave Jenkins</h3>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-2">FLEET SUPERVISOR</p>
+<p class="font-body-sm text-on-surface-variant">Leading our road-side teams with over 3,000 successful recoveries.</p>
+</div>
+<!-- Team Member -->
+<div class="group">
+<div class="relative overflow-hidden mb-4 border border-outline-variant">
+<img class="w-full aspect-[4/5] object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A portrait of a female software engineer in a modern tech-focused workspace, sitting in front of code on multiple monitors. She is the lead of the CRM development. The atmosphere is high-tech and efficient. The color palette uses neon blue accents against a charcoal background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBHwu4GiRL1sBBc89apKFmecyx6bT33jb6ghxnv6LxOgLlrAs0uFMZ2KAOoqObTuI6LovSzfq_0epd8FemAI6X74Q2QAdczbwIkTkmgIwiTCpQ2wuZYrT1aIYrT4Dvmgx_h_Suf3JTGx_2eteTeMEEpq2AWYJMQ9peWSApxTXQuYf2FRGi4tmUfPBplMidZda0E8duvtnsCsAa1YD3c-0kVCq9MF_Xb2G2FqYTtrBqhbmezdHOkpvQzvk3TnYNqoLNWw87CCdKu-8A"/>
+<div class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary">Sarah Chen</h3>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-2">HEAD OF SYSTEMS</p>
+<p class="font-body-sm text-on-surface-variant">Pioneering the data-driven approach behind RecoveryPro CRM.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Accreditations Strip -->
+<section class="bg-white border-y border-outline-variant py-12 px-grid-margin">
+<div class="max-w-[1400px] mx-auto flex flex-wrap items-center justify-between gap-12 opacity-60 grayscale hover:grayscale-0 transition-all duration-500">
+<div class="flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-4xl text-primary">verified_user</span>
+<span class="font-label-caps text-label-caps">PAS 43 CERTIFIED</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-4xl text-primary">health_and_safety</span>
+<span class="font-label-caps text-label-caps">ISO 9001 QUALITY</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-4xl text-primary">security</span>
+<span class="font-label-caps text-label-caps">FORS GOLD MEMBER</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-4xl text-primary">eco</span>
+<span class="font-label-caps text-label-caps">ISO 14001 GREEN</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<span class="material-symbols-outlined text-4xl text-primary">workspace_premium</span>
+<span class="font-label-caps text-label-caps">IVR ACCREDITED</span>
+</div>
+</div>
+</section>
+<!-- Call to Action -->
+<section class="bg-primary text-on-primary py-24 px-grid-margin relative overflow-hidden">
+
+<div class="relative z-10 text-center max-w-2xl mx-auto">
+<h2 class="font-display-lg text-display-lg mb-6">Partner With the Professionals</h2>
+<p class="font-body-md opacity-80 mb-10">Whether you manage a private fleet or need emergency recovery, MancWay delivers industrial-grade reliability whenever you need it.</p>
+<div class="flex flex-col sm:flex-row gap-4 justify-center">
+<button class="bg-secondary-container text-on-secondary-container px-8 py-4 font-label-caps text-label-caps hover:bg-secondary-fixed transition-colors">ESTABLISH PARTNERSHIP</button>
+<button class="border border-on-primary text-on-primary px-8 py-4 font-label-caps text-label-caps hover:bg-on-primary hover:text-primary transition-colors">VIEW CAPABILITIES</button>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-surface-charcoal text-on-primary py-16 px-grid-margin">
+<div class="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
+<div class="md:col-span-2">
+<span class="font-headline-md text-headline-md font-black text-on-primary block mb-6">MancWay Recovery</span>
+<p class="font-body-md opacity-60 max-w-md">The regional leader in recovery logistics, operating 24/7/365 across the Greater Manchester area. Specialized in rapid response for commercial and private fleets.</p>
+</div>
+<div>
+<h4 class="font-label-caps text-label-caps text-secondary-container mb-6">OPERATIONS</h4>
+<ul class="space-y-4 font-body-sm opacity-80">
+<li><a class="hover:text-secondary-container" href="#">Dispatch Center</a></li>
+<li><a class="hover:text-secondary-container" href="#">Fleet Management</a></li>
+<li><a class="hover:text-secondary-container" href="#">Regional Coverage</a></li>
+<li><a class="hover:text-secondary-container" href="#">Compliance &amp; PAS 43</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-label-caps text-label-caps text-secondary-container mb-6">CONTACT</h4>
+<ul class="space-y-4 font-body-sm opacity-80">
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-sm">call</span> 0800 MANC WAY</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-sm">mail</span> ops@mancway.co.uk</li>
+<li class="flex items-center gap-2"><span class="material-symbols-outlined text-sm">location_on</span> Trafford Park, Manchester</li>
+</ul>
+</div>
+</div>
+<div class="max-w-[1400px] mx-auto border-t border-white/10 mt-16 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+<p class="font-data-mono text-[10px] opacity-40">© 2024 MANCWAY RECOVERY LTD. SYSTEM POWERED BY RECOVERYPRO CRM V4.2</p>
+<div class="flex gap-6 opacity-40 text-[10px] font-label-caps">
+<a href="#">PRIVACY POLICY</a>
+<a href="#">TERMS OF SERVICE</a>
+<a href="#">ACCESSIBILITY</a>
+</div>
+</div>
+</footer>
+</main>
+</div>
+<!-- Mobile Navigation Bar -->
+<nav class="bg-surface fixed bottom-0 left-0 w-full md:hidden flex justify-around py-2 px-4 border-t border-outline-variant shadow-lg z-50">
+<a class="flex flex-col items-center justify-center text-on-surface-variant active:bg-surface-container p-2 rounded" href="#">
+<span class="material-symbols-outlined">local_shipping</span>
+<span class="font-label-caps text-[10px] uppercase">Jobs</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant active:bg-surface-container p-2 rounded" href="#">
+<span class="material-symbols-outlined">map</span>
+<span class="font-label-caps text-[10px] uppercase">Map</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary dark:text-secondary-fixed-dim active:bg-surface-container p-2 rounded" href="#">
+<span class="material-symbols-outlined">info</span>
+<span class="font-label-caps text-[10px] uppercase">About</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant active:bg-surface-container p-2 rounded" href="#">
+<span class="material-symbols-outlined">notifications</span>
+<span class="font-label-caps text-[10px] uppercase">Alerts</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant active:bg-surface-container p-2 rounded" href="#">
+<span class="material-symbols-outlined">menu</span>
+<span class="font-label-caps text-[10px] uppercase">Menu</span>
+</a>
+</nav>
+<script>
+        // Micro-interaction for team cards
+        document.querySelectorAll('.group').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-4px)';
+                card.style.transition = 'transform 0.3s ease';
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Sticky header opacity change on scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('bg-white/95', 'backdrop-blur-md');
+            } else {
+                nav.classList.remove('bg-white/95', 'backdrop-blur-md');
+            }
+        });
+    </script>
+</body></html>

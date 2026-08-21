@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Emergency Roadside Assistance | RecoveryPro CRM</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .status-border-confirmed { border-left: 4px solid #10B981; }
+        .status-border-provisional { border-left: 4px solid #F97316; }
+        
+        /* Custom Scrollbar for Dispatch Center */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-fixed": "#271901",
+                        "surface-bright": "#f8f9ff",
+                        "on-background": "#0b1c30",
+                        "inverse-surface": "#213145",
+                        "status-provisional": "#F97316",
+                        "surface-steel": "#F1F5F9",
+                        "on-primary-fixed": "#131b2e",
+                        "secondary": "#855300",
+                        "on-tertiary-container": "#98805d",
+                        "on-secondary-fixed": "#2a1700",
+                        "status-conflict": "#EF4444",
+                        "surface-container": "#e5eeff",
+                        "surface-charcoal": "#1E293B",
+                        "on-tertiary-fixed-variant": "#574425",
+                        "outline": "#76777d",
+                        "surface-dim": "#cbdbf5",
+                        "on-primary": "#ffffff",
+                        "surface-container-high": "#dce9ff",
+                        "on-tertiary": "#ffffff",
+                        "inverse-primary": "#bec6e0",
+                        "primary-fixed-dim": "#bec6e0",
+                        "surface": "#f8f9ff",
+                        "status-confirmed": "#10B981",
+                        "primary": "#000000",
+                        "tertiary-container": "#271901",
+                        "surface-tint": "#565e74",
+                        "background": "#f8f9ff",
+                        "secondary-container": "#fea619",
+                        "secondary-fixed": "#ffddb8",
+                        "outline-variant": "#c6c6cd",
+                        "on-surface": "#0b1c30",
+                        "surface-container-highest": "#d3e4fe",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed-variant": "#3f465c",
+                        "on-secondary-container": "#684000",
+                        "tertiary-fixed": "#fcdeb5",
+                        "surface-container-low": "#eff4ff",
+                        "secondary-fixed-dim": "#ffb95f",
+                        "on-secondary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "tertiary-fixed-dim": "#dec29a",
+                        "surface-variant": "#d3e4fe",
+                        "status-completed": "#8B5CF6",
+                        "primary-container": "#131b2e",
+                        "on-primary-container": "#7c839b",
+                        "on-surface-variant": "#45464d",
+                        "on-secondary-fixed-variant": "#653e00",
+                        "on-error": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "status-cancelled": "#94A3B8",
+                        "primary-fixed": "#dae2fd",
+                        "tertiary": "#000000",
+                        "status-in-progress": "#3B82F6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "16px",
+                        "grid-margin": "24px",
+                        "density-comfortable": "16px",
+                        "unit": "4px",
+                        "density-compact": "8px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "data-mono": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "body-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "data-mono": ["12px", {"lineHeight": "16px", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-secondary-container">
+<!-- TopNavBar -->
+<header class="bg-surface dark:bg-surface-charcoal font-body-md text-body-md docked full-width top-0 sticky z-40 border-b border-outline-variant dark:border-outline shadow-sm flex items-center justify-between px-grid-margin h-16 w-full">
+<div class="flex items-center gap-8">
+<span class="font-headline-md text-headline-md font-black text-primary dark:text-inverse-primary">RecoveryPro CRM</span>
+<div class="hidden md:flex items-center gap-6">
+<nav class="flex gap-4">
+<a class="text-primary font-bold hover:bg-surface-container-low transition-colors px-3 py-2 rounded" href="#">Dashboard</a>
+<a class="text-on-surface-variant hover:bg-surface-container-low transition-colors px-3 py-2 rounded" href="#">Fleet</a>
+<a class="text-on-surface-variant hover:bg-surface-container-low transition-colors px-3 py-2 rounded" href="#">Customers</a>
+</nav>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden sm:flex items-center bg-surface-container px-3 py-1.5 rounded border border-outline-variant">
+<span class="material-symbols-outlined text-on-surface-variant mr-2" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-sm w-48" placeholder="Search registration..." type="text"/>
+</div>
+<div class="flex items-center gap-2">
+<button class="material-symbols-outlined p-2 text-on-surface-variant active:scale-95 duration-150" data-icon="notifications">notifications</button>
+<button class="material-symbols-outlined p-2 text-on-surface-variant active:scale-95 duration-150" data-icon="sms">sms</button>
+<button class="material-symbols-outlined p-2 text-on-surface-variant active:scale-95 duration-150" data-icon="help_outline">help_outline</button>
+<div class="w-8 h-8 rounded-full bg-primary overflow-hidden ml-2">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a female fleet dispatcher in a high-tech control center environment. She is wearing a modern headset and smiling confidently. The lighting is crisp and blue-toned, emphasizing a clean, corporate industrial atmosphere with soft bokeh lights in the background representing data screens." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQ4aQMqo0YouX35DjEtqBLbyoa8D6WomyQ2DqVxps4shMDEEfebqA6aKnE8bAl3SnBvksIEAZw5m6H_wmfyRdjhNEDT1_yzN4zi7CqJbaGWu-mUQow0xeEeDrWc-BaYoRF23lp4FR3JC3ma9BM_2CiXyUccHo6obwiJNdJdzOnxMum5URJbvXFzcu7RcQXHC4AuXgZyMIn7GO4-9SiDEvJzX2Z7CxsEH7WlXezGPkfW58itWRGByZqoCkhLBiBhZ_CJX3FBtNC67c"/>
+</div>
+</div>
+</div>
+</header>
+<div class="flex">
+<!-- SideNavBar -->
+<aside class="bg-surface-container-lowest dark:bg-inverse-surface text-primary dark:text-inverse-primary docked left-0 h-screen w-64 border-r border-outline-variant hidden md:flex flex-col sticky top-16 overflow-y-auto">
+<div class="p-6 border-b border-outline-variant">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-primary-container rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container" data-icon="local_shipping">local_shipping</span>
+</div>
+<div>
+<p class="font-headline-md text-headline-md text-primary leading-none">Dispatch Center</p>
+<p class="text-[10px] uppercase tracking-widest text-on-surface-variant mt-1">Recovery Unit 01</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 py-4">
+<ul class="space-y-1">
+<li><a class="flex items-center gap-3 px-6 py-3 text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-surface-charcoal transition-all duration-200" href="#"><span class="material-symbols-outlined" data-icon="dashboard">dashboard</span> <span class="font-label-caps text-label-caps">DASHBOARD</span></a></li>
+<li><a class="flex items-center gap-3 px-6 py-3 text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-surface-charcoal transition-all duration-200" href="#"><span class="material-symbols-outlined" data-icon="calendar_month">calendar_month</span> <span class="font-label-caps text-label-caps">CALENDAR</span></a></li>
+<li><a class="flex items-center gap-3 px-6 py-3 text-primary dark:text-inverse-primary border-l-4 border-status-provisional bg-surface-container-high transition-all duration-200" href="#"><span class="material-symbols-outlined" data-icon="event_available">event_available</span> <span class="font-label-caps text-label-caps">BOOKINGS</span></a></li>
+<li><a class="flex items-center gap-3 px-6 py-3 text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-surface-charcoal transition-all duration-200" href="#"><span class="material-symbols-outlined" data-icon="recovery_convertible">cc_attribution</span> <span class="font-label-caps text-label-caps">JOBS</span></a></li>
+<li><a class="flex items-center gap-3 px-6 py-3 text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-surface-charcoal transition-all duration-200" href="#"><span class="material-symbols-outlined" data-icon="local_shipping">local_shipping</span> <span class="font-label-caps text-label-caps">VEHICLES</span></a></li>
+<li><a class="flex items-center gap-3 px-6 py-3 text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-surface-charcoal transition-all duration-200" href="#"><span class="material-symbols-outlined" data-icon="request_quote">request_quote</span> <span class="font-label-caps text-label-caps">QUOTES</span></a></li>
+<li><a class="flex items-center gap-3 px-6 py-3 text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-surface-charcoal transition-all duration-200" href="#"><span class="material-symbols-outlined" data-icon="analytics">analytics</span> <span class="font-label-caps text-label-caps">REPORTS</span></a></li>
+<li><a class="flex items-center gap-3 px-6 py-3 text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-surface-charcoal transition-all duration-200" href="#"><span class="material-symbols-outlined" data-icon="settings">settings</span> <span class="font-label-caps text-label-caps">SETTINGS</span></a></li>
+</ul>
+</nav>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 min-w-0 bg-surface-steel">
+<!-- Hero Section -->
+<section class="relative h-[480px] w-full overflow-hidden">
+<div class="absolute inset-0 bg-cover bg-center" data-alt="A cinematic night-time shot of a modern heavy-duty recovery truck with bright amber LED flashing lights parked on the shoulder of a dark highway. Raindrops are visible on the asphalt reflecting the vibrant orange warning lights. The truck is positioned behind a broken-down silver vehicle, with the tow operator wearing high-visibility gear working efficiently. The overall mood is high-stakes, authoritative, and reliable, featuring deep blues and dramatic amber highlights." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCkqEcDKd0Of2WYVbOAUuLdeC0MbDKt-RyoRJ7G0LNPTo__ORLAUowTp7mAbuRKhRHvoBSY73JEjsIq8RZ9NB4BjrnPjmeHyA1GLSgTliciU0OoHM8X8HDBoFueP5YVklnOpeZkgkgfUwTsFYYputUZOd7iBQri7tCkXo0N5zkx7LVjSV0y_-dtaChZDJIsUDauRTo_6V6v4mkFiX3J5dt2BUEeOpl2AZPO54TdgoSseab7ATy_i6-E4K58aBphpOGvIGOyZlvbVLM')"></div>
+<div class="absolute inset-0 bg-gradient-to-r from-primary/80 to-transparent"></div>
+<div class="relative h-full flex flex-col justify-center px-grid-margin max-w-7xl mx-auto">
+<div class="max-w-2xl">
+<span class="inline-block px-3 py-1 rounded bg-status-provisional text-white font-label-caps text-label-caps mb-4">PRIORITY RESPONSE</span>
+<h1 class="font-display-lg text-display-lg text-white mb-4 leading-tight">Emergency Roadside Assistance</h1>
+<p class="font-body-md text-white/90 text-lg mb-8 max-w-lg">Rapid deployment for vehicle breakdowns, battery failures, and roadside emergencies. Dependable support for fleet operators and private motorists across the region.</p>
+<div class="flex flex-wrap gap-4">
+<button class="bg-secondary-container text-on-secondary-container px-8 py-4 font-label-caps text-label-caps rounded-lg hover:brightness-110 active:scale-95 transition-all flex items-center gap-2">
+<span class="material-symbols-outlined" data-icon="emergency_share">emergency_share</span>
+                                REQUEST RECOVERY
+                            </button>
+<div class="flex flex-col justify-center">
+<p class="text-white/60 font-label-caps text-[10px]">PRICING FROM</p>
+<p class="text-white font-headline-md text-headline-md">£65.00 <span class="text-sm font-normal text-white/70">/ callout</span></p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Content Bento Grid -->
+<section class="p-grid-margin max-w-7xl mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+<!-- What's Included Column (L-Shape/Bento Style) -->
+<div class="md:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-6">
+<!-- Battery Support -->
+<div class="bg-surface-container-lowest p-density-comfortable rounded-xl border border-outline-variant shadow-sm flex flex-col">
+<div class="w-12 h-12 bg-surface-container rounded-lg flex items-center justify-center text-primary mb-4">
+<span class="material-symbols-outlined text-3xl" data-icon="battery_charging_full">battery_charging_full</span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-2">Battery &amp; Electrical</h3>
+<p class="text-on-surface-variant font-body-md flex-1">Jump-starts, battery health diagnostics, and on-site replacement for all vehicle classes. We carry standard 12V and 24V units.</p>
+</div>
+<!-- Tyre Changes -->
+<div class="bg-surface-container-lowest p-density-comfortable rounded-xl border border-outline-variant shadow-sm flex flex-col">
+<div class="w-12 h-12 bg-surface-container rounded-lg flex items-center justify-center text-primary mb-4">
+<span class="material-symbols-outlined text-3xl" data-icon="settings_backup_restore">settings_backup_restore</span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-2">Tyre Assistance</h3>
+<p class="text-on-surface-variant font-body-md flex-1">Rapid roadside tyre changes and puncture repairs. If a spare isn't available, we provide immediate tow-to-base services.</p>
+</div>
+<!-- Fuel Delivery -->
+<div class="bg-surface-container-lowest p-density-comfortable rounded-xl border border-outline-variant shadow-sm flex flex-col sm:col-span-2">
+<div class="flex items-start gap-6">
+<div class="w-12 h-12 bg-surface-container rounded-lg flex-shrink-0 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-3xl" data-icon="local_gas_station">local_gas_station</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md mb-2">Fuel &amp; Fluids</h3>
+<p class="text-on-surface-variant font-body-md">Emergency fuel delivery (Petrol/Diesel) to get you to the nearest station. We also assist with AdBlue replenishment and coolant top-ups for commercial fleets.</p>
+</div>
+</div>
+</div>
+<!-- Map Visual (Interactive feel) -->
+<div class="sm:col-span-2 h-64 rounded-xl border border-outline-variant overflow-hidden relative group">
+<div class="absolute inset-0 z-10 bg-black/20 group-hover:bg-black/10 transition-colors"></div>
+<div class="absolute top-4 left-4 z-20 glass-panel p-3 rounded border border-outline-variant">
+<p class="font-label-caps text-label-caps text-primary">LIVE OPERATOR NETWORK</p>
+<p class="text-body-sm text-on-surface-variant">14 units currently patrolling London M25 orbital</p>
+</div>
+<img class="w-full h-full object-cover" data-location="London" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAnZ4JYJyWhf9Nqfb0ZqUrd0pjXttXYs_pP2McTbHLYFu_5a4arDj9FZfHyoMCY8PtrK7uODp9L7OIFpUTygytpt7z5cNQx4K93hfB7GsoTijbvHThHUwdJlnB6GUoGwYb97S56ULjwDVL0R1_q7jgxsP3524hrDXNyCX3BsY1A783xODfdDT69IJB96jZ-9nUhT9UeIDgZT2_l-LpMO1aCn3KaTa2pNKxlWGWe_nlPQn5233x5SnRdLC5a3s0eXIrhqS4fVeLrbBk"/>
+</div>
+</div>
+<!-- Side Action/Pricing Panel -->
+<div class="md:col-span-4 flex flex-col gap-6">
+<div class="bg-primary-container p-density-comfortable rounded-xl text-white shadow-lg relative overflow-hidden">
+<div class="absolute top-0 right-0 p-4 opacity-10">
+<span class="material-symbols-outlined text-8xl" data-icon="shield">shield</span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-4 text-on-primary-container">Service Estimates</h3>
+<ul class="space-y-4 mb-8">
+<li class="flex justify-between items-center border-b border-white/10 pb-2">
+<span class="text-white/80">Standard Callout</span>
+<span class="font-data-mono text-data-mono">£65.00</span>
+</li>
+<li class="flex justify-between items-center border-b border-white/10 pb-2">
+<span class="text-white/80">Battery Replacement</span>
+<span class="font-data-mono text-data-mono">£115.00+</span>
+</li>
+<li class="flex justify-between items-center border-b border-white/10 pb-2">
+<span class="text-white/80">Flat Tow (per mile)</span>
+<span class="font-data-mono text-data-mono">£1.85</span>
+</li>
+<li class="flex justify-between items-center">
+<span class="text-white/80">Heavy Recovery</span>
+<span class="font-data-mono text-data-mono">QUOTE ONLY</span>
+</li>
+</ul>
+<button class="w-full bg-white text-primary font-label-caps text-label-caps py-4 rounded-lg hover:bg-surface-steel transition-colors active:scale-95 duration-100 mb-3">
+                                BOOK VIA PORTAL
+                            </button>
+<p class="text-center text-[10px] text-white/50 uppercase tracking-widest">NO MEMBERSHIP REQUIRED</p>
+</div>
+<!-- Testimonial/Trust Card -->
+<div class="bg-surface-container-high p-density-comfortable rounded-xl border border-outline-variant">
+<div class="flex gap-1 text-secondary mb-3">
+<span class="material-symbols-outlined" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="italic text-on-surface font-body-md mb-4">"RecoveryPro arrived in under 30 minutes on a rainy Tuesday night. Driver was professional and had my battery swapped in 10 minutes."</p>
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-outline-variant"></div>
+<div>
+<p class="font-label-caps text-label-caps">M. REYNOLDS</p>
+<p class="text-[10px] text-on-surface-variant">Fleet Logistics Mgr</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+</div>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="fixed bottom-0 left-0 w-full md:hidden flex justify-around py-2 px-4 bg-surface dark:bg-surface-charcoal border-t border-outline-variant shadow-lg z-50">
+<a class="flex flex-col items-center justify-center text-primary dark:text-secondary-fixed-dim" href="#">
+<span class="material-symbols-outlined" data-icon="local_shipping">local_shipping</span>
+<span class="font-label-caps text-label-caps">JOBS</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant" href="#">
+<span class="material-symbols-outlined" data-icon="map">map</span>
+<span class="font-label-caps text-label-caps">MAP</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant" href="#">
+<span class="material-symbols-outlined" data-icon="forum">forum</span>
+<span class="font-label-caps text-label-caps">CHAT</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant" href="#">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="font-label-caps text-label-caps">ALERTS</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant" href="#">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+<span class="font-label-caps text-label-caps">MENU</span>
+</a>
+</nav>
+<!-- FAB (Contextual for Booking) -->
+<button class="fixed bottom-20 right-6 md:bottom-10 md:right-10 w-14 h-14 bg-primary text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-105 active:scale-95 transition-all z-40 group">
+<span class="material-symbols-outlined text-2xl" data-icon="add">add</span>
+<span class="absolute right-full mr-4 bg-primary text-white px-3 py-1 rounded font-label-caps text-label-caps opacity-0 group-hover:opacity-100 whitespace-nowrap pointer-events-none transition-opacity">NEW DISPATCH</span>
+</button>
+<script>
+        // Micro-interaction for service cards
+        document.querySelectorAll('.bg-surface-container-lowest').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.classList.add('border-primary');
+            });
+            card.addEventListener('mouseleave', () => {
+                card.classList.remove('border-primary');
+            });
+        });
+
+        // Simple mock search functionality
+        const searchInput = document.querySelector('input[placeholder="Search registration..."]');
+        if(searchInput) {
+            searchInput.addEventListener('keypress', (e) => {
+                if(e.key === 'Enter') {
+                    console.log('Searching for vehicle: ' + searchInput.value);
+                    alert('Searching dispatch logs for ' + searchInput.value.toUpperCase());
+                }
+            });
+        }
+    </script>
+</body></html>

@@ -3,12 +3,24 @@ declare(strict_types=1);
 require __DIR__ . '/../../app/bootstrap.php';
 require_admin();
 
+// The CRM migration adds the accepted/dispatched workflow. Keep the original
+// status set available until that migration has been run.
+$crmReady = false;
+try {
+    db()->query('SELECT vehicle_id, updated_at FROM bookings LIMIT 1');
+    db()->query('SELECT 1 FROM recovery_vehicles LIMIT 1');
+    $crmReady = true;
+} catch (Throwable $e) {
+    $crmReady = false;
+}
+$statusOptions = $crmReady ? enquiry_statuses() : ['new', 'confirmed', 'complete', 'cancelled'];
+
 // Update status
 if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
     csrf_check();
     $id = (int)($_POST['id'] ?? 0);
     $status = $_POST['status'] ?? '';
-    if (in_array($status, ['new','confirmed','complete','cancelled'], true)) {
+    if (in_array($status, $statusOptions, true)) {
         $upd = db()->prepare('UPDATE bookings SET status=? WHERE id=?');
         $upd->execute([$status, $id]);
         redirect_with(url('/admin/bookings.php?view=' . $id), ['flash' => 'Booking updated.']);
@@ -68,7 +80,7 @@ if ($viewId) {
                 <input type="hidden" name="id" value="<?= (int)$b['id'] ?>">
                 <div class="field"><label for="status">Status</label>
                     <select id="status" name="status">
-                        <?php foreach (['new','confirmed','complete','cancelled'] as $st): ?>
+                        <?php foreach ($statusOptions as $st): ?>
                             <option value="<?= e($st) ?>" <?= $b['status']===$st?'selected':'' ?>><?= e(ucfirst($st)) ?></option>
                         <?php endforeach; ?>
                     </select>
@@ -85,7 +97,7 @@ if ($viewId) {
 // ---- List view ----
 $statusFilter = $_GET['status'] ?? '';
 $where = ''; $params = [];
-if (in_array($statusFilter, ['new','confirmed','complete','cancelled'], true)) { $where = 'WHERE b.status=?'; $params[] = $statusFilter; }
+if (in_array($statusFilter, $statusOptions, true)) { $where = 'WHERE b.status=?'; $params[] = $statusFilter; }
 $stmt = db()->prepare("SELECT b.*, s.title AS service_title FROM bookings b LEFT JOIN services s ON s.id=b.service_id $where ORDER BY b.created_at DESC");
 $stmt->execute($params);
 $bookings = $stmt->fetchAll();
@@ -98,7 +110,7 @@ require APP_DIR . '/views/layout/admin_header.php';
 <?php if ($flash): ?><div class="alert alert-success"><?= e($flash) ?></div><?php endif; ?>
 <div class="filter-bar">
     <a class="chip <?= $statusFilter===''?'active':'' ?>" href="<?= e(url('/admin/bookings.php')) ?>">All</a>
-    <?php foreach (['new','confirmed','complete','cancelled'] as $st): ?>
+    <?php foreach ($statusOptions as $st): ?>
         <a class="chip <?= $statusFilter===$st?'active':'' ?>" href="<?= e(url('/admin/bookings.php?status=' . $st)) ?>"><?= e(ucfirst($st)) ?></a>
     <?php endforeach; ?>
 </div>

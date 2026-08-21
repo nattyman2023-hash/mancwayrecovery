@@ -1,0 +1,24 @@
+# =====================================================================
+#  MancWay — root-level router
+#  Deployment (git/Hostinger) clones this whole repo into public_html,
+#  but the actual document root content lives in public/. This file
+#  transparently routes every request into public/ without exposing
+#  /public/ in the URL, so app/, database/, .git etc. stay unreachable
+#  over HTTP without needing a custom Hostinger document-root setting.
+# =====================================================================
+
+DirectoryIndex public/index.php
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Force HTTPS first, on the original (pre-rewrite) URI, so canonical
+    # URLs stay clean without /public/ in them.
+    RewriteCond %{HTTPS} !=on
+    RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+    # Route everything through public/ without exposing it in the URL.
+    RewriteCond %{REQUEST_URI} !^/public/
+    RewriteRule ^(.*)$ /public/$1 [L]
+</IfModule>

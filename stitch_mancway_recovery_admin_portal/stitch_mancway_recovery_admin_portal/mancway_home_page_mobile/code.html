@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MancWay Recovery - Mobile Response</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .emergency-pulse {
+            animation: pulse-red 2s infinite;
+        }
+        @keyframes pulse-red {
+            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+        }
+        .glossy-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        body {
+            -webkit-tap-highlight-color: transparent;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed": "#fcdeb5",
+                        "secondary": "#855300",
+                        "primary-container": "#131b2e",
+                        "surface-container-high": "#dce9ff",
+                        "on-secondary-fixed": "#2a1700",
+                        "primary-fixed": "#dae2fd",
+                        "on-surface-variant": "#45464d",
+                        "on-surface": "#0b1c30",
+                        "on-primary-fixed-variant": "#3f465c",
+                        "tertiary-fixed-dim": "#dec29a",
+                        "status-completed": "#8B5CF6",
+                        "secondary-fixed": "#ffddb8",
+                        "on-tertiary-fixed-variant": "#574425",
+                        "error-container": "#ffdad6",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-dim": "#cbdbf5",
+                        "surface-charcoal": "#1E293B",
+                        "outline": "#76777d",
+                        "surface-steel": "#F1F5F9",
+                        "on-secondary": "#ffffff",
+                        "surface-container-low": "#eff4ff",
+                        "on-secondary-container": "#684000",
+                        "status-conflict": "#EF4444",
+                        "error": "#ba1a1a",
+                        "surface": "#f8f9ff",
+                        "background": "#f8f9ff",
+                        "secondary-container": "#fea619",
+                        "status-provisional": "#F97316",
+                        "inverse-primary": "#bec6e0",
+                        "on-background": "#0b1c30",
+                        "primary": "#000000",
+                        "status-cancelled": "#94A3B8",
+                        "on-primary-fixed": "#131b2e",
+                        "outline-variant": "#c6c6cd",
+                        "surface-bright": "#f8f9ff",
+                        "secondary-fixed-dim": "#ffb95f",
+                        "inverse-surface": "#213145",
+                        "surface-container": "#e5eeff",
+                        "on-error-container": "#93000a",
+                        "inverse-on-surface": "#eaf1ff",
+                        "surface-variant": "#d3e4fe",
+                        "surface-tint": "#565e74",
+                        "tertiary-container": "#271901",
+                        "status-confirmed": "#10B981",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-container": "#98805d",
+                        "surface-container-highest": "#d3e4fe",
+                        "on-tertiary": "#ffffff",
+                        "status-in-progress": "#3B82F6",
+                        "on-secondary-fixed-variant": "#653e00",
+                        "primary-fixed-dim": "#bec6e0",
+                        "on-tertiary-fixed": "#271901",
+                        "tertiary": "#000000",
+                        "on-error": "#ffffff",
+                        "on-primary-container": "#7c839b"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "16px",
+                        "unit": "4px",
+                        "density-compact": "8px",
+                        "grid-margin": "24px",
+                        "density-comfortable": "16px"
+                    },
+                    "fontFamily": {
+                        "body-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "data-mono": ["JetBrains Mono"],
+                        "label-caps": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "data-mono": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "label-caps": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-x-hidden">
+<!-- TopNavBar (Execution from JSON) -->
+<header class="bg-surface docked full-width top-0 sticky z-40 border-b border-outline-variant shadow-sm flex items-center justify-between px-grid-margin h-16 w-full">
+<div class="flex items-center gap-2">
+<span class="font-headline-md text-headline-md font-black text-primary">RECOVERYPRO CRM</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-low p-2 rounded-full transition-colors active:scale-95 duration-150">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-low p-2 rounded-full transition-colors active:scale-95 duration-150">sms</button>
+<div class="w-8 h-8 rounded-full bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a dispatcher in a high-tech vehicle recovery command center. The lighting is crisp and modern, featuring cool blue tones and industrial grey surfaces. The person is wearing a clean navy uniform with a subtle company logo, conveying authority and dependability. Professional photography style, sharp focus, 8k resolution." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAoaHF_NhxFxAgKf_MczAUA0lyILhWPbDVvatQMkxbOwTv4olMy9kkq7Hi3wI3cyqz_HGjUjQUKc2ElUfs2PWUDHlPwE3JoiOhhqFE2MMdgjm8NqBU_Ml9jYIMUK8jHt50LoGJzcQjLUeOHZkvay8VvqkuJlQJPEy1cUETBmbYVMc1XekpwLrkNRqeFhT2FclXT7dV1Rl8PZtiL4SDEmWnhjNVkKSrRv0G_n3WqXCbvxlQRew_nV5uCh_Wf6Y_f3qGar4ppLknBPwo"/>
+</div>
+</div>
+</header>
+<main class="pb-24">
+<!-- Emergency Response Hero -->
+<section class="relative px-grid-margin pt-8 pb-12 overflow-hidden bg-primary-container text-on-primary">
+
+<div class="relative z-10 flex flex-col items-center text-center">
+<div class="inline-flex items-center gap-2 bg-status-provisional text-white px-3 py-1 rounded-full mb-6 font-label-caps text-label-caps tracking-widest uppercase">
+<span class="material-symbols-outlined text-[14px]">timer</span>
+                    30 Minute Response Time
+                </div>
+<h1 class="font-display-lg text-display-lg mb-4 text-white">MancWay Breakdown Recovery</h1>
+<p class="font-body-md text-on-primary-container mb-8 max-w-[280px]">Dependable, ultra-efficient roadside assistance across Greater Manchester.</p>
+<!-- CRITICAL: Primary CTA Buttons -->
+<div class="w-full space-y-4 max-w-sm">
+<a class="emergency-pulse flex items-center justify-center gap-3 w-full bg-status-conflict text-white py-5 rounded-xl font-headline-md shadow-lg active:scale-95 transition-transform" href="tel:0800123456">
+<span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">phone_in_talk</span>
+                        TAP TO CALL EMERGENCY
+                    </a>
+<button class="flex items-center justify-center gap-3 w-full bg-white text-primary py-5 rounded-xl font-headline-md shadow-md border-2 border-primary active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[28px]">local_shipping</span>
+                        REQUEST RECOVERY
+                    </button>
+</div>
+</div>
+</section>
+<!-- Current Location / Status Tracking -->
+<section class="px-grid-margin -mt-6 relative z-20">
+<div class="glossy-card p-density-comfortable rounded-xl shadow-xl space-y-4">
+<div class="flex items-center justify-between border-b border-outline-variant pb-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined">my_location</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant">YOUR CURRENT LOCATION</p>
+<p class="font-body-md font-bold text-primary">M16 0RA, Manchester</p>
+</div>
+</div>
+<button class="text-primary font-bold text-body-sm hover:underline">Edit</button>
+</div>
+<div class="flex items-center gap-4 py-2">
+<div class="flex-1">
+<div class="flex justify-between items-end mb-2">
+<span class="font-label-caps text-label-caps text-on-surface-variant">AVERAGE ETA</span>
+<span class="font-data-mono text-status-provisional text-headline-md">24m</span>
+</div>
+<div class="h-2 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-status-provisional w-3/4 rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Service Grid (Bento Style) -->
+<section class="px-grid-margin mt-10">
+<h2 class="font-headline-md text-headline-md mb-6 flex items-center gap-2">
+<span class="w-1 h-6 bg-primary rounded-full"></span>
+                Our Services
+            </h2>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant flex flex-col justify-between h-40">
+<span class="material-symbols-outlined text-primary text-[32px]">cc_attribution</span>
+<div>
+<p class="font-bold text-body-md">Flatbed</p>
+<p class="font-body-sm text-on-surface-variant">Total lift recovery</p>
+</div>
+</div>
+<div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant flex flex-col justify-between h-40">
+<span class="material-symbols-outlined text-primary text-[32px]">battery_charging_full</span>
+<div>
+<p class="font-bold text-body-md">Jump Start</p>
+<p class="font-body-sm text-on-surface-variant">Battery assistance</p>
+</div>
+</div>
+<div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant flex flex-col justify-between h-40">
+<span class="material-symbols-outlined text-primary text-[32px]">tire_repair</span>
+<div>
+<p class="font-bold text-body-md">Tyre Change</p>
+<p class="font-body-sm text-on-surface-variant">Roadside repair</p>
+</div>
+</div>
+<div class="bg-surface-container-low p-4 rounded-xl border border-outline-variant flex flex-col justify-between h-40">
+<span class="material-symbols-outlined text-primary text-[32px]">oil_barrel</span>
+<div>
+<p class="font-bold text-body-md">Fuel Delivery</p>
+<p class="font-body-sm text-on-surface-variant">Petrol or Diesel</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Live Area Map Section -->
+<section class="px-grid-margin mt-10">
+<div class="bg-surface-container rounded-xl overflow-hidden shadow-sm relative">
+<div class="p-4 border-b border-outline-variant bg-white flex justify-between items-center">
+<span class="font-label-caps text-label-caps">LIVE FLEET DENSITY</span>
+<span class="flex items-center gap-1 text-status-confirmed font-bold text-body-sm">
+<span class="w-2 h-2 rounded-full bg-status-confirmed animate-pulse"></span>
+                        Active Dispatch
+                    </span>
+</div>
+<div class="h-48 w-full bg-slate-200">
+<img class="w-full h-full object-cover grayscale brightness-90" data-location="Manchester City Centre" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQ8x-dchrCqu_pHf_cMSAHHEa80ymotAofPcWCCcJlsT0lrxyd6nflxWeYiuejokjOxtaqxaAGE1ZpITEd0om8cQfFsscrRsMn51wjA92mOAaIOw4dMP1UPVXCkU-EmWxoaCwpK4dhRqfmYJ-AsX5_412vCKCvbdwqctBkpkNZ5VTsHb0-WZep066aYWMQtWCT1-ZL4LAtXTmm4NTt4NP0iCKhbol2-I9eijF9ACFBq1mvrijbyJr4cR92b79vvRH7JsYs3_6bLdQ"/>
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<!-- Simulated vehicle markers -->
+<div class="absolute top-1/4 left-1/3 w-6 h-6 bg-primary rounded-full border-2 border-white shadow-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-[14px]">local_shipping</span>
+</div>
+<div class="absolute bottom-1/3 right-1/4 w-6 h-6 bg-primary rounded-full border-2 border-white shadow-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-[14px]">local_shipping</span>
+</div>
+<div class="absolute top-1/2 right-1/2 w-8 h-8 bg-status-provisional rounded-full border-2 border-white shadow-xl flex items-center justify-center animate-bounce">
+<span class="material-symbols-outlined text-white text-[18px]">person_pin_circle</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Quick Info Blocks -->
+<section class="px-grid-margin mt-10 space-y-4">
+<div class="flex items-center gap-4 p-4 bg-surface-container-high rounded-xl">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">verified</span>
+<div class="flex-1">
+<p class="font-bold text-body-md">Fully Insured &amp; PAS 43 Accredited</p>
+<p class="font-body-sm text-on-surface-variant">Compliant with all UK recovery standards.</p>
+</div>
+</div>
+<div class="flex items-center gap-4 p-4 bg-surface-container-high rounded-xl">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">payments</span>
+<div class="flex-1">
+<p class="font-bold text-body-md">Fixed Price Guarantee</p>
+<p class="font-body-sm text-on-surface-variant">No hidden fees. Quote confirmed before dispatch.</p>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Execution from JSON) -->
+<nav class="fixed bottom-0 left-0 w-full md:hidden flex justify-around py-2 px-4 bg-surface border-t border-outline-variant shadow-lg z-50">
+<a class="flex flex-col items-center justify-center text-primary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">local_shipping</span>
+<span class="font-label-caps text-label-caps">Jobs</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant active:bg-surface-container transition-all scale-95 duration-100" href="#">
+<span class="material-symbols-outlined">map</span>
+<span class="font-label-caps text-label-caps">Map</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant active:bg-surface-container transition-all scale-95 duration-100" href="#">
+<span class="material-symbols-outlined">forum</span>
+<span class="font-label-caps text-label-caps">Chat</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant active:bg-surface-container transition-all scale-95 duration-100 relative" href="#">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-0 right-0 w-2 h-2 bg-status-conflict rounded-full"></span>
+<span class="font-label-caps text-label-caps">Alerts</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant active:bg-surface-container transition-all scale-95 duration-100" href="#">
+<span class="material-symbols-outlined">menu</span>
+<span class="font-label-caps text-label-caps">Menu</span>
+</a>
+</nav>
+<script>
+        // Simple interaction for the Recovery Request button
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('touchstart', function() {
+                this.classList.add('scale-95');
+            });
+            btn.addEventListener('touchend', function() {
+                this.classList.remove('scale-95');
+            });
+        });
+
+        // Sticky header opacity shift on scroll
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 20) {
+                header.classList.add('bg-opacity-90', 'backdrop-blur-md');
+            } else {
+                header.classList.remove('bg-opacity-90', 'backdrop-blur-md');
+            }
+        });
+    </script>
+</body></html>

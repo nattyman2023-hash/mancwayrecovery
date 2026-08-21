@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RecoveryPro CRM - MancWay Recovery Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-fixed": "#271901",
+                    "error-container": "#ffdad6",
+                    "on-secondary-fixed": "#2a1700",
+                    "on-background": "#0b1c30",
+                    "surface-dim": "#cbdbf5",
+                    "secondary-container": "#fea619",
+                    "surface-container": "#e5eeff",
+                    "on-secondary-fixed-variant": "#653e00",
+                    "on-primary-fixed-variant": "#3f465c",
+                    "surface": "#f8f9ff",
+                    "outline": "#76777d",
+                    "on-surface": "#0b1c30",
+                    "on-primary-container": "#7c839b",
+                    "surface-bright": "#f8f9ff",
+                    "on-error": "#ffffff",
+                    "secondary-fixed-dim": "#ffb95f",
+                    "primary-fixed": "#dae2fd",
+                    "tertiary-fixed": "#fcdeb5",
+                    "on-tertiary": "#ffffff",
+                    "primary": "#000000",
+                    "surface-variant": "#d3e4fe",
+                    "on-secondary": "#ffffff",
+                    "status-provisional": "#F97316",
+                    "primary-fixed-dim": "#bec6e0",
+                    "surface-tint": "#565e74",
+                    "surface-container-highest": "#d3e4fe",
+                    "on-error-container": "#93000a",
+                    "surface-container-lowest": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "on-primary-fixed": "#131b2e",
+                    "on-tertiary-container": "#98805d",
+                    "tertiary-container": "#271901",
+                    "tertiary-fixed-dim": "#dec29a",
+                    "on-secondary-container": "#684000",
+                    "inverse-primary": "#bec6e0",
+                    "tertiary": "#000000",
+                    "error": "#ba1a1a",
+                    "surface-container-high": "#dce9ff",
+                    "surface-steel": "#F1F5F9",
+                    "inverse-surface": "#213145",
+                    "background": "#f8f9ff",
+                    "inverse-on-surface": "#eaf1ff",
+                    "status-conflict": "#EF4444",
+                    "surface-container-low": "#eff4ff",
+                    "status-in-progress": "#3B82F6",
+                    "secondary-fixed": "#ffddb8",
+                    "status-completed": "#8B5CF6",
+                    "primary-container": "#131b2e",
+                    "status-confirmed": "#10B981",
+                    "outline-variant": "#c6c6cd",
+                    "on-tertiary-fixed-variant": "#574425",
+                    "surface-charcoal": "#1E293B"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "density-comfortable": "16px",
+                    "density-compact": "8px",
+                    "gutter": "16px",
+                    "grid-margin": "24px",
+                    "unit": "4px"
+            },
+            "fontFamily": {
+                    "body-sm": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "data-mono": ["JetBrains Mono"],
+                    "label-caps": ["Inter"],
+                    "headline-md": ["Inter"]
+            },
+            "fontSize": {
+                    "body-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "data-mono": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "label-caps": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                    "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 16px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md selection:bg-secondary-container">
+<!-- TopNavBar -->
+<nav class="bg-surface docked full-width top-0 sticky z-40 border-b border-outline-variant shadow-sm flex items-center justify-between px-grid-margin h-16 w-full">
+<div class="flex items-center gap-8">
+<span class="font-headline-md text-headline-md font-black text-primary">RecoveryPro CRM</span>
+<div class="hidden lg:flex items-center bg-surface-container-low px-4 py-2 rounded-lg gap-3 w-96 group focus-within:ring-2 focus-within:ring-secondary-container transition-all">
+<span class="material-symbols-outlined text-outline">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-md w-full placeholder:text-outline-variant" placeholder="Search jobs, reg, or customers..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-primary hover:bg-surface-container-low p-2 rounded-full transition-colors active:scale-95 duration-150" title="notifications">notifications</button>
+<button class="material-symbols-outlined text-primary hover:bg-surface-container-low p-2 rounded-full transition-colors active:scale-95 duration-150" title="sms">sms</button>
+<button class="material-symbols-outlined text-primary hover:bg-surface-container-low p-2 rounded-full transition-colors active:scale-95 duration-150" title="help_outline">help_outline</button>
+<div class="h-8 w-[1px] bg-outline-variant mx-2"></div>
+<div class="flex items-center gap-3 pl-2">
+<div class="text-right hidden sm:block">
+<p class="font-label-caps text-label-caps text-primary">Dispatcher 01</p>
+<p class="text-[10px] text-on-surface-variant font-medium">MancWay Recovery</p>
+</div>
+<img class="w-10 h-10 rounded-full border-2 border-surface-container-high object-cover shadow-sm" data-alt="A professional headshot of a dispatcher in a modern logistics control center. The lighting is crisp and cool, reflecting a high-efficiency industrial workspace with blue and grey tones. The subject is wearing a professional headset, suggesting a fast-paced vehicle recovery environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9i6Ud9z6kCES2MKJUuHichtHb784Vfe-2eOuIP10ibkfItxP56NuI62OFbsyiBp0QRmXdIVINAEP2HDzWDTh6TgCWgOvXdfYTOo5vJpabE2Nx25Vnql7zG6zzwSmudG9iVw586FnSTWDzvDadIJuTZ2KrbjWLXy4fg05ot-0s_gpGoDcRafPV31KYv2zlQx7JZZjziKnuwcvXoY0vM9t_G2lhwAI8Zk4lOGa9Jv4WVg2iZ7qUf-Df1lrKs5fZmPQUEzZnkzGVYW8"/>
+</div>
+</div>
+</nav>
+<div class="flex">
+<!-- SideNavBar -->
+<aside class="bg-surface-container-lowest dark:bg-inverse-surface docked left-0 h-screen w-64 border-r border-outline-variant flex flex-col overflow-y-auto hidden md:flex sticky top-16">
+<div class="p-6">
+<div class="flex items-center gap-3 mb-8">
+<div class="w-10 h-10 bg-primary flex items-center justify-center rounded">
+<span class="material-symbols-outlined text-white" style="font-variation-settings: 'FILL' 1;">cc_attribution</span>
+</div>
+<div>
+<h2 class="font-headline-md text-headline-md text-primary leading-tight">Dispatch Center</h2>
+<p class="font-label-caps text-label-caps text-on-surface-variant">Recovery Unit 01</p>
+</div>
+</div>
+<nav class="space-y-1">
+<!-- Dashboard is active -->
+<a class="flex items-center gap-3 px-4 py-3 text-primary border-l-4 border-status-provisional bg-surface-container-high font-bold transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="font-label-caps text-label-caps">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">calendar_month</span>
+<span class="font-label-caps text-label-caps">Calendar</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">contact_support</span>
+<span class="font-label-caps text-label-caps">Enquiries</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">event_available</span>
+<span class="font-label-caps text-label-caps">Bookings</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">cc_attribution</span>
+<span class="font-label-caps text-label-caps">Jobs</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">groups</span>
+<span class="font-label-caps text-label-caps">Customers</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">local_shipping</span>
+<span class="font-label-caps text-label-caps">Vehicles</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">person_pin_circle</span>
+<span class="font-label-caps text-label-caps">Drivers</span>
+</a>
+<div class="py-4 border-t border-outline-variant my-2 opacity-50"></div>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-label-caps text-label-caps">Payments</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-caps text-label-caps">Reports</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-caps text-label-caps">Settings</span>
+</a>
+</nav>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 min-h-screen p-grid-margin pb-24 md:pb-8 bg-background">
+<header class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<h1 class="font-display-lg text-display-lg text-primary tracking-tight">System Overview</h1>
+<p class="text-on-surface-variant font-body-md mt-1">MancWay Recovery Operational Hub — Monday, Oct 23</p>
+</div>
+<div class="flex gap-3">
+<button class="bg-white border border-outline-variant px-4 py-2 flex items-center gap-2 hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-[18px]">download</span>
+<span class="font-label-caps text-label-caps">Export Stats</span>
+</button>
+<button class="bg-primary text-white px-4 py-2 flex items-center gap-2 hover:opacity-90 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[18px]">add</span>
+<span class="font-label-caps text-label-caps">Create New Job</span>
+</button>
+</div>
+</header>
+<div class="bento-grid">
+<!-- Row 1: High Level Metrics -->
+<div class="col-span-12 lg:col-span-3 bg-white p-density-comfortable border border-outline-variant flex flex-col justify-between group">
+<div class="flex justify-between items-start">
+<span class="font-label-caps text-label-caps text-on-surface-variant">Jobs Today</span>
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">cc_attribution</span>
+</div>
+<div class="mt-4">
+<span class="text-[40px] font-black leading-none">42</span>
+<div class="flex items-center gap-1 text-status-confirmed mt-1">
+<span class="material-symbols-outlined text-[16px]">trending_up</span>
+<span class="text-[12px] font-bold">+12% vs last week</span>
+</div>
+</div>
+</div>
+<div class="col-span-12 lg:col-span-3 bg-white p-density-comfortable border border-outline-variant flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<span class="font-label-caps text-label-caps text-on-surface-variant">Confirmed Bookings</span>
+<span class="material-symbols-outlined text-status-confirmed" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="mt-4">
+<span class="text-[40px] font-black leading-none">128</span>
+<p class="text-[12px] text-on-surface-variant mt-1">Scheduled for next 48h</p>
+</div>
+</div>
+<div class="col-span-12 lg:col-span-3 bg-white p-density-comfortable border border-status-conflict border-2 flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<span class="font-label-caps text-label-caps text-status-conflict">Provisional Conflicts</span>
+<span class="material-symbols-outlined text-status-conflict" style="font-variation-settings: 'FILL' 1;">warning</span>
+</div>
+<div class="mt-4">
+<span class="text-[40px] font-black leading-none text-status-conflict">03</span>
+<p class="text-[12px] text-status-conflict font-bold mt-1 underline cursor-pointer">Resolve Immediate Action Required</p>
+</div>
+</div>
+<div class="col-span-12 lg:col-span-3 bg-white p-density-comfortable border border-outline-variant flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<span class="font-label-caps text-label-caps text-on-surface-variant">Unpaid Deposits</span>
+<span class="material-symbols-outlined text-status-provisional" style="font-variation-settings: 'FILL' 1;">pending_actions</span>
+</div>
+<div class="mt-4">
+<span class="text-[40px] font-black leading-none">£1,450</span>
+<p class="text-[12px] text-on-surface-variant mt-1">8 pending payments</p>
+</div>
+</div>
+<!-- Row 2: Financials & Resources -->
+<div class="col-span-12 lg:col-span-8 bg-white border border-outline-variant">
+<div class="p-density-comfortable border-b border-outline-variant flex justify-between items-center bg-surface-steel">
+<h3 class="font-label-caps text-label-caps text-primary">Financial Performance</h3>
+<div class="flex gap-2">
+<span class="px-2 py-1 bg-white border border-outline-variant text-[10px] font-bold">DAILY</span>
+<span class="px-2 py-1 bg-primary text-white text-[10px] font-bold">WEEKLY</span>
+</div>
+</div>
+<div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-8">
+<div>
+<p class="text-on-surface-variant text-[12px] uppercase font-bold tracking-widest">Revenue Today</p>
+<h4 class="text-[32px] font-black text-primary mt-1">£3,240.50</h4>
+<div class="w-full bg-surface-container h-2 mt-4 rounded-full overflow-hidden">
+<div class="bg-status-confirmed h-full w-[75%]"></div>
+</div>
+<p class="text-[11px] text-on-surface-variant mt-2 italic">Target: £4,000.00 (81% reached)</p>
+</div>
+<div class="border-l border-outline-variant pl-8">
+<p class="text-on-surface-variant text-[12px] uppercase font-bold tracking-widest">Revenue This Week</p>
+<h4 class="text-[32px] font-black text-primary mt-1">£18,920.00</h4>
+<div class="w-full bg-surface-container h-2 mt-4 rounded-full overflow-hidden">
+<div class="bg-status-in-progress h-full w-[62%]"></div>
+</div>
+<p class="text-[11px] text-on-surface-variant mt-2 italic">Target: £30,000.00 (63% reached)</p>
+</div>
+</div>
+<!-- Mini data grid -->
+<div class="p-density-comfortable bg-surface-steel border-t border-outline-variant">
+<table class="w-full text-left">
+<thead>
+<tr class="text-[10px] text-on-surface-variant uppercase tracking-tighter">
+<th class="pb-2">Invoice ID</th>
+<th class="pb-2">Customer</th>
+<th class="pb-2">Status</th>
+<th class="pb-2 text-right">Amount</th>
+</tr>
+</thead>
+<tbody class="text-body-sm font-data-mono">
+<tr class="border-t border-outline-variant/30">
+<td class="py-2">#INV-8821</td>
+<td class="py-2 font-body-sm">Global Logistics Ltd</td>
+<td class="py-2"><span class="px-2 py-0.5 bg-status-confirmed/10 text-status-confirmed rounded text-[10px] font-bold">PAID</span></td>
+<td class="py-2 text-right">£840.00</td>
+</tr>
+<tr class="border-t border-outline-variant/30">
+<td class="py-2 text-status-conflict">#INV-8819</td>
+<td class="py-2 font-body-sm">Individual - John Doe</td>
+<td class="py-2"><span class="px-2 py-0.5 bg-status-conflict/10 text-status-conflict rounded text-[10px] font-bold">OVERDUE</span></td>
+<td class="py-2 text-right text-status-conflict">£210.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Resource Status -->
+<div class="col-span-12 lg:col-span-4 bg-primary text-white p-density-comfortable">
+<h3 class="font-label-caps text-label-caps mb-6 text-white/70">Resource Availability</h3>
+<div class="space-y-6">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+<span class="material-symbols-outlined">person_pin_circle</span>
+</div>
+<div>
+<p class="font-bold">Drivers Ready</p>
+<p class="text-[12px] opacity-60">Active shifts now</p>
+</div>
+</div>
+<span class="text-[24px] font-black">12/15</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+<span class="material-symbols-outlined">local_shipping</span>
+</div>
+<div>
+<p class="font-bold">Recovery Units</p>
+<p class="text-[12px] opacity-60">Available fleet</p>
+</div>
+</div>
+<span class="text-[24px] font-black">08/10</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center">
+<span class="material-symbols-outlined">schedule</span>
+</div>
+<div>
+<p class="font-bold">Jobs in Progress</p>
+<p class="text-[12px] opacity-60">Real-time tracking</p>
+</div>
+</div>
+<span class="text-[24px] font-black">06</span>
+</div>
+</div>
+<div class="mt-10 pt-6 border-t border-white/20">
+<p class="text-[10px] font-bold uppercase tracking-widest text-secondary-container">Active Units Live Map</p>
+<div class="mt-3 aspect-video bg-inverse-surface rounded overflow-hidden relative border border-white/10">
+<div class="w-full h-full bg-cover bg-center grayscale contrast-125 opacity-50" data-location="Manchester, UK" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC1A48ITN4SV6jGblstuzTAnHDnRolyNANPfW2cozxz3M8C-thMLI0ouHrWIzHnQdmcuoEz2VsTmkOqbnBTSFQu2jeflVm8JfGs2vypRH_P4AOve71CMybAC7onWUlVypJS_WdjUHEJQ83O-bBFQzGZfaaxHoRXggN2_8Oc1tg-hldIa46F8WOBlcQ2uJglP7BSZiKp8lyRH8hCgMspwpJHkd05pMUnI7ayvnbB16lyL2_LPemoz_YBidUsLScQds9Sfz3gKEBX2UQ')"></div>
+<div class="absolute top-1/2 left-1/3 w-3 h-3 bg-secondary-container rounded-full animate-ping"></div>
+<div class="absolute top-1/2 left-1/3 w-3 h-3 bg-secondary-container rounded-full shadow-[0_0_10px_#fea619]"></div>
+<div class="absolute bottom-4 left-4 bg-primary/80 backdrop-blur-md px-2 py-1 text-[9px] font-bold">LIVE: M60 NORTHBOUND JUNCTION 14</div>
+</div>
+</div>
+</div>
+<!-- Feed: Recent Messages -->
+<div class="col-span-12 bg-white border border-outline-variant">
+<div class="p-density-comfortable border-b border-outline-variant flex justify-between items-center">
+<h3 class="font-label-caps text-label-caps text-primary">Customer Communication Feed</h3>
+<span class="text-[10px] font-bold text-on-surface-variant">3 NEW UNREAD</span>
+</div>
+<div class="divide-y divide-outline-variant">
+<div class="p-4 flex gap-4 hover:bg-surface-container-low transition-colors cursor-pointer group">
+<div class="w-12 h-12 rounded bg-surface-container-high flex-shrink-0 flex items-center justify-center font-bold text-primary">SM</div>
+<div class="flex-1">
+<div class="flex justify-between">
+<h4 class="font-bold text-body-md">Sarah Miller <span class="text-on-surface-variant font-normal text-[12px] ml-2">via WhatsApp</span></h4>
+<span class="text-[11px] text-on-surface-variant">2 mins ago</span>
+</div>
+<p class="text-body-sm mt-1 text-on-surface-variant line-clamp-1">"Hey, just confirming the driver is still on track for the M6 motorway pick-up? My car is getting a bit of attention from the rain!"</p>
+</div>
+<div class="flex items-center">
+<span class="w-2 h-2 bg-status-in-progress rounded-full"></span>
+</div>
+</div>
+<div class="p-4 flex gap-4 hover:bg-surface-container-low transition-colors cursor-pointer group">
+<div class="w-12 h-12 rounded bg-surface-container-high flex-shrink-0 flex items-center justify-center font-bold text-primary">RK</div>
+<div class="flex-1">
+<div class="flex justify-between">
+<h4 class="font-bold text-body-md">Robert Knight <span class="text-on-surface-variant font-normal text-[12px] ml-2">via SMS</span></h4>
+<span class="text-[11px] text-on-surface-variant">14 mins ago</span>
+</div>
+<p class="text-body-sm mt-1 text-on-surface-variant line-clamp-1">"Payment link isn't loading on my phone. Can you resend it or take card over the phone?"</p>
+</div>
+<div class="flex items-center">
+<span class="w-2 h-2 bg-status-in-progress rounded-full"></span>
+</div>
+</div>
+<div class="p-4 flex gap-4 hover:bg-surface-container-low transition-colors cursor-pointer group opacity-60">
+<div class="w-12 h-12 rounded bg-surface-container-high flex-shrink-0 flex items-center justify-center font-bold text-primary">AJ</div>
+<div class="flex-1">
+<div class="flex justify-between">
+<h4 class="font-bold text-body-md">Auto Join Logistics <span class="text-on-surface-variant font-normal text-[12px] ml-2">via Portal</span></h4>
+<span class="text-[11px] text-on-surface-variant">1h ago</span>
+</div>
+<p class="text-body-sm mt-1 text-on-surface-variant line-clamp-1">"Attached are the photos of the vehicle pre-pickup as requested for Job #J-9122."</p>
+</div>
+<div class="flex items-center">
+<span class="material-symbols-outlined text-outline-variant text-[18px]">done_all</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="bg-surface docked full-width bottom-0 z-50 border-t border-outline-variant shadow-lg fixed bottom-0 left-0 w-full md:hidden flex justify-around py-2 px-4">
+<a class="flex flex-col items-center justify-center text-primary" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">local_shipping</span>
+<span class="font-label-caps text-label-caps">Jobs</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">map</span>
+<span class="font-label-caps text-label-caps">Map</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">forum</span>
+<span class="font-label-caps text-label-caps">Chat</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">notifications</span>
+<span class="font-label-caps text-label-caps">Alerts</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">menu</span>
+<span class="font-label-caps text-label-caps">Menu</span>
+</a>
+</nav>
+<script>
+        // Micro-interactions for dashboard hover states and simple real-time feel
+        document.querySelectorAll('.bento-grid > div').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                if (!card.classList.contains('bg-primary')) {
+                    card.classList.add('shadow-md');
+                    card.style.transform = 'translateY(-2px)';
+                }
+            });
+            card.addEventListener('mouseleave', () => {
+                card.classList.remove('shadow-md');
+                card.style.transform = 'translateY(0px)';
+            });
+            card.style.transition = 'all 0.3s ease-out';
+        });
+
+        // Simulate notification pulses
+        setInterval(() => {
+            const conflictBadge = document.querySelector('.border-status-conflict');
+            if (conflictBadge) {
+                conflictBadge.classList.toggle('border-opacity-50');
+            }
+        }, 1000);
+    </script>
+</body></html>

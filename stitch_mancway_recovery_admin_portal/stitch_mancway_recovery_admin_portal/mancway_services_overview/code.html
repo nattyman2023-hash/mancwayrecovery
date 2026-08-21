@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Services | RecoveryPro CRM</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind Config Injection -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "tertiary-fixed": "#fcdeb5",
+                "secondary": "#855300",
+                "primary-container": "#131b2e",
+                "surface-container-high": "#dce9ff",
+                "on-secondary-fixed": "#2a1700",
+                "primary-fixed": "#dae2fd",
+                "on-surface-variant": "#45464d",
+                "on-surface": "#0b1c30",
+                "on-primary-fixed-variant": "#3f465c",
+                "tertiary-fixed-dim": "#dec29a",
+                "status-completed": "#8B5CF6",
+                "secondary-fixed": "#ffddb8",
+                "on-tertiary-fixed-variant": "#574425",
+                "error-container": "#ffdad6",
+                "surface-container-lowest": "#ffffff",
+                "surface-dim": "#cbdbf5",
+                "surface-charcoal": "#1E293B",
+                "outline": "#76777d",
+                "surface-steel": "#F1F5F9",
+                "on-secondary": "#ffffff",
+                "surface-container-low": "#eff4ff",
+                "on-secondary-container": "#684000",
+                "status-conflict": "#EF4444",
+                "error": "#ba1a1a",
+                "surface": "#f8f9ff",
+                "background": "#f8f9ff",
+                "secondary-container": "#fea619",
+                "status-provisional": "#F97316",
+                "inverse-primary": "#bec6e0",
+                "on-background": "#0b1c30",
+                "primary": "#000000",
+                "status-cancelled": "#94A3B8",
+                "on-primary-fixed": "#131b2e",
+                "outline-variant": "#c6c6cd",
+                "surface-bright": "#f8f9ff",
+                "secondary-fixed-dim": "#ffb95f",
+                "inverse-surface": "#213145",
+                "surface-container": "#e5eeff",
+                "on-error-container": "#93000a",
+                "inverse-on-surface": "#eaf1ff",
+                "surface-variant": "#d3e4fe",
+                "surface-tint": "#565e74",
+                "tertiary-container": "#271901",
+                "status-confirmed": "#10B981",
+                "on-primary": "#ffffff",
+                "on-tertiary-container": "#98805d",
+                "surface-container-highest": "#d3e4fe",
+                "on-tertiary": "#ffffff",
+                "status-in-progress": "#3B82F6",
+                "on-secondary-fixed-variant": "#653e00",
+                "primary-fixed-dim": "#bec6e0",
+                "on-tertiary-fixed": "#271901",
+                "tertiary": "#000000",
+                "on-error": "#ffffff",
+                "on-primary-container": "#7c839b"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+            },
+            "spacing": {
+                "gutter": "16px",
+                "unit": "4px",
+                "density-compact": "8px",
+                "grid-margin": "24px",
+                "density-comfortable": "16px"
+            },
+            "fontFamily": {
+                "body-sm": ["Inter"],
+                "body-md": ["Inter"],
+                "display-lg": ["Inter"],
+                "headline-md": ["Inter"],
+                "data-mono": ["JetBrains Mono"],
+                "label-caps": ["Inter"]
+            },
+            "fontSize": {
+                "body-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                "data-mono": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                "label-caps": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+        }
+        .service-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .service-card:hover {
+            transform: translateY(-4px);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface">
+<!-- TopNavBar -->
+<nav class="bg-surface dark:bg-surface-charcoal font-body-md text-body-md docked full-width top-0 sticky z-40 border-b border-outline-variant dark:border-outline shadow-sm flex items-center justify-between px-grid-margin h-16 w-full">
+<div class="flex items-center gap-8">
+<span class="font-headline-md text-headline-md font-black text-primary dark:text-inverse-primary uppercase tracking-tighter">RecoveryPro CRM</span>
+<div class="hidden md:flex items-center gap-6">
+<a class="text-on-surface-variant hover:bg-surface-container-low transition-colors px-3 py-2 rounded" href="#">Dashboard</a>
+<a class="text-primary font-bold px-3 py-2 rounded" href="#">Services</a>
+<a class="text-on-surface-variant hover:bg-surface-container-low transition-colors px-3 py-2 rounded" href="#">Fleet</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="pl-10 pr-4 py-1.5 bg-surface-container-low border-none rounded-lg text-body-sm focus:ring-2 focus:ring-secondary-container transition-all" placeholder="Search resources..." type="text"/>
+</div>
+<div class="flex items-center gap-2">
+<button class="material-symbols-outlined p-2 text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-full">notifications</button>
+<button class="material-symbols-outlined p-2 text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-full">sms</button>
+<button class="material-symbols-outlined p-2 text-on-surface-variant hover:bg-surface-container-low transition-colors rounded-full">help_outline</button>
+<div class="h-8 w-8 rounded-full bg-surface-container-highest overflow-hidden border border-outline-variant ml-2">
+<img class="w-full h-full object-cover" data-alt="A professional business headshot of a logistics manager in a modern office. High-key lighting, soft shadows, and a clean minimalist background. The style is sharp and corporate, using a palette of blues and grays to maintain a professional, reliable brand image." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD9ZBetyKO5x0EpDHePPAdYsccBh7S2cnQdIQwe2McBAPCMdjusAO3WipwBaa_X-OMRuRDDTU-yKX6tZ08puMhn-khFuJuqqBtgSIV8wrZ3p0r9EyFtbHHCIp2YjIdWE9CYFSknV_rBXmYgLzLTD_202vtLytauRIDfOwetkz5qAiuNyCD8yQx0j6fETYwTqZeaqbo7FeCZQA82vnDLpxh_sHXvVCj7_OdOGMDqAOnmC5Rbvri1Shi_WOHCQ5E7mfFrwBtDZ4wb6xA"/>
+</div>
+</div>
+</div>
+</nav>
+<div class="flex">
+<!-- SideNavBar -->
+<aside class="bg-surface-container-lowest dark:bg-inverse-surface font-label-caps text-label-caps docked left-0 h-screen w-64 border-r border-outline-variant flex flex-col hidden md:flex sticky top-16">
+<div class="p-6 border-b border-outline-variant">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-primary-container rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-inverse-primary" style="font-variation-settings: 'FILL' 1;">cc_attribution</span>
+</div>
+<div>
+<p class="font-bold text-on-surface leading-none">Dispatch Center</p>
+<p class="text-[10px] text-on-surface-variant mt-1">RECOVERY UNIT 01</p>
+</div>
+</div>
+</div>
+<div class="flex-1 py-4 overflow-y-auto">
+<div class="px-3 mb-2 opacity-50">Logistics</div>
+<nav class="space-y-1 px-2">
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container transition-all rounded" href="#">
+<span class="material-symbols-outlined">dashboard</span> Dashboard
+                    </a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container transition-all rounded" href="#">
+<span class="material-symbols-outlined">calendar_month</span> Calendar
+                    </a>
+<a class="flex items-center gap-3 px-3 py-2 text-primary dark:text-inverse-primary border-l-4 border-status-provisional bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined">event_available</span> Bookings
+                    </a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container transition-all rounded" href="#">
+<span class="material-symbols-outlined">local_shipping</span> Jobs
+                    </a>
+</nav>
+<div class="px-3 mt-6 mb-2 opacity-50">Management</div>
+<nav class="space-y-1 px-2">
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container transition-all rounded" href="#">
+<span class="material-symbols-outlined">groups</span> Customers
+                    </a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container transition-all rounded" href="#">
+<span class="material-symbols-outlined">vibration</span> Fleet
+                    </a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container transition-all rounded" href="#">
+<span class="material-symbols-outlined">payments</span> Payments
+                    </a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container transition-all rounded" href="#">
+<span class="material-symbols-outlined">analytics</span> Reports
+                    </a>
+<a class="flex items-center gap-3 px-3 py-2 text-on-surface-variant hover:bg-surface-container transition-all rounded" href="#">
+<span class="material-symbols-outlined">settings</span> Settings
+                    </a>
+</nav>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 bg-background min-h-screen p-grid-margin">
+<!-- Header Section -->
+<div class="mb-12">
+<span class="font-label-caps text-label-caps text-secondary font-bold tracking-widest uppercase">MancWay Capabilities</span>
+<h1 class="font-display-lg text-display-lg text-on-surface mt-2 mb-4">Precision Recovery Services</h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">
+                    High-stakes logistics requiring authoritative execution. Our specialized fleet and 24/7 dispatch center ensure total reliability for commercial partners and private motorists across the UK.
+                </p>
+</div>
+<!-- Bento Grid of Services -->
+<div class="bento-grid">
+<!-- 24/7 Roadside Assistance (Large Featured) -->
+<div class="col-span-12 lg:col-span-8 row-span-2 bg-surface-container-lowest border border-outline-variant p-8 relative overflow-hidden service-card">
+<div class="relative z-10 h-full flex flex-col">
+<div class="w-14 h-14 bg-secondary-container rounded flex items-center justify-center mb-6 shadow-md">
+<span class="material-symbols-outlined text-on-secondary-container text-3xl" style="font-variation-settings: 'FILL' 1;">emergency</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-3">24/7 Roadside Assistance</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-8 max-w-lg">
+                            Immediate dispatch for breakdowns, accidents, and emergencies. Our average response time is under 40 minutes nationwide. Equipped with onboard diagnostics and minor repair tools to get you moving faster.
+                        </p>
+<div class="mt-auto flex gap-4">
+<button class="px-6 py-3 bg-primary text-on-primary font-bold text-label-caps tracking-widest rounded hover:bg-primary-container transition-colors active:scale-95">GET A QUOTE</button>
+<button class="px-6 py-3 border border-outline text-on-surface font-bold text-label-caps tracking-widest rounded hover:bg-surface-container-low transition-colors">VIEW COVERAGE</button>
+</div>
+</div>
+<!-- Background Visual Decor -->
+<div class="absolute top-0 right-0 w-1/2 h-full opacity-10 pointer-events-none">
+<span class="material-symbols-outlined text-[300px] absolute -right-20 -top-20">history_toggle_off</span>
+</div>
+</div>
+<!-- Specialist Low-Access Recovery (Multi-storey) -->
+<div class="col-span-12 lg:col-span-4 bg-surface-container-low border border-outline-variant p-6 service-card">
+<div class="w-12 h-12 bg-surface-variant rounded flex items-center justify-center mb-4">
+<span class="material-symbols-outlined text-primary text-2xl">low_priority</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Specialist Low-Access</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-6">
+                        Custom vehicles designed for multi-storey car parks and height-restricted zones. We recovery where others can't.
+                    </p>
+<button class="w-full py-2 bg-surface-container-highest text-on-surface font-bold text-label-caps tracking-wider rounded border border-outline-variant hover:bg-surface-container transition-colors">GET A QUOTE</button>
+</div>
+<!-- Commercial Fleet Support -->
+<div class="col-span-12 lg:col-span-4 bg-surface-container-low border border-outline-variant p-6 service-card">
+<div class="w-12 h-12 bg-surface-variant rounded flex items-center justify-center mb-4">
+<span class="material-symbols-outlined text-primary text-2xl">corporate_fare</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Fleet Support</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-6">
+                        Priority recovery contracts for logistics companies. Reduced downtime through automated dispatch integration.
+                    </p>
+<button class="w-full py-2 bg-surface-container-highest text-on-surface font-bold text-label-caps tracking-wider rounded border border-outline-variant hover:bg-surface-container transition-colors">ENQUIRE</button>
+</div>
+<!-- Long Distance Vehicle Transport -->
+<div class="col-span-12 bg-primary-container text-on-primary-fixed p-10 flex flex-col md:flex-row items-center gap-10 rounded-lg shadow-xl relative overflow-hidden">
+<div class="flex-1 relative z-10">
+<div class="flex items-center gap-2 mb-4">
+<div class="px-2 py-1 bg-status-provisional text-white text-[10px] font-bold rounded">PREMIUM SERVICE</div>
+</div>
+<h3 class="font-display-lg text-display-lg text-white mb-4">Long Distance Transport</h3>
+<p class="font-body-md text-body-md text-on-primary-container max-w-xl mb-8">
+                            Nationwide delivery and vehicle relocation. We handle luxury, classic, and prestige vehicles with total enclosure options and real-time GPS tracking for the ultimate peace of mind during transit.
+                        </p>
+<div class="flex flex-wrap gap-4">
+<div class="flex items-center gap-2 bg-surface-charcoal/50 px-4 py-2 rounded border border-white/10">
+<span class="material-symbols-outlined text-secondary-container" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span class="font-data-mono text-white">FULLY INSURED</span>
+</div>
+<div class="flex items-center gap-2 bg-surface-charcoal/50 px-4 py-2 rounded border border-white/10">
+<span class="material-symbols-outlined text-secondary-container" style="font-variation-settings: 'FILL' 1;">location_on</span>
+<span class="font-data-mono text-white">LIVE TRACKING</span>
+</div>
+</div>
+</div>
+<div class="w-full md:w-1/3 aspect-video rounded-xl overflow-hidden shadow-2xl relative z-10">
+<img class="w-full h-full object-cover" data-alt="A professional heavy-duty flatbed recovery truck transporting a high-end luxury vehicle on a modern highway at twilight. The lighting is moody with streaks of motion blur, capturing a sense of high-speed logistical efficiency. The aesthetic is industrial and ultra-clean, highlighting the safety-first approach of the company." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDCW4UsdTbRpbOua5HDD5IaoEJ_4aUzmm8zhFzfRgjeUq-MzHJuTQe45CI4Qg-L3GFo24rdxNqCKoic0Cmp1LHi36AmTz_UBx-8si8affd-9EZH9sTsyuaJHlR7liiddMnG7-8BiQn1VGb9b_FPXeglB008lJBs0O1eBxXpdL-QWzTeiXYrgfZUQKwsv6MkzGrRDJvoTugYEszujQGdr2fLVciX-SmsAX9QLM4eoYiQz5dBwOqZvuZf7UTnKFkt6TzxB2YyAzclPEQ"/>
+</div>
+<!-- Ambient Shader Effect Overlay -->
+
+</div>
+</div>
+<!-- Stats Bar -->
+<div class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-6 border-t border-outline-variant pt-8">
+<div>
+<p class="font-label-caps text-on-surface-variant">AVERAGE RESPONSE</p>
+<p class="font-display-lg text-display-lg text-secondary">38m</p>
+</div>
+<div>
+<p class="font-label-caps text-on-surface-variant">FLEET CAPACITY</p>
+<p class="font-display-lg text-display-lg text-secondary">150+</p>
+</div>
+<div>
+<p class="font-label-caps text-on-surface-variant">SUCCESS RATE</p>
+<p class="font-display-lg text-display-lg text-secondary">99.8%</p>
+</div>
+<div>
+<p class="font-label-caps text-on-surface-variant">ACTIVE JOBS</p>
+<p class="font-display-lg text-display-lg text-secondary">1,204</p>
+</div>
+</div>
+</main>
+</div>
+<!-- BottomNavBar (Mobile) -->
+<nav class="bg-surface dark:bg-surface-charcoal font-label-caps text-label-caps docked full-width bottom-0 z-50 border-t border-outline-variant shadow-lg fixed bottom-0 left-0 w-full md:hidden flex justify-around py-2 px-4">
+<a class="flex flex-col items-center justify-center text-on-surface-variant active:bg-surface-container scale-95 duration-100" href="#">
+<span class="material-symbols-outlined">local_shipping</span>
+<span>Jobs</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant active:bg-surface-container scale-95 duration-100" href="#">
+<span class="material-symbols-outlined">map</span>
+<span>Map</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary dark:text-secondary-fixed-dim active:bg-surface-container scale-95 duration-100" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">list_alt</span>
+<span>Services</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant active:bg-surface-container scale-95 duration-100" href="#">
+<span class="material-symbols-outlined">forum</span>
+<span>Chat</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant active:bg-surface-container scale-95 duration-100" href="#">
+<span class="material-symbols-outlined">menu</span>
+<span>Menu</span>
+</a>
+</nav>
+<script>
+        // Micro-interactions and hover logic
+        document.querySelectorAll('.service-card').forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                const icon = card.querySelector('.material-symbols-outlined');
+                if (icon) {
+                    icon.style.transform = 'scale(1.1) rotate(5deg)';
+                    icon.style.transition = 'transform 0.3s ease';
+                }
+            });
+            card.addEventListener('mouseleave', () => {
+                const icon = card.querySelector('.material-symbols-outlined');
+                if (icon) {
+                    icon.style.transform = 'scale(1) rotate(0deg)';
+                }
+            });
+        });
+    </script>
+</body></html>

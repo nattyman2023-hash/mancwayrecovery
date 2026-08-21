@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Service Areas | RecoveryPro CRM</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "inverse-on-surface": "#eaf1ff",
+                    "on-error-container": "#93000a",
+                    "on-tertiary-fixed": "#271901",
+                    "surface-bright": "#f8f9ff",
+                    "on-background": "#0b1c30",
+                    "inverse-surface": "#213145",
+                    "status-provisional": "#F97316",
+                    "surface-steel": "#F1F5F9",
+                    "on-primary-fixed": "#131b2e",
+                    "secondary": "#855300",
+                    "on-tertiary-container": "#98805d",
+                    "on-secondary-fixed": "#2a1700",
+                    "status-conflict": "#EF4444",
+                    "surface-container": "#e5eeff",
+                    "surface-charcoal": "#1E293B",
+                    "on-tertiary-fixed-variant": "#574425",
+                    "outline": "#76777d",
+                    "surface-dim": "#cbdbf5",
+                    "on-primary": "#ffffff",
+                    "surface-container-high": "#dce9ff",
+                    "on-tertiary": "#ffffff",
+                    "inverse-primary": "#bec6e0",
+                    "primary-fixed-dim": "#bec6e0",
+                    "surface": "#f8f9ff",
+                    "status-confirmed": "#10B981",
+                    "primary": "#000000",
+                    "tertiary-container": "#271901",
+                    "surface-tint": "#565e74",
+                    "background": "#f8f9ff",
+                    "secondary-container": "#fea619",
+                    "secondary-fixed": "#ffddb8",
+                    "outline-variant": "#c6c6cd",
+                    "on-surface": "#0b1c30",
+                    "surface-container-highest": "#d3e4fe",
+                    "surface-container-lowest": "#ffffff",
+                    "on-primary-fixed-variant": "#3f465c",
+                    "on-secondary-container": "#684000",
+                    "tertiary-fixed": "#fcdeb5",
+                    "surface-container-low": "#eff4ff",
+                    "secondary-fixed-dim": "#ffb95f",
+                    "on-secondary": "#ffffff",
+                    "error": "#ba1a1a",
+                    "tertiary-fixed-dim": "#dec29a",
+                    "surface-variant": "#d3e4fe",
+                    "status-completed": "#8B5CF6",
+                    "primary-container": "#131b2e",
+                    "on-primary-container": "#7c839b",
+                    "on-surface-variant": "#45464d",
+                    "on-secondary-fixed-variant": "#653e00",
+                    "on-error": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "status-cancelled": "#94A3B8",
+                    "primary-fixed": "#dae2fd",
+                    "tertiary": "#000000",
+                    "status-in-progress": "#3B82F6"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "gutter": "16px",
+                    "grid-margin": "24px",
+                    "density-comfortable": "16px",
+                    "unit": "4px",
+                    "density-compact": "8px"
+            },
+            "fontFamily": {
+                    "label-caps": ["Inter"],
+                    "body-sm": ["Inter"],
+                    "body-md": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "data-mono": ["JetBrains Mono"]
+            },
+            "fontSize": {
+                    "label-caps": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                    "body-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                    "data-mono": ["12px", {"lineHeight": "16px", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        .map-gradient {
+            background: radial-gradient(circle at center, transparent 0%, rgba(248, 249, 255, 1) 70%);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background selection:bg-primary selection:text-white">
+<!-- TopNavBar Shell -->
+<header class="bg-surface dark:bg-surface-charcoal font-body-md text-body-md docked full-width top-0 sticky z-40 border-b border-outline-variant dark:border-outline shadow-sm flex items-center justify-between px-grid-margin h-16 w-full">
+<div class="flex items-center gap-6">
+<span class="font-headline-md text-headline-md font-black text-primary dark:text-inverse-primary">RecoveryPro CRM</span>
+<div class="hidden lg:flex items-center bg-surface-container-low px-4 py-2 rounded-lg border border-outline-variant">
+<span class="material-symbols-outlined text-on-surface-variant text-sm mr-2">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-sm w-64 p-0" placeholder="Search service areas..." type="text"/>
+</div>
+</div>
+<nav class="flex items-center gap-4">
+<button class="p-2 hover:bg-surface-container-low transition-colors active:scale-95 duration-150 text-on-surface-variant">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 hover:bg-surface-container-low transition-colors active:scale-95 duration-150 text-on-surface-variant">
+<span class="material-symbols-outlined">sms</span>
+</button>
+<button class="p-2 hover:bg-surface-container-low transition-colors active:scale-95 duration-150 text-on-surface-variant">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+<div class="h-8 w-px bg-outline-variant mx-2"></div>
+<img class="h-10 w-10 rounded-full border border-outline object-cover" data-alt="A professional headshot of a logistics fleet manager wearing a dark navy company polo shirt. The background is a blurred office environment with modern monitors displaying maps. The lighting is soft and professional, reflecting a trustworthy corporate setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzekENAznPbrL-yosL-kaSKa-TQepQi3wQIaBHMp6M6x2bce60iTnthq1u4oDHoFgKVze-wwefPOJMD_cjvaPzgQVBRY3IdfqH5eJg--Co307nCrwnKxZ0Q_LJiNRbhcIoNNIJZ2D3cgjG8rByB5SSxRBYmE-2SubI-yu5kB2IQZXVTRGjFl7MBDWkRsY65On-H2Ej2XOrvWzn_bQ5uD-mTcrMB-1cFQacWOEcnFxawmr-cPq6f5YXOhUgbCXkw2AuBUEfDNe74ek"/>
+</nav>
+</header>
+<div class="flex">
+<!-- SideNavBar Shell -->
+<aside class="bg-surface-container-lowest dark:bg-inverse-surface font-label-caps text-label-caps docked left-0 h-screen w-64 border-r border-outline-variant flex flex-col hidden md:flex sticky top-16">
+<div class="p-6 border-b border-outline-variant">
+<div class="flex items-center gap-3">
+<div class="h-10 w-10 bg-primary flex items-center justify-center rounded">
+<span class="material-symbols-outlined text-white">cc_attribution</span>
+</div>
+<div>
+<p class="font-headline-md text-sm font-bold text-primary dark:text-inverse-primary leading-none">Dispatch Center</p>
+<p class="text-[10px] text-on-surface-variant mt-1 uppercase tracking-widest">Recovery Unit 01</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 overflow-y-auto py-4">
+<div class="px-3 mb-2 text-on-surface-variant opacity-50 text-[10px] font-bold">CORE NAVIGATION</div>
+<a class="flex items-center gap-3 px-6 py-3 text-on-surface-variant dark:text-outline-variant hover:bg-surface-container transition-all duration-200" href="#">
+<span class="material-symbols-outlined">dashboard</span> Dashboard
+                </a>
+<a class="flex items-center gap-3 px-6 py-3 text-on-surface-variant dark:text-outline-variant hover:bg-surface-container transition-all duration-200" href="#">
+<span class="material-symbols-outlined">calendar_month</span> Calendar
+                </a>
+<!-- Active Tab: Map/Service Areas context -->
+<a class="flex items-center gap-3 px-6 py-3 text-primary dark:text-inverse-primary border-l-4 border-status-provisional bg-surface-container-high transition-all duration-200" href="#">
+<span class="material-symbols-outlined">map</span> Service Areas
+                </a>
+<a class="flex items-center gap-3 px-6 py-3 text-on-surface-variant dark:text-outline-variant hover:bg-surface-container transition-all duration-200" href="#">
+<span class="material-symbols-outlined">local_shipping</span> Jobs
+                </a>
+<a class="flex items-center gap-3 px-6 py-3 text-on-surface-variant dark:text-outline-variant hover:bg-surface-container transition-all duration-200" href="#">
+<span class="material-symbols-outlined">groups</span> Customers
+                </a>
+<div class="px-3 mt-6 mb-2 text-on-surface-variant opacity-50 text-[10px] font-bold">ADMINISTRATION</div>
+<a class="flex items-center gap-3 px-6 py-3 text-on-surface-variant dark:text-outline-variant hover:bg-surface-container transition-all duration-200" href="#">
+<span class="material-symbols-outlined">payments</span> Payments
+                </a>
+<a class="flex items-center gap-3 px-6 py-3 text-on-surface-variant dark:text-outline-variant hover:bg-surface-container transition-all duration-200" href="#">
+<span class="material-symbols-outlined">analytics</span> Reports
+                </a>
+<a class="flex items-center gap-3 px-6 py-3 text-on-surface-variant dark:text-outline-variant hover:bg-surface-container transition-all duration-200" href="#">
+<span class="material-symbols-outlined">settings</span> Settings
+                </a>
+</nav>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 min-w-0 pb-24 md:pb-8">
+<!-- Hero Header -->
+<section class="p-grid-margin border-b border-outline-variant bg-surface-container-low">
+<div class="max-w-6xl mx-auto">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<nav class="flex items-center gap-2 text-on-surface-variant font-label-caps text-label-caps mb-4">
+<a class="hover:text-primary" href="#">Regional Hub</a>
+<span class="material-symbols-outlined text-[12px]">chevron_right</span>
+<span class="text-primary">Greater Manchester</span>
+</nav>
+<h1 class="font-display-lg text-display-lg text-primary mb-2">Greater Manchester Service Areas</h1>
+<p class="text-on-surface-variant font-body-md max-w-xl">
+                                Real-time operational monitoring for the Northwest's largest recovery network. Manage response times, unit availability, and local performance metrics across all 10 boroughs.
+                            </p>
+</div>
+<div class="flex gap-3">
+<button class="bg-primary text-white px-6 py-2.5 font-label-caps text-label-caps flex items-center gap-2 hover:opacity-90 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-sm">add_location</span> Add Local Depot
+                            </button>
+</div>
+</div>
+<!-- Rapid Stats Row -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-gutter mt-8">
+<div class="bg-white p-4 border border-outline-variant shadow-sm">
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-1">Average Response</p>
+<div class="flex items-end gap-2">
+<span class="font-headline-md text-2xl font-bold">24m 12s</span>
+<span class="text-status-confirmed font-label-caps text-[10px] mb-1 flex items-center">
+<span class="material-symbols-outlined text-[12px]">trending_down</span> 4%
+                                </span>
+</div>
+</div>
+<div class="bg-white p-4 border border-outline-variant shadow-sm">
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-1">Active Units</p>
+<div class="flex items-end gap-2">
+<span class="font-headline-md text-2xl font-bold">84 / 112</span>
+<span class="text-on-surface-variant font-label-caps text-[10px] mb-1 italic opacity-60">75% Capacity</span>
+</div>
+</div>
+<div class="bg-white p-4 border border-outline-variant shadow-sm">
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-1">Recovery Success</p>
+<div class="flex items-end gap-2">
+<span class="font-headline-md text-2xl font-bold">99.8%</span>
+<span class="text-status-confirmed font-label-caps text-[10px] mb-1">Verified</span>
+</div>
+</div>
+<div class="bg-white p-4 border border-outline-variant shadow-sm">
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-1">Live Enquiries</p>
+<div class="flex items-end gap-2">
+<span class="font-headline-md text-2xl font-bold text-status-provisional">18</span>
+<span class="text-on-surface-variant font-label-caps text-[10px] mb-1">Queueing</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Interactive Map Section -->
+<section class="p-grid-margin">
+<div class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Map Container (Large) -->
+<div class="lg:col-span-8 bg-surface-steel border border-outline-variant relative overflow-hidden h-[500px]">
+<div class="absolute inset-0 bg-cover bg-center opacity-40 mix-blend-multiply" data-location="Manchester, United Kingdom" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDWxy5n5vUzmfhbNsAsBoSj4gapY4unaKL-28wW-UQFsos3OFeCM1yUOxtFcEwFM0Hj_4gZuugnpvyYylpml8qTkHmYB-sTCW6vRNFIdlh9guGIWwp6kll9FiBHiiCSCkFlLYfnnOTezwbbmFx6IVR-zcuYDzRcrRKlH4MArZRguTY9ykeVMHnK6muUKK8-xTpONsTznJuCVHjdccMrBss1hWoXK2EXQShg8fzXueC2iqiSHPgx0GP5I8m9L7vKgraPw2MVhCSt1RY')"></div>
+<!-- Interactive Overlays -->
+<div class="absolute inset-0 flex items-center justify-center p-12">
+<div class="relative w-full h-full flex items-center justify-center">
+<!-- Decorative Hotspots representing Greater Manchester towns -->
+<div class="absolute top-[40%] left-[50%] group cursor-pointer">
+<div class="w-4 h-4 bg-primary rounded-full animate-ping opacity-75 absolute inset-0"></div>
+<div class="w-4 h-4 bg-primary rounded-full relative border-2 border-white"></div>
+<div class="absolute bottom-6 left-1/2 -translate-x-1/2 bg-surface-charcoal text-white px-3 py-1 text-[10px] font-bold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">MANCHESTER CITY CENTRE</div>
+</div>
+<div class="absolute top-[60%] left-[60%] group cursor-pointer">
+<div class="w-4 h-4 bg-status-confirmed rounded-full relative border-2 border-white"></div>
+<div class="absolute bottom-6 left-1/2 -translate-x-1/2 bg-surface-charcoal text-white px-3 py-1 text-[10px] font-bold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">STOCKPORT</div>
+</div>
+<div class="absolute top-[30%] left-[35%] group cursor-pointer">
+<div class="w-4 h-4 bg-status-in-progress rounded-full relative border-2 border-white"></div>
+<div class="absolute bottom-6 left-1/2 -translate-x-1/2 bg-surface-charcoal text-white px-3 py-1 text-[10px] font-bold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">BOLTON</div>
+</div>
+<div class="absolute top-[45%] left-[25%] group cursor-pointer">
+<div class="w-4 h-4 bg-status-confirmed rounded-full relative border-2 border-white"></div>
+<div class="absolute bottom-6 left-1/2 -translate-x-1/2 bg-surface-charcoal text-white px-3 py-1 text-[10px] font-bold whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">WIGAN</div>
+</div>
+</div>
+</div>
+<!-- Map Controls -->
+<div class="absolute bottom-4 left-4 flex flex-col gap-2">
+<button class="bg-white p-2 border border-outline-variant shadow-sm hover:bg-surface-container"><span class="material-symbols-outlined">add</span></button>
+<button class="bg-white p-2 border border-outline-variant shadow-sm hover:bg-surface-container"><span class="material-symbols-outlined">remove</span></button>
+</div>
+<div class="absolute top-4 right-4 bg-white/90 backdrop-blur px-3 py-2 border border-outline-variant text-[10px] font-bold font-label-caps">
+<div class="flex items-center gap-2 mb-1"><span class="w-2 h-2 rounded-full bg-status-confirmed"></span> HIGH AVAILABILITY</div>
+<div class="flex items-center gap-2 mb-1"><span class="w-2 h-2 rounded-full bg-status-provisional"></span> MEDIUM DENSITY</div>
+<div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-status-conflict"></span> HIGH CONGESTION</div>
+</div>
+</div>
+<!-- Sidebar: Area List -->
+<div class="lg:col-span-4 flex flex-col gap-gutter h-[500px]">
+<div class="bg-white border border-outline-variant p-4 flex-1 flex flex-col overflow-hidden">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-4 flex items-center justify-between">
+                                Priority Locations
+                                <span class="bg-surface-container-high px-2 py-0.5 rounded text-[9px] text-primary">10 BOROUGHS</span>
+</h3>
+<div class="overflow-y-auto space-y-2 pr-1">
+<!-- Area Item -->
+<button class="w-full text-left p-3 border border-outline-variant hover:border-primary hover:bg-surface-container-lowest transition-all group">
+<div class="flex justify-between items-start mb-2">
+<span class="font-headline-md text-sm font-bold">Manchester City Centre</span>
+<span class="bg-status-confirmed/10 text-status-confirmed font-label-caps text-[9px] px-1.5 py-0.5 rounded">ONLINE</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3 text-on-surface-variant">
+<span class="flex items-center gap-1 font-data-mono text-[10px]"><span class="material-symbols-outlined text-[14px]">local_shipping</span> 12 Units</span>
+<span class="flex items-center gap-1 font-data-mono text-[10px]"><span class="material-symbols-outlined text-[14px]">timer</span> 18m Avg</span>
+</div>
+<span class="material-symbols-outlined text-primary opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all">arrow_forward</span>
+</div>
+</button>
+<!-- Repeat Area Items -->
+<button class="w-full text-left p-3 border border-outline-variant hover:border-primary hover:bg-surface-container-lowest transition-all group">
+<div class="flex justify-between items-start mb-2">
+<span class="font-headline-md text-sm font-bold">Stockport</span>
+<span class="bg-status-confirmed/10 text-status-confirmed font-label-caps text-[9px] px-1.5 py-0.5 rounded">ONLINE</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3 text-on-surface-variant">
+<span class="flex items-center gap-1 font-data-mono text-[10px]"><span class="material-symbols-outlined text-[14px]">local_shipping</span> 8 Units</span>
+<span class="flex items-center gap-1 font-data-mono text-[10px]"><span class="material-symbols-outlined text-[14px]">timer</span> 22m Avg</span>
+</div>
+<span class="material-symbols-outlined text-primary opacity-0 group-hover:opacity-100">arrow_forward</span>
+</div>
+</button>
+<button class="w-full text-left p-3 border border-outline-variant hover:border-primary hover:bg-surface-container-lowest transition-all group">
+<div class="flex justify-between items-start mb-2">
+<span class="font-headline-md text-sm font-bold">Bolton</span>
+<span class="bg-status-provisional/10 text-status-provisional font-label-caps text-[9px] px-1.5 py-0.5 rounded">BUSY</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3 text-on-surface-variant">
+<span class="flex items-center gap-1 font-data-mono text-[10px]"><span class="material-symbols-outlined text-[14px]">local_shipping</span> 6 Units</span>
+<span class="flex items-center gap-1 font-data-mono text-[10px]"><span class="material-symbols-outlined text-[14px]">timer</span> 34m Avg</span>
+</div>
+<span class="material-symbols-outlined text-primary opacity-0 group-hover:opacity-100">arrow_forward</span>
+</div>
+</button>
+<button class="w-full text-left p-3 border border-outline-variant hover:border-primary hover:bg-surface-container-lowest transition-all group">
+<div class="flex justify-between items-start mb-2">
+<span class="font-headline-md text-sm font-bold">Wigan</span>
+<span class="bg-status-confirmed/10 text-status-confirmed font-label-caps text-[9px] px-1.5 py-0.5 rounded">ONLINE</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3 text-on-surface-variant">
+<span class="flex items-center gap-1 font-data-mono text-[10px]"><span class="material-symbols-outlined text-[14px]">local_shipping</span> 9 Units</span>
+<span class="flex items-center gap-1 font-data-mono text-[10px]"><span class="material-symbols-outlined text-[14px]">timer</span> 25m Avg</span>
+</div>
+<span class="material-symbols-outlined text-primary opacity-0 group-hover:opacity-100">arrow_forward</span>
+</div>
+</button>
+</div>
+</div>
+<div class="bg-primary text-white p-4 flex flex-col justify-between">
+<h4 class="font-label-caps text-label-caps text-on-primary-container">Dispatch Status</h4>
+<p class="font-body-sm text-xs mt-2 mb-4 opacity-80">All Greater Manchester units are currently operating on standard response protocol.</p>
+<div class="h-1.5 w-full bg-white/20 rounded-full overflow-hidden">
+<div class="h-full bg-status-confirmed w-[88%]"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Detailed Grid of Other Areas -->
+<section class="p-grid-margin bg-surface-steel/50">
+<div class="max-w-6xl mx-auto">
+<h2 class="font-headline-md text-primary mb-8 flex items-center gap-3">
+<span class="material-symbols-outlined">map_search</span> All Registered Boroughs &amp; Major Towns
+                    </h2>
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+<!-- Area Bento Card -->
+<a class="bg-white p-4 border border-outline-variant hover:shadow-md transition-shadow group" href="#">
+<p class="font-label-caps text-[10px] text-on-surface-variant mb-1">M27 / M60</p>
+<h4 class="font-headline-md text-sm mb-3">Salford</h4>
+<div class="flex items-center gap-2">
+<div class="flex -space-x-2">
+<div class="w-6 h-6 rounded-full bg-surface-steel border-2 border-white flex items-center justify-center text-[10px] font-bold">H</div>
+<div class="w-6 h-6 rounded-full bg-surface-steel border-2 border-white flex items-center justify-center text-[10px] font-bold">M</div>
+</div>
+<span class="text-[10px] font-label-caps text-on-surface-variant">4 Units Active</span>
+</div>
+</a>
+<a class="bg-white p-4 border border-outline-variant hover:shadow-md transition-shadow" href="#">
+<p class="font-label-caps text-[10px] text-on-surface-variant mb-1">M62 Corridor</p>
+<h4 class="font-headline-md text-sm mb-3">Rochdale</h4>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-status-confirmed"></span>
+<span class="text-[10px] font-label-caps text-on-surface-variant">Low Traffic</span>
+</div>
+</a>
+<a class="bg-white p-4 border border-outline-variant hover:shadow-md transition-shadow" href="#">
+<p class="font-label-caps text-[10px] text-on-surface-variant mb-1">South Hub</p>
+<h4 class="font-headline-md text-sm mb-3">Trafford</h4>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-status-confirmed"></span>
+<span class="text-[10px] font-label-caps text-on-surface-variant">Optimal Flow</span>
+</div>
+</a>
+<a class="bg-white p-4 border border-outline-variant hover:shadow-md transition-shadow" href="#">
+<p class="font-label-caps text-[10px] text-on-surface-variant mb-1">Pennine Reach</p>
+<h4 class="font-headline-md text-sm mb-3">Oldham</h4>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-status-provisional"></span>
+<span class="text-[10px] font-label-caps text-on-surface-variant">Congested</span>
+</div>
+</a>
+<a class="bg-white p-4 border border-outline-variant hover:shadow-md transition-shadow" href="#">
+<p class="font-label-caps text-[10px] text-on-surface-variant mb-1">East Hub</p>
+<h4 class="font-headline-md text-sm mb-3">Tameside</h4>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-status-confirmed"></span>
+<span class="text-[10px] font-label-caps text-on-surface-variant">Clear</span>
+</div>
+</a>
+<a class="bg-white p-4 border border-outline-variant hover:shadow-md transition-shadow" href="#">
+<p class="font-label-caps text-[10px] text-on-surface-variant mb-1">M61 / M6</p>
+<h4 class="font-headline-md text-sm mb-3">Bury</h4>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-status-confirmed"></span>
+<span class="text-[10px] font-label-caps text-on-surface-variant">Clear</span>
+</div>
+</a>
+<!-- Add Area Placeholder -->
+<button class="bg-dashed-surface p-4 border-2 border-dashed border-outline-variant hover:border-primary hover:bg-surface-container transition-all flex flex-col items-center justify-center text-on-surface-variant group">
+<span class="material-symbols-outlined mb-1 group-hover:scale-110 transition-transform">add_circle</span>
+<span class="font-label-caps text-[10px]">REGISTER AREA</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Trust Signals & Compliance -->
+<section class="p-grid-margin">
+<div class="max-w-6xl mx-auto flex flex-col md:flex-row gap-8 items-center border-t border-outline-variant pt-12">
+<div class="flex-1">
+<h3 class="font-headline-md text-primary mb-4 italic">"Operational excellence is the backbone of our Greater Manchester recovery network."</h3>
+<div class="flex items-center gap-4">
+<div class="h-12 w-12 rounded-full bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">verified</span>
+</div>
+<div>
+<p class="font-bold text-sm">PAS 43 Accredited</p>
+<p class="text-[10px] font-label-caps text-on-surface-variant">MANAGEMENT STANDARDS VERIFIED FOR 2024</p>
+</div>
+</div>
+</div>
+<div class="flex gap-12 grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-500">
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-3xl">policy</span>
+<span class="text-[9px] font-bold mt-2">ISO 9001</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-3xl">gavel</span>
+<span class="text-[9px] font-bold mt-2">DVSA COMPLIANT</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-3xl">shield</span>
+<span class="text-[9px] font-bold mt-2">GDPR SECURE</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+</div>
+<!-- BottomNavBar Shell (Mobile) -->
+<nav class="bg-surface dark:bg-surface-charcoal font-label-caps text-label-caps docked full-width bottom-0 z-50 border-t border-outline-variant shadow-lg fixed bottom-0 left-0 w-full md:hidden flex justify-around py-2 px-4">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary" href="#">
+<span class="material-symbols-outlined">local_shipping</span>
+<span class="text-[10px] mt-1">Jobs</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary dark:text-secondary-fixed-dim" href="#">
+<span class="material-symbols-outlined">map</span>
+<span class="text-[10px] mt-1">Map</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary" href="#">
+<span class="material-symbols-outlined">forum</span>
+<span class="text-[10px] mt-1">Chat</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary relative" href="#">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-0 right-0 h-2 w-2 bg-status-conflict rounded-full"></span>
+<span class="text-[10px] mt-1">Alerts</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary" href="#">
+<span class="material-symbols-outlined">menu</span>
+<span class="text-[10px] mt-1">Menu</span>
+</a>
+</nav>
+<script>
+        // Simple interactive demo logic
+        document.querySelectorAll('button, a').forEach(el => {
+            el.addEventListener('mousedown', () => {
+                el.classList.add('scale-95');
+            });
+            el.addEventListener('mouseup', () => {
+                el.classList.remove('scale-95');
+            });
+            el.addEventListener('mouseleave', () => {
+                el.classList.remove('scale-95');
+            });
+        });
+    </script>
+</body></html>

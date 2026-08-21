@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Request Non-Emergency Recovery Quote | RecoveryPro CRM</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-fixed": "#271901",
+                        "surface-bright": "#f8f9ff",
+                        "on-background": "#0b1c30",
+                        "inverse-surface": "#213145",
+                        "status-provisional": "#F97316",
+                        "surface-steel": "#F1F5F9",
+                        "on-primary-fixed": "#131b2e",
+                        "secondary": "#855300",
+                        "on-tertiary-container": "#98805d",
+                        "on-secondary-fixed": "#2a1700",
+                        "status-conflict": "#EF4444",
+                        "surface-container": "#e5eeff",
+                        "surface-charcoal": "#1E293B",
+                        "on-tertiary-fixed-variant": "#574425",
+                        "outline": "#76777d",
+                        "surface-dim": "#cbdbf5",
+                        "on-primary": "#ffffff",
+                        "surface-container-high": "#dce9ff",
+                        "on-tertiary": "#ffffff",
+                        "inverse-primary": "#bec6e0",
+                        "primary-fixed-dim": "#bec6e0",
+                        "surface": "#f8f9ff",
+                        "status-confirmed": "#10B981",
+                        "primary": "#000000",
+                        "tertiary-container": "#271901",
+                        "surface-tint": "#565e74",
+                        "background": "#f8f9ff",
+                        "secondary-container": "#fea619",
+                        "secondary-fixed": "#ffddb8",
+                        "outline-variant": "#c6c6cd",
+                        "on-surface": "#0b1c30",
+                        "surface-container-highest": "#d3e4fe",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed-variant": "#3f465c",
+                        "on-secondary-container": "#684000",
+                        "tertiary-fixed": "#fcdeb5",
+                        "surface-container-low": "#eff4ff",
+                        "secondary-fixed-dim": "#ffb95f",
+                        "on-secondary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "tertiary-fixed-dim": "#dec29a",
+                        "surface-variant": "#d3e4fe",
+                        "status-completed": "#8B5CF6",
+                        "primary-container": "#131b2e",
+                        "on-primary-container": "#7c839b",
+                        "on-surface-variant": "#45464d",
+                        "on-secondary-fixed-variant": "#653e00",
+                        "on-error": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "status-cancelled": "#94A3B8",
+                        "primary-fixed": "#dae2fd",
+                        "tertiary": "#000000",
+                        "status-in-progress": "#3B82F6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "16px",
+                        "grid-margin": "24px",
+                        "density-comfortable": "16px",
+                        "unit": "4px",
+                        "density-compact": "8px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "data-mono": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "body-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "data-mono": ["12px", {"lineHeight": "16px", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .form-input-focus:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px #F97316;
+            border-color: transparent;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<header class="bg-surface dark:bg-surface-charcoal border-b border-outline-variant dark:border-outline shadow-sm docked full-width top-0 sticky z-40 flex items-center justify-between px-grid-margin h-16 w-full">
+<div class="flex items-center gap-8">
+<span class="font-headline-md text-headline-md font-black text-primary dark:text-inverse-primary">RecoveryPro CRM</span>
+<nav class="hidden lg:flex items-center gap-6">
+<a class="text-primary font-bold font-body-md transition-colors hover:bg-surface-container-low px-3 py-2" href="#">Quotes</a>
+<a class="text-on-surface-variant font-body-md transition-colors hover:bg-surface-container-low px-3 py-2" href="#">Fleet</a>
+<a class="text-on-surface-variant font-body-md transition-colors hover:bg-surface-container-low px-3 py-2" href="#">Schedule</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden sm:flex items-center bg-surface-container-low px-3 py-1.5 rounded border border-outline-variant">
+<span class="material-symbols-outlined text-on-surface-variant mr-2" style="font-size: 18px;">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-sm w-48" placeholder="Search jobs..." type="text"/>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-low transition-colors active:scale-95">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-low transition-colors active:scale-95">
+<span class="material-symbols-outlined">sms</span>
+</button>
+<div class="w-8 h-8 bg-surface-container-highest rounded-full overflow-hidden ml-2 border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="Professional headshot of a logistics dispatcher in a modern office setting, soft natural lighting, high-quality corporate photography style consistent with an efficient industrial CRM interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPsq9xCH8b7YeqcohgDMq7srvlM-Cmq_z_839EyTk7pyIjxeF73VcMqXtUvZfCEfpgrDsfGRNJTgJrvRPE_gQt-Cy4oBYe2256E_axSVC0ZdqJM8Zv-zVN0yODjZ0Bhkq6LnV_eS24OXKAaso2UXQr3_dUngljm15yag_4VZVWn77qV9fO-_-NfBgtu2bw6_aoSJ7bTBfQcaBGNHIjrSAsSJLBOHamp_3pFtIL6181Dja8TkRhSW9VJIpGn4Kz32jILX0wWOjZZgM"/>
+</div>
+</div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- SideNavBar -->
+<aside class="bg-surface-container-lowest dark:bg-inverse-surface border-r border-outline-variant docked left-0 h-full w-64 flex-col overflow-y-auto hidden md:flex">
+<div class="p-6 border-b border-outline-variant">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-primary flex items-center justify-center rounded">
+<span class="material-symbols-outlined text-white">cc_attribution</span>
+</div>
+<div>
+<h2 class="font-headline-md text-headline-md text-primary leading-none">Dispatch</h2>
+<p class="text-on-surface-variant text-[11px] font-label-caps uppercase mt-1">Recovery Unit 01</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 py-4">
+<div class="px-3 mb-2">
+<p class="text-on-surface-variant font-label-caps text-[10px] px-3 mb-1 uppercase tracking-widest">Main Operations</p>
+</div>
+<a class="flex items-center gap-3 px-6 py-3 text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-surface-charcoal transition-all duration-200" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-caps">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-3 text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-surface-charcoal transition-all duration-200" href="#">
+<span class="material-symbols-outlined">calendar_month</span>
+<span class="font-label-caps">Calendar</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-3 text-primary dark:text-inverse-primary border-l-4 border-status-provisional bg-surface-container-high transition-all duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">request_quote</span>
+<span class="font-label-caps">Quotes</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-3 text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-surface-charcoal transition-all duration-200" href="#">
+<span class="material-symbols-outlined">event_available</span>
+<span class="font-label-caps">Bookings</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-3 text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-surface-charcoal transition-all duration-200" href="#">
+<span class="material-symbols-outlined">groups</span>
+<span class="font-label-caps">Customers</span>
+</a>
+<div class="px-3 mt-6 mb-2">
+<p class="text-on-surface-variant font-label-caps text-[10px] px-3 mb-1 uppercase tracking-widest">Assets</p>
+</div>
+<a class="flex items-center gap-3 px-6 py-3 text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-surface-charcoal transition-all duration-200" href="#">
+<span class="material-symbols-outlined">local_shipping</span>
+<span class="font-label-caps">Vehicles</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-3 text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-surface-charcoal transition-all duration-200" href="#">
+<span class="material-symbols-outlined">person_pin_circle</span>
+<span class="font-label-caps">Drivers</span>
+</a>
+</nav>
+<div class="p-4 bg-surface-container-low m-4 rounded border border-outline-variant">
+<p class="text-on-surface font-label-caps mb-2">System Load</p>
+<div class="w-full bg-outline-variant h-1.5 rounded-full overflow-hidden">
+<div class="bg-status-confirmed h-full w-[45%]"></div>
+</div>
+<p class="text-on-surface-variant text-[10px] mt-2">12 Active Recoveries</p>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 overflow-y-auto bg-surface-steel p-grid-margin hide-scrollbar">
+<div class="max-w-6xl mx-auto">
+<!-- Page Header -->
+<div class="mb-8">
+<div class="flex items-center gap-2 text-on-surface-variant mb-2">
+<a class="hover:text-primary transition-colors" href="#">Quotes</a>
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+<span class="text-primary font-bold">New Non-Emergency Quote</span>
+</div>
+<h1 class="font-display-lg text-display-lg text-on-background">Non-Emergency Vehicle Transport Quote</h1>
+<p class="text-on-surface-variant mt-2 max-w-2xl">Enter the details for scheduled vehicle recovery or relocation. For immediate emergency roadside assistance, please use the <span class="text-status-conflict font-bold">Emergency Dispatch</span> line.</p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+<!-- Form Section -->
+<div class="lg:col-span-8 space-y-gutter">
+<!-- Vehicle Details Card -->
+<section class="bg-surface-container-lowest p-6 border border-outline-variant shadow-sm rounded-lg">
+<div class="flex items-center gap-3 mb-6 border-b border-surface-steel pb-4">
+<span class="material-symbols-outlined text-primary">directions_car</span>
+<h3 class="font-headline-md text-headline-md">Vehicle Details</h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="space-y-1">
+<label class="block text-label-caps text-on-surface-variant">Registration Number <span class="text-status-provisional">*</span></label>
+<input class="w-full bg-surface-steel border border-outline-variant rounded p-3 font-data-mono text-data-mono uppercase form-input-focus" placeholder="e.g. AB12 CDE" type="text"/>
+</div>
+<div class="space-y-1">
+<label class="block text-label-caps text-on-surface-variant">Vehicle Type <span class="text-status-provisional">*</span></label>
+<select class="w-full bg-surface-steel border border-outline-variant rounded p-3 form-input-focus">
+<option>Passenger Car</option>
+<option>Light Commercial (Van)</option>
+<option>Motorcycle</option>
+<option>SUV / 4x4</option>
+<option>Classic / Performance</option>
+</select>
+</div>
+<div class="space-y-1">
+<label class="block text-label-caps text-on-surface-variant">Make &amp; Model</label>
+<input class="w-full bg-surface-steel border border-outline-variant rounded p-3 form-input-focus" placeholder="e.g. BMW 3 Series" type="text"/>
+</div>
+<div class="space-y-1">
+<label class="block text-label-caps text-on-surface-variant">Vehicle Condition <span class="text-status-provisional">*</span></label>
+<div class="flex gap-2 mt-1">
+<label class="flex-1 cursor-pointer">
+<input class="hidden peer" name="condition" type="radio"/>
+<div class="text-center p-2 border border-outline-variant rounded peer-checked:bg-primary-container peer-checked:text-white transition-colors text-body-sm">Rollable</div>
+</label>
+<label class="flex-1 cursor-pointer">
+<input class="hidden peer" name="condition" type="radio"/>
+<div class="text-center p-2 border border-outline-variant rounded peer-checked:bg-primary-container peer-checked:text-white transition-colors text-body-sm">Non-Rollable</div>
+</label>
+</div>
+</div>
+</div>
+</section>
+<!-- Route Details Card -->
+<section class="bg-surface-container-lowest p-6 border border-outline-variant shadow-sm rounded-lg">
+<div class="flex items-center gap-3 mb-6 border-b border-surface-steel pb-4">
+<span class="material-symbols-outlined text-primary">route</span>
+<h3 class="font-headline-md text-headline-md">Transport Logistics</h3>
+</div>
+<div class="space-y-6">
+<div class="relative pl-8 border-l-2 border-dashed border-outline-variant ml-3">
+<!-- Pickup -->
+<div class="absolute -left-[11px] top-0 w-5 h-5 bg-status-confirmed rounded-full border-4 border-white shadow-sm"></div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+<div class="space-y-1">
+<label class="block text-label-caps text-on-surface-variant">Pickup Postcode <span class="text-status-provisional">*</span></label>
+<div class="flex gap-2">
+<input class="flex-1 bg-surface-steel border border-outline-variant rounded p-3 form-input-focus" placeholder="SW1A 1AA" type="text"/>
+<button class="bg-surface-container px-3 border border-outline-variant rounded hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined">map</span>
+</button>
+</div>
+</div>
+<div class="space-y-1">
+<label class="block text-label-caps text-on-surface-variant">Contact at Pickup</label>
+<input class="w-full bg-surface-steel border border-outline-variant rounded p-3 form-input-focus" placeholder="Name &amp; Phone" type="text"/>
+</div>
+</div>
+<!-- Drop-off -->
+<div class="absolute -left-[11px] bottom-0 w-5 h-5 bg-status-conflict rounded-full border-4 border-white shadow-sm"></div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="space-y-1">
+<label class="block text-label-caps text-on-surface-variant">Drop-off Postcode <span class="text-status-provisional">*</span></label>
+<div class="flex gap-2">
+<input class="flex-1 bg-surface-steel border border-outline-variant rounded p-3 form-input-focus" placeholder="EH1 1YZ" type="text"/>
+<button class="bg-surface-container px-3 border border-outline-variant rounded hover:bg-surface-container-high transition-colors">
+<span class="material-symbols-outlined">map</span>
+</button>
+</div>
+</div>
+<div class="space-y-1">
+<label class="block text-label-caps text-on-surface-variant">Destination Contact</label>
+<input class="w-full bg-surface-steel border border-outline-variant rounded p-3 form-input-focus" placeholder="Name &amp; Phone" type="text"/>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Scheduling Card -->
+<section class="bg-surface-container-lowest p-6 border border-outline-variant shadow-sm rounded-lg">
+<div class="flex items-center gap-3 mb-6 border-b border-surface-steel pb-4">
+<span class="material-symbols-outlined text-primary">schedule</span>
+<h3 class="font-headline-md text-headline-md">Scheduling</h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="space-y-1">
+<label class="block text-label-caps text-on-surface-variant">Preferred Date</label>
+<input class="w-full bg-surface-steel border border-outline-variant rounded p-3 form-input-focus" type="date"/>
+</div>
+<div class="space-y-1">
+<label class="block text-label-caps text-on-surface-variant">Time Slot</label>
+<select class="w-full bg-surface-steel border border-outline-variant rounded p-3 form-input-focus">
+<option>Anytime (Best Value)</option>
+<option>Morning (08:00 - 12:00)</option>
+<option>Afternoon (12:00 - 17:00)</option>
+<option>Evening (17:00 - 21:00)</option>
+</select>
+</div>
+<div class="space-y-1">
+<label class="block text-label-caps text-on-surface-variant">Flexibility</label>
+<select class="w-full bg-surface-steel border border-outline-variant rounded p-3 form-input-focus">
+<option>Exact Date Only</option>
+<option>+/- 1 Day</option>
+<option>+/- 3 Days</option>
+</select>
+</div>
+</div>
+</section>
+<div class="flex items-center justify-end gap-4 py-4">
+<button class="px-6 py-3 border border-outline-variant font-label-caps hover:bg-surface-container transition-colors">Cancel</button>
+<button class="px-8 py-3 bg-primary text-white font-label-caps hover:bg-primary-container active:scale-95 transition-all shadow-lg flex items-center gap-2">
+                                Generate Quote <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Sidebar Section -->
+<aside class="lg:col-span-4 space-y-gutter">
+<!-- Map Preview -->
+<div class="bg-white border border-outline-variant overflow-hidden rounded-lg shadow-sm">
+<div class="h-48 relative">
+<div class="absolute inset-0 grayscale opacity-70" data-alt="A detailed map showing urban street layouts with logistics route markers and pins, styled with a high-contrast industrial aesthetic and subtle blue-grey tones to match a professional recovery service dashboard." data-location="London" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBvBKKRZG3e-pqPHH-0jUa2gke3_FltdaHGoJW4PkMG5T23tkrn86KyPb_LLxWERJctXi5Raj9r1t8UUIqfsPS5v7VoIgPZnNuKXptdMPtV1h6xNGJjkpc0nyk14V0ifE9dJMYyj2947d_ZEnStip5SK7Z_haqHmEMQ4d7aRb5Sv8pBzHHr95DokP_DB_D9k-3pSYbpLfpE77WC3rU0O0wJdq0-2NN0Ov7iwCHUpNWKerER69n9_SblvUBzYsOtxVzdYbZpD3EY1h8')"></div>
+<div class="absolute inset-0 bg-primary/10 pointer-events-none"></div>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="bg-white/90 backdrop-blur-sm px-4 py-2 rounded border border-outline shadow-xl flex items-center gap-2">
+<span class="material-symbols-outlined text-status-provisional animate-pulse">location_on</span>
+<span class="font-label-caps text-[10px]">Awaiting Location Data</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Why Choose Us -->
+<div class="bg-primary-container text-on-primary-container p-6 rounded-lg shadow-md">
+<h4 class="font-headline-md text-white mb-6 border-b border-white/10 pb-2">Why RecoveryPro?</h4>
+<ul class="space-y-5">
+<li class="flex gap-4">
+<div class="flex-shrink-0 w-8 h-8 rounded bg-white/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary-container">verified_user</span>
+</div>
+<div>
+<p class="font-bold text-white text-body-md">Fully Insured Transport</p>
+<p class="text-on-primary-container text-body-sm opacity-80">Up to £100k Goods In Transit insurance as standard for every job.</p>
+</div>
+</li>
+<li class="flex gap-4">
+<div class="flex-shrink-0 w-8 h-8 rounded bg-white/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary-container">speed</span>
+</div>
+<div>
+<p class="font-bold text-white text-body-md">Real-Time Tracking</p>
+<p class="text-on-primary-container text-body-sm opacity-80">Track your vehicle from pickup to delivery via our live dispatcher portal.</p>
+</div>
+</li>
+<li class="flex gap-4">
+<div class="flex-shrink-0 w-8 h-8 rounded bg-white/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary-container">local_shipping</span>
+</div>
+<div>
+<p class="font-bold text-white text-body-md">Modern Fleet</p>
+<p class="text-on-primary-container text-body-sm opacity-80">Using the latest spec-lift and flatbed trucks for safe handling.</p>
+</div>
+</li>
+</ul>
+<div class="mt-8 pt-6 border-t border-white/10">
+<div class="bg-white/5 p-4 rounded border border-white/10 italic text-body-sm text-on-primary-container">
+                                    "Used RecoveryPro for a classic car relocation. Absolute professionals from start to finish. Highly recommended!"
+                                    <div class="mt-2 font-bold not-italic text-secondary-container">— James T., London</div>
+</div>
+</div>
+</div>
+<!-- Quote Support -->
+<div class="bg-surface-container-low p-6 rounded-lg border border-outline-variant">
+<h5 class="font-label-caps text-on-surface-variant mb-4">Need Assistance?</h5>
+<button class="w-full flex items-center justify-center gap-2 py-3 bg-white border border-outline-variant rounded font-label-caps text-primary hover:bg-surface transition-colors mb-3">
+<span class="material-symbols-outlined">forum</span>
+                                Live Chat
+                            </button>
+<button class="w-full flex items-center justify-center gap-2 py-3 bg-white border border-outline-variant rounded font-label-caps text-primary hover:bg-surface transition-colors">
+<span class="material-symbols-outlined">call</span>
+                                Call Support
+                            </button>
+</div>
+</aside>
+</div>
+</div>
+</main>
+</div>
+<!-- BottomNavBar (Mobile Only) -->
+<footer class="bg-surface dark:bg-surface-charcoal border-t border-outline-variant shadow-lg docked full-width bottom-0 z-50 fixed bottom-0 left-0 w-full md:hidden flex justify-around py-2 px-4 h-16">
+<a class="flex flex-col items-center justify-center text-on-surface-variant active:bg-surface-container scale-95 duration-100 flex-1" href="#">
+<span class="material-symbols-outlined">local_shipping</span>
+<span class="font-label-caps text-[10px] mt-1">Jobs</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant active:bg-surface-container scale-95 duration-100 flex-1" href="#">
+<span class="material-symbols-outlined">map</span>
+<span class="font-label-caps text-[10px] mt-1">Map</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary dark:text-secondary-fixed-dim active:bg-surface-container scale-95 duration-100 flex-1" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">request_quote</span>
+<span class="font-label-caps text-[10px] mt-1">Quote</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant active:bg-surface-container scale-95 duration-100 flex-1 relative" href="#">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1 right-5 w-2 h-2 bg-status-conflict rounded-full"></span>
+<span class="font-label-caps text-[10px] mt-1">Alerts</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant active:bg-surface-container scale-95 duration-100 flex-1" href="#">
+<span class="material-symbols-outlined">menu</span>
+<span class="font-label-caps text-[10px] mt-1">Menu</span>
+</a>
+</footer>
+<!-- Micro-interaction Script -->
+<script>
+        document.querySelectorAll('.active\\:scale-95').forEach(button => {
+            button.addEventListener('mousedown', () => {
+                button.style.transform = 'scale(0.95)';
+            });
+            button.addEventListener('mouseup', () => {
+                button.style.transform = 'scale(1)';
+            });
+            button.addEventListener('mouseleave', () => {
+                button.style.transform = 'scale(1)';
+            });
+        });
+    </script>
+</body></html>

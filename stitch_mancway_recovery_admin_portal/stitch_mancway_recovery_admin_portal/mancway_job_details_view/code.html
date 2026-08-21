@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .resource-lane-border {
+            border-left: 4px solid;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed": "#271901",
+                        "error-container": "#ffdad6",
+                        "on-secondary-fixed": "#2a1700",
+                        "on-background": "#0b1c30",
+                        "surface-dim": "#cbdbf5",
+                        "secondary-container": "#fea619",
+                        "surface-container": "#e5eeff",
+                        "on-secondary-fixed-variant": "#653e00",
+                        "on-primary-fixed-variant": "#3f465c",
+                        "surface": "#f8f9ff",
+                        "outline": "#76777d",
+                        "on-surface": "#0b1c30",
+                        "on-primary-container": "#7c839b",
+                        "surface-bright": "#f8f9ff",
+                        "on-error": "#ffffff",
+                        "secondary-fixed-dim": "#ffb95f",
+                        "primary-fixed": "#dae2fd",
+                        "tertiary-fixed": "#fcdeb5",
+                        "on-tertiary": "#ffffff",
+                        "primary": "#000000",
+                        "surface-variant": "#d3e4fe",
+                        "on-secondary": "#ffffff",
+                        "status-provisional": "#F97316",
+                        "primary-fixed-dim": "#bec6e0",
+                        "surface-tint": "#565e74",
+                        "surface-container-highest": "#d3e4fe",
+                        "on-error-container": "#93000a",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "on-primary-fixed": "#131b2e",
+                        "on-tertiary-container": "#98805d",
+                        "tertiary-container": "#271901",
+                        "tertiary-fixed-dim": "#dec29a",
+                        "on-secondary-container": "#684000",
+                        "inverse-primary": "#bec6e0",
+                        "tertiary": "#000000",
+                        "error": "#ba1a1a",
+                        "surface-container-high": "#dce9ff",
+                        "surface-steel": "#F1F5F9",
+                        "inverse-surface": "#213145",
+                        "background": "#f8f9ff",
+                        "inverse-on-surface": "#eaf1ff",
+                        "status-conflict": "#EF4444",
+                        "surface-container-low": "#eff4ff",
+                        "status-in-progress": "#3B82F6",
+                        "secondary-fixed": "#ffddb8",
+                        "status-completed": "#8B5CF6",
+                        "primary-container": "#131b2e",
+                        "status-confirmed": "#10B981",
+                        "outline-variant": "#c6c6cd",
+                        "on-tertiary-fixed-variant": "#574425",
+                        "surface-charcoal": "#1E293B"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "density-comfortable": "16px",
+                        "density-compact": "8px",
+                        "gutter": "16px",
+                        "grid-margin": "24px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "body-sm": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "data-mono": ["JetBrains Mono"],
+                        "label-caps": ["Inter"],
+                        "headline-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                        "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "data-mono": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "label-caps": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-surface-steel text-on-surface font-body-md selection:bg-secondary-container selection:text-on-secondary-container">
+<!-- Desktop Sidebar -->
+<aside class="fixed left-0 top-0 h-screen w-64 bg-surface-container-lowest border-r border-outline-variant flex flex-col hidden md:flex z-50">
+<div class="p-6">
+<h1 class="font-headline-md text-headline-md text-primary font-black tracking-tight">RecoveryPro CRM</h1>
+<p class="text-on-surface-variant font-label-caps text-label-caps mt-1">Dispatch Center</p>
+</div>
+<nav class="flex-1 overflow-y-auto px-3 space-y-1 scrollbar-hide">
+<a class="flex items-center gap-3 px-3 py-2.5 rounded text-on-surface-variant hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-caps text-label-caps">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded text-primary border-l-4 border-status-provisional bg-surface-container-high font-bold transition-all" href="#">
+<span class="material-symbols-outlined">local_shipping</span>
+<span class="font-label-caps text-label-caps">Jobs</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded text-on-surface-variant hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined">calendar_month</span>
+<span class="font-label-caps text-label-caps">Calendar</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded text-on-surface-variant hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined">groups</span>
+<span class="font-label-caps text-label-caps">Customers</span>
+</a>
+<!-- Additional nav items as per JSON... -->
+<div class="pt-4 pb-2 px-3">
+<span class="text-outline text-[10px] font-bold uppercase tracking-widest">Financials</span>
+</div>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded text-on-surface-variant hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-label-caps text-label-caps">Payments</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded text-on-surface-variant hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-caps text-label-caps">Settings</span>
+</a>
+</nav>
+<div class="p-4 border-t border-outline-variant flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary">
+<span class="material-symbols-outlined">person</span>
+</div>
+<div>
+<p class="font-bold text-sm">Op. Sarah J.</p>
+<p class="text-xs text-on-surface-variant">Unit 01 Manager</p>
+</div>
+</div>
+</aside>
+<!-- Top AppBar -->
+<header class="md:ml-64 bg-surface sticky top-0 z-40 border-b border-outline-variant shadow-sm flex items-center justify-between px-grid-margin h-16 w-full">
+<div class="flex items-center gap-4">
+<button class="md:hidden p-2">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<div class="flex items-center gap-2">
+<span class="text-on-surface-variant font-label-caps text-label-caps uppercase tracking-widest">Current Job</span>
+<span class="bg-primary-container text-on-primary px-2 py-0.5 rounded-sm font-data-mono text-data-mono">REC-88429-X</span>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex items-center bg-surface-container-low border border-outline-variant rounded px-3 py-1.5 w-64">
+<span class="material-symbols-outlined text-outline text-sm">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-full p-0 ml-2" placeholder="Search registration or ref..." type="text"/>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-low p-2 rounded cursor-pointer transition-colors">sms</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-low p-2 rounded cursor-pointer transition-colors relative">
+                    notifications
+                    <span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
+</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-low p-2 rounded cursor-pointer transition-colors">help_outline</span>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="md:ml-64 p-grid-margin pb-24 md:pb-8">
+<!-- Job Header & Quick Actions -->
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-8">
+<div>
+<nav class="flex items-center gap-2 text-on-surface-variant text-xs mb-2">
+<span>Jobs</span>
+<span class="material-symbols-outlined text-[10px]">chevron_right</span>
+<span class="text-primary font-bold">REC-88429-X</span>
+</nav>
+<h1 class="font-display-lg text-display-lg text-primary uppercase tracking-tighter">Flatbed Recovery: LD70 XPK</h1>
+<div class="flex items-center gap-3 mt-2">
+<span class="px-2.5 py-1 bg-status-provisional text-white text-[10px] font-bold uppercase rounded-sm">En Route</span>
+<span class="text-on-surface-variant font-body-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">schedule</span>
+                        Requested: Today, 14:30
+                    </span>
+<span class="text-on-surface-variant font-body-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">local_shipping</span>
+                        Service: Total Breakdown
+                    </span>
+</div>
+</div>
+<div class="flex flex-wrap gap-2">
+<button class="bg-primary text-on-primary px-4 py-2 rounded-sm font-label-caps text-label-caps hover:bg-opacity-90 active:scale-95 transition-all flex items-center gap-2 shadow-md">
+<span class="material-symbols-outlined text-sm">check_circle</span>
+                    Confirm Job
+                </button>
+<button class="bg-white border border-outline-variant text-primary px-4 py-2 rounded-sm font-label-caps text-label-caps hover:bg-surface-container-low active:scale-95 transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">person_add</span>
+                    Assign Driver
+                </button>
+<button class="bg-white border border-outline-variant text-primary px-4 py-2 rounded-sm font-label-caps text-label-caps hover:bg-surface-container-low active:scale-95 transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">more_vert</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Left Column: Details -->
+<div class="col-span-12 lg:col-span-8 space-y-gutter">
+<!-- Main Job Grid (Bento Style) -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<!-- Customer & Vehicle Info -->
+<div class="bg-white p-6 rounded-lg shadow-sm border border-outline-variant space-y-6">
+<div class="flex items-center justify-between border-b border-outline-variant pb-4">
+<h3 class="font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">person</span>
+                                Customer Details
+                            </h3>
+<div class="flex gap-2">
+<a class="p-2 bg-surface-container-low rounded-full text-status-in-progress hover:bg-surface-container transition-colors" href="tel:07123456789">
+<span class="material-symbols-outlined text-lg">call</span>
+</a>
+<button class="p-2 bg-surface-container-low rounded-full text-status-in-progress hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-lg">sms</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div>
+<p class="text-[10px] font-bold uppercase text-outline mb-1">Name</p>
+<p class="font-semibold">Benjamin Whitaker</p>
+</div>
+<div>
+<p class="text-[10px] font-bold uppercase text-outline mb-1">Phone</p>
+<p class="font-data-mono">+44 7123 456789</p>
+</div>
+<div class="col-span-2">
+<p class="text-[10px] font-bold uppercase text-outline mb-1">Email</p>
+<p class="font-body-md">b.whitaker@example.co.uk</p>
+</div>
+</div>
+<div class="pt-4 border-t border-outline-variant">
+<h3 class="font-bold flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary">directions_car</span>
+                                Vehicle Details
+                            </h3>
+<div class="grid grid-cols-2 gap-4 bg-surface-container-low p-4 rounded">
+<div>
+<p class="text-[10px] font-bold uppercase text-outline mb-1">Registration</p>
+<p class="font-data-mono text-lg bg-secondary-container text-on-secondary-fixed px-2 inline-block rounded-sm">LD70 XPK</p>
+</div>
+<div>
+<p class="text-[10px] font-bold uppercase text-outline mb-1">Type</p>
+<span class="px-2 py-0.5 bg-outline-variant text-on-surface-variant text-[10px] font-bold rounded uppercase">SUV / 4x4</span>
+</div>
+<div class="col-span-2">
+<p class="text-[10px] font-bold uppercase text-outline mb-1">Make &amp; Model</p>
+<p class="font-semibold">Land Rover Defender (Black)</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Location & Routing -->
+<div class="bg-white p-6 rounded-lg shadow-sm border border-outline-variant flex flex-col">
+<h3 class="font-bold flex items-center gap-2 border-b border-outline-variant pb-4 mb-4">
+<span class="material-symbols-outlined text-primary">distance</span>
+                            Route Information
+                        </h3>
+<div class="flex-1 space-y-6">
+<div class="relative pl-8">
+<div class="absolute left-3 top-2 bottom-2 w-0.5 bg-outline-variant border-dashed border-l"></div>
+<div class="absolute left-1 top-0 w-4 h-4 rounded-full border-4 border-white bg-status-conflict shadow-sm"></div>
+<div class="absolute left-1 bottom-0 w-4 h-4 rounded-full border-4 border-white bg-status-confirmed shadow-sm"></div>
+<div class="mb-8">
+<p class="text-[10px] font-bold uppercase text-outline">Collection Point (Current)</p>
+<p class="font-semibold text-sm">A3 Motorway, Northbound J14</p>
+<p class="text-on-surface-variant text-xs">Hard shoulder, 500m past slip road</p>
+</div>
+<div>
+<p class="text-[10px] font-bold uppercase text-outline">Destination</p>
+<p class="font-semibold text-sm">JLR Solihull Service Centre</p>
+<p class="text-on-surface-variant text-xs">Lode Ln, Solihull B92 8NW</p>
+</div>
+</div>
+<div class="mt-4 rounded overflow-hidden h-32 relative border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A clean, professional digital map interface showing a GPS route from a motorway junction to a commercial industrial area. The map uses a minimalist, light-mode palette with steel blue and white tones. A bright amber route line connects the collection and delivery markers. The aesthetic is clinical, focused, and high-contrast for readability." data-location="Solihull, UK" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBsPxTV8mSrvLCEEdL4cJXEw9BV2ElIWNvTG0xn6mUvVmd2Cdd5F97-ip7adMSp_1TNPW-sVaHWm9D6RBUtV4q7rBbU96-S6JoDqYOM66zfa_BZtv26sSZzWUgSmoyNIGr4jOkjvnmnWh-KoBI4xGF_LorF2GoNw6NlmA6TffvxlUXpOWv3vUyBJHszrR1dhRlWdCdZnz1dn53KKdw3rJXnep_RbCHJtptRO8U9E46NzAy7Icbw_beNM5IcP3VdN3_P76czg2TG3eI"/>
+<div class="absolute inset-0 bg-primary/10 pointer-events-none"></div>
+<div class="absolute bottom-2 right-2 bg-white px-2 py-1 rounded shadow text-[10px] font-bold">12.4 MILES / 22 MIN</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Driver & Fleet Section -->
+<div class="bg-white p-6 rounded-lg shadow-sm border border-outline-variant">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">engineering</span>
+                            Assigned Resources
+                        </h3>
+<button class="text-status-in-progress font-label-caps text-label-caps flex items-center gap-1 hover:underline">
+<span class="material-symbols-outlined text-sm">edit</span> Change
+                        </button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="flex items-center gap-4 p-4 border border-outline-variant rounded hover:border-primary transition-all cursor-pointer group">
+<div class="w-12 h-12 bg-surface-container-high rounded flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-3xl">person_pin_circle</span>
+</div>
+<div>
+<p class="text-[10px] font-bold uppercase text-outline">Driver</p>
+<p class="font-bold group-hover:text-primary transition-colors">Marcus Thorne</p>
+<p class="text-xs text-on-surface-variant">ID: OP-442 | 4.9 ★</p>
+</div>
+<div class="ml-auto text-status-confirmed flex items-center">
+<span class="material-symbols-outlined">radio_button_checked</span>
+</div>
+</div>
+<div class="flex items-center gap-4 p-4 border border-outline-variant rounded hover:border-primary transition-all cursor-pointer group">
+<div class="w-12 h-12 bg-surface-container-high rounded flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-3xl">local_shipping</span>
+</div>
+<div>
+<p class="text-[10px] font-bold uppercase text-outline">Vehicle</p>
+<p class="font-bold group-hover:text-primary transition-colors">RECO-TRK-09</p>
+<p class="text-xs text-on-surface-variant">Flatbed XL | Cap: 3.5t</p>
+</div>
+<div class="ml-auto text-status-confirmed flex items-center">
+<span class="material-symbols-outlined">radio_button_checked</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Media Section -->
+<div class="bg-white p-6 rounded-lg shadow-sm border border-outline-variant">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">camera_alt</span>
+                            Job Photographs
+                            <span class="ml-2 px-2 py-0.5 bg-surface-container text-primary text-[10px] rounded-full">4 Photos</span>
+</h3>
+<button class="bg-surface-container-low text-primary px-3 py-1.5 rounded-sm font-label-caps text-label-caps flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">upload</span> Upload
+                        </button>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<div class="aspect-square bg-surface-container-low rounded overflow-hidden group cursor-pointer border border-transparent hover:border-primary transition-all">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A clear, high-resolution close-up photograph of a black Land Rover Defender on a motorway shoulder during the day. The lighting is natural and bright. The focus is on the front three-quarter view, showing the car's registration plate and front wheel. Professional automotive photography style, clean and industrial." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDMOcC8dNeOxAMpv9tSMGZ-Rg_njo2lMUHFjk88Fbqn1epWz0Hb0wmuQ2O-cVMXZ68xSA3QhaF78kiLzB3WCzSlhyloJ3F-CUUeSkv6OKx6F91qG413jMJdYmJGb2WCpOnzSApdLIr_fiSXXtTEdKGvMKlHmgNCrTAXi10ObJkkdUt3PFqJWvfAMr4Uhvy_ap8is1phqNGYYfspUMIHXcAZYLk9TjwnDL4YNWdRANQM6L48FLZUlUXV5rOD8aYtnMwmEe_QKcN72Cs"/>
+</div>
+<div class="aspect-square bg-surface-container-low rounded overflow-hidden group cursor-pointer border border-transparent hover:border-primary transition-all">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A documentary-style photograph showing the dashboard of a disabled SUV. The instrument cluster is visible, showing various warning lights illuminated. The interior is well-lit, providing clear evidence of the vehicle's electronic failure state. Industrial documentary aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA6vTw3DyXgLaHmY8YzTxApH1Z6_RmBuNepywFCaDGawNynaDEHiAxexkv0N1dxhJMKgIwH4DUryvDvKjttnsLRUk2mJsf4abnj-fmCOpbaKBbDVfK17ZJOPjzm0mveOGdxmQ0ChwdgwQj-r5gAzF4YwpOQVvyFrI6agpZdqvOZzFYRx3EOI3CzrbdPF6QFIudvVmrv_AfjxuHibSS6eeM55Iy4hkghdUiyVt-OWJGmX_GD8anha6eKtt5E8IheSCJLWqtUc91hric"/>
+</div>
+<div class="aspect-square bg-surface-container-low rounded overflow-hidden group cursor-pointer border border-transparent hover:border-primary transition-all">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A wide-angle photograph of a recovery truck preparing to load a vehicle on the side of a busy motorway. Safety cones are placed in the foreground, and the truck's hydraulic bed is tilted. High-contrast lighting with safety-conscious composition. The scene is professional and orderly." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbqvh0jVEbJfl_zwF2p9iS4QONQCO99Clp19V2bfiH5DUsXKmkiRLJoVap7s3MANkNAN5Lkz5343cxBSSEUiLMQQ_Uprgyad-a_zUUusnqrhHv9jm30WFSdLcSQJC44eIqhMZx1k3F4rQKU85sM7MLlVNOwlDBC37KQZ8AT9ll6QrM4KKByROEsWh7ZxLCOCZXx-EV9lg4mbxvFcKHXRUG4LKYEzIMb6-OHXJvhYTjHWUO658SGyex1llcUP1FSx5pPV3rkezKXlY"/>
+</div>
+<div class="aspect-square border-2 border-dashed border-outline-variant rounded flex flex-col items-center justify-center text-outline hover:text-primary hover:border-primary transition-all cursor-pointer">
+<span class="material-symbols-outlined text-3xl">add_a_photo</span>
+<span class="text-[10px] font-bold uppercase mt-1">Add Image</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Financials & Timeline -->
+<div class="col-span-12 lg:col-span-4 space-y-gutter">
+<!-- Financials Card -->
+<div class="bg-primary text-on-primary p-6 rounded-lg shadow-lg">
+<h3 class="font-label-caps text-label-caps text-on-primary-container mb-6 opacity-70">Financial Summary</h3>
+<div class="space-y-4">
+<div class="flex justify-between items-center border-b border-white/10 pb-4">
+<span class="text-sm opacity-80">Estimated Quote</span>
+<span class="text-2xl font-black font-data-mono">£285.00</span>
+</div>
+<div class="bg-white/10 p-4 rounded-sm">
+<div class="flex justify-between items-center mb-1">
+<span class="text-xs font-bold uppercase">Deposit Status</span>
+<span class="text-[10px] font-bold bg-status-confirmed text-white px-2 py-0.5 rounded-full uppercase">Paid</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-sm">Paid via Stripe (Online)</span>
+<span class="font-data-mono">£50.00</span>
+</div>
+</div>
+<div class="pt-2">
+<div class="flex justify-between items-center text-on-secondary-fixed-variant">
+<span class="font-bold text-sm text-secondary-fixed-dim">Remaining Balance</span>
+<span class="text-2xl font-black font-data-mono text-secondary-fixed-dim">£235.00</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-2 mt-6">
+<button class="bg-secondary-container text-on-secondary-fixed px-3 py-2 rounded-sm font-label-caps text-label-caps hover:brightness-110 transition-all flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-sm">receipt_long</span> Invoice
+                            </button>
+<button class="bg-white/10 text-white px-3 py-2 rounded-sm font-label-caps text-label-caps hover:bg-white/20 transition-all flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-sm">link</span> Pay Link
+                            </button>
+</div>
+</div>
+</div>
+<!-- Timeline / Log -->
+<div class="bg-white p-6 rounded-lg shadow-sm border border-outline-variant">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">history</span>
+                            Activity Log
+                        </h3>
+<span class="material-symbols-outlined text-outline cursor-pointer hover:text-primary">filter_list</span>
+</div>
+<div class="space-y-6 relative before:absolute before:left-2 before:top-2 before:bottom-2 before:w-[1px] before:bg-outline-variant">
+<!-- Log Item -->
+<div class="relative pl-8">
+<div class="absolute left-0 top-1 w-4 h-4 rounded-full bg-status-provisional flex items-center justify-center">
+<span class="material-symbols-outlined text-[10px] text-white">bolt</span>
+</div>
+<p class="text-xs font-bold">Status Updated: En Route</p>
+<p class="text-on-surface-variant text-[11px] mb-1">Driver Marcus Thorne confirmed transit to location.</p>
+<p class="text-[10px] text-outline font-data-mono uppercase">Today, 15:12 • Dispatch</p>
+</div>
+<!-- Log Item -->
+<div class="relative pl-8">
+<div class="absolute left-0 top-1 w-4 h-4 rounded-full bg-status-confirmed flex items-center justify-center">
+<span class="material-symbols-outlined text-[10px] text-white">payments</span>
+</div>
+<p class="text-xs font-bold">Deposit Confirmed</p>
+<p class="text-on-surface-variant text-[11px] mb-1">£50.00 deposit received via mobile payment link.</p>
+<p class="text-[10px] text-outline font-data-mono uppercase">Today, 14:55 • System</p>
+</div>
+<!-- Log Item -->
+<div class="relative pl-8">
+<div class="absolute left-0 top-1 w-4 h-4 rounded-full bg-status-in-progress flex items-center justify-center">
+<span class="material-symbols-outlined text-[10px] text-white">sms</span>
+</div>
+<p class="text-xs font-bold">SMS Sent to Customer</p>
+<p class="text-on-surface-variant text-[11px] mb-1">"Your recovery unit is en-route. Driver: Marcus Thorne."</p>
+<p class="text-[10px] text-outline font-data-mono uppercase">Today, 14:40 • Op. Sarah J.</p>
+</div>
+<!-- Log Item -->
+<div class="relative pl-8">
+<div class="absolute left-0 top-1 w-4 h-4 rounded-full bg-surface-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[10px] text-outline">add</span>
+</div>
+<p class="text-xs font-bold">Job Created</p>
+<p class="text-on-surface-variant text-[11px] mb-1">Inbound call processed. Reference REC-88429-X issued.</p>
+<p class="text-[10px] text-outline font-data-mono uppercase">Today, 14:30 • Op. Sarah J.</p>
+</div>
+</div>
+<div class="mt-8">
+<div class="flex gap-2">
+<input class="flex-1 text-sm bg-surface-container-low border-outline-variant rounded p-2 focus:ring-primary focus:border-primary" placeholder="Add private note..." type="text"/>
+<button class="p-2 bg-primary text-on-primary rounded">
+<span class="material-symbols-outlined">send</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Danger Zone Actions -->
+<div class="bg-error-container/20 p-6 rounded-lg border border-error/20">
+<h3 class="text-error font-bold text-xs uppercase tracking-widest mb-4">Internal Controls</h3>
+<div class="space-y-2">
+<button class="w-full bg-white border border-error text-error py-2 rounded-sm font-label-caps text-label-caps hover:bg-error hover:text-white transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">block</span> Cancel Job
+                        </button>
+<button class="w-full text-on-surface-variant py-2 rounded-sm font-label-caps text-label-caps hover:bg-surface-container transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">refresh</span> Refund Deposit
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Mobile Bottom Navigation -->
+<nav class="fixed bottom-0 left-0 w-full md:hidden bg-surface border-t border-outline-variant shadow-lg flex justify-around py-2 px-4 z-50">
+<div class="flex flex-col items-center justify-center text-primary font-label-caps text-label-caps">
+<span class="material-symbols-outlined">local_shipping</span>
+<span>Jobs</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant font-label-caps text-label-caps">
+<span class="material-symbols-outlined">map</span>
+<span>Map</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant font-label-caps text-label-caps">
+<span class="material-symbols-outlined">forum</span>
+<span>Chat</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant font-label-caps text-label-caps">
+<span class="material-symbols-outlined">notifications</span>
+<span>Alerts</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant font-label-caps text-label-caps">
+<span class="material-symbols-outlined">menu</span>
+<span>Menu</span>
+</div>
+</nav>
+<!-- Floating Quick Update (Mobile) -->
+<button class="fixed bottom-20 right-6 md:hidden w-14 h-14 bg-primary text-on-primary rounded-full shadow-2xl flex items-center justify-center z-50 active:scale-95 transition-transform">
+<span class="material-symbols-outlined">update</span>
+</button>
+<script>
+        // Micro-interaction for buttons
+        document.querySelectorAll('button').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const icon = this.querySelector('.material-symbols-outlined');
+                if(icon) {
+                    icon.classList.add('scale-125');
+                    setTimeout(() => icon.classList.remove('scale-125'), 200);
+                }
+            });
+        });
+    </script>
+</body></html>

@@ -9,12 +9,38 @@ $counts = [
     'pending_reviews'=> (int) db()->query("SELECT COUNT(*) FROM testimonials WHERE is_approved=0")->fetchColumn(),
     'total_services' => (int) db()->query("SELECT COUNT(*) FROM services")->fetchColumn(),
 ];
+$crmReady = false;
+$crmStats = ['new' => $counts['new_bookings'], 'active' => 0, 'available' => 0, 'fleet' => 0];
+try {
+    db()->query('SELECT vehicle_id FROM bookings LIMIT 1');
+    db()->query('SELECT 1 FROM recovery_vehicles LIMIT 1');
+    $crmReady = true;
+    $crmStats['active'] = (int) db()->query("SELECT COUNT(*) FROM bookings WHERE status IN ('accepted','dispatched')")->fetchColumn();
+    $crmStats['fleet'] = (int) db()->query('SELECT COUNT(*) FROM recovery_vehicles WHERE is_active=1')->fetchColumn();
+    $crmStats['available'] = (int) db()->query("SELECT COUNT(*) FROM recovery_vehicles WHERE is_active=1 AND status='available'")->fetchColumn();
+} catch (Throwable $e) {
+    $crmReady = false;
+}
 $recent = db()->query("SELECT b.*, s.title AS service_title FROM bookings b LEFT JOIN services s ON s.id=b.service_id ORDER BY b.created_at DESC LIMIT 5")->fetchAll();
 
 $admin_title = 'Dashboard';
 $active_admin = 'dashboard';
 require APP_DIR . '/views/layout/admin_header.php';
 ?>
+<?php if ($crmReady): ?>
+<section class="crm-dashboard-banner">
+    <div>
+        <p class="eyebrow-caps">Dispatch Center</p>
+        <h2><?= $crmStats['new'] ?> new <?= $crmStats['new'] === 1 ? 'enquiry' : 'enquiries' ?> need attention</h2>
+        <p class="muted">Manage the recovery workflow, assign a unit, and keep live jobs moving.</p>
+    </div>
+    <div class="crm-dashboard-metrics">
+        <span><strong><?= $crmStats['active'] ?></strong> live job<?= $crmStats['active'] === 1 ? '' : 's' ?></span>
+        <span><strong><?= $crmStats['available'] ?>/<?= $crmStats['fleet'] ?></strong> units available</span>
+        <a class="btn btn-amber btn-sm" href="<?= e(url('/admin/crm.php')) ?>">Open CRM</a>
+    </div>
+</section>
+<?php endif; ?>
 <div class="stat-grid grid grid-4">
     <a class="stat-card stat-link" href="<?= e(url('/admin/bookings.php')) ?>">
         <strong><?= $counts['new_bookings'] ?></strong><span>New bookings</span>

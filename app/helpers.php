@@ -210,3 +210,82 @@ function field_error(array $errors, string $key): string
     return '<span class="field-error">' . e($errors[$key]) . '</span>';
 }
 
+/* ===================================================================
+ *  CRM helpers — enquiries (bookings) + recovery vehicles
+ * =================================================================== */
+
+/** Canonical enquiry status list (CRM workflow). */
+function enquiry_statuses(): array
+{
+    return ['new', 'accepted', 'dispatched', 'complete', 'cancelled'];
+}
+
+/** Human label for an enquiry status. */
+function enquiry_status_label(string $status): string
+{
+    return [
+        'new'        => 'New',
+        'accepted'   => 'Accepted',
+        'dispatched' => 'Dispatched',
+        'complete'   => 'Completed',
+        'cancelled'  => 'Cancelled',
+    ][$status] ?? ucfirst($status);
+}
+
+/** Material Symbol icon for an enquiry status. */
+function enquiry_status_icon(string $status): string
+{
+    return [
+        'new'        => 'inbox',
+        'accepted'   => 'task_alt',
+        'dispatched' => 'local_shipping',
+        'complete'   => 'check_circle',
+        'cancelled'  => 'cancel',
+    ][$status] ?? 'circle';
+}
+
+/** Render a coloured status pill for an enquiry. */
+function enquiry_status_pill(string $status): string
+{
+    $label = e(enquiry_status_label($status));
+    $icon  = e(enquiry_status_icon($status));
+    return '<span class="pill-status pill-' . e($status) . '"><span class="mw-icon status-icon">' . $icon . '</span>' . $label . '</span>';
+}
+
+/** Relative "age" of an enquiry from its created timestamp, e.g. "12m", "3h", "2d". */
+function enquiry_age(string $createdAt): string
+{
+    $ts  = strtotime($createdAt);
+    $diff = max(0, time() - $ts);
+    if ($diff < 60)        return 'just now';
+    if ($diff < 3600)      return floor($diff / 60) . 'm ago';
+    if ($diff < 86400)     return floor($diff / 3600) . 'h ago';
+    if ($diff < 604800)    return floor($diff / 86400) . 'd ago';
+    return date('j M', $ts);
+}
+
+/** Recovery vehicle status list. */
+function vehicle_statuses(): array
+{
+    return ['available', 'on_job', 'off_duty'];
+}
+
+/** Human label for a vehicle status. */
+function vehicle_status_label(string $status): string
+{
+    return [
+        'available' => 'Available',
+        'on_job'    => 'On a job',
+        'off_duty'  => 'Off duty',
+    ][$status] ?? ucfirst($status);
+}
+
+/** CSS class for a vehicle status pill. */
+function vehicle_pill_class(string $status): string
+{
+    return [
+        'available' => 'available',
+        'on_job'    => 'on-job',
+        'off_duty'  => 'off-duty',
+    ][$status] ?? 'off-duty';
+}

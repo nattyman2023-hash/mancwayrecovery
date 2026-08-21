@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MancWay Recovery | Fast &amp; Reliable Vehicle Recovery Manchester</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+        .shimmer {
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        .hero-gradient {
+            background: linear-gradient(to right, rgba(11, 28, 48, 0.95) 30%, rgba(11, 28, 48, 0.4) 100%);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "tertiary-fixed": "#fcdeb5",
+                      "secondary": "#855300",
+                      "primary-container": "#131b2e",
+                      "surface-container-high": "#dce9ff",
+                      "on-secondary-fixed": "#2a1700",
+                      "primary-fixed": "#dae2fd",
+                      "on-surface-variant": "#45464d",
+                      "on-surface": "#0b1c30",
+                      "on-primary-fixed-variant": "#3f465c",
+                      "tertiary-fixed-dim": "#dec29a",
+                      "status-completed": "#8B5CF6",
+                      "secondary-fixed": "#ffddb8",
+                      "on-tertiary-fixed-variant": "#574425",
+                      "error-container": "#ffdad6",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-dim": "#cbdbf5",
+                      "surface-charcoal": "#1E293B",
+                      "outline": "#76777d",
+                      "surface-steel": "#F1F5F9",
+                      "on-secondary": "#ffffff",
+                      "surface-container-low": "#eff4ff",
+                      "on-secondary-container": "#684000",
+                      "status-conflict": "#EF4444",
+                      "error": "#ba1a1a",
+                      "surface": "#f8f9ff",
+                      "background": "#f8f9ff",
+                      "secondary-container": "#fea619",
+                      "status-provisional": "#F97316",
+                      "inverse-primary": "#bec6e0",
+                      "on-background": "#0b1c30",
+                      "primary": "#000000",
+                      "status-cancelled": "#94A3B8",
+                      "on-primary-fixed": "#131b2e",
+                      "outline-variant": "#c6c6cd",
+                      "surface-bright": "#f8f9ff",
+                      "secondary-fixed-dim": "#ffb95f",
+                      "inverse-surface": "#213145",
+                      "surface-container": "#e5eeff",
+                      "on-error-container": "#93000a",
+                      "inverse-on-surface": "#eaf1ff",
+                      "surface-variant": "#d3e4fe",
+                      "surface-tint": "#565e74",
+                      "tertiary-container": "#271901",
+                      "status-confirmed": "#10B981",
+                      "on-primary": "#ffffff",
+                      "on-tertiary-container": "#98805d",
+                      "surface-container-highest": "#d3e4fe",
+                      "on-tertiary": "#ffffff",
+                      "status-in-progress": "#3B82F6",
+                      "on-secondary-fixed-variant": "#653e00",
+                      "primary-fixed-dim": "#bec6e0",
+                      "on-tertiary-fixed": "#271901",
+                      "tertiary": "#000000",
+                      "on-error": "#ffffff",
+                      "on-primary-container": "#7c839b"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "gutter": "16px",
+                      "unit": "4px",
+                      "density-compact": "8px",
+                      "grid-margin": "24px",
+                      "density-comfortable": "16px"
+              },
+              "fontFamily": {
+                      "body-sm": ["Inter"],
+                      "body-md": ["Inter"],
+                      "display-lg": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "data-mono": ["JetBrains Mono"],
+                      "label-caps": ["Inter"]
+              },
+              "fontSize": {
+                      "body-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                      "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "data-mono": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                      "label-caps": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md selection:bg-secondary-container">
+<!-- Top Navigation Bar -->
+<header class="bg-surface docked full-width top-0 sticky z-40 border-b border-outline-variant shadow-sm flex items-center justify-between px-grid-margin h-16 w-full">
+<div class="flex items-center gap-8">
+<div class="font-headline-md text-headline-md font-black text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">cc_attribution</span>
+                MancWay Recovery
+            </div>
+<nav class="hidden md:flex gap-6">
+<a class="text-primary font-bold font-body-md hover:bg-surface-container-low transition-colors px-2 py-1" href="#">Home</a>
+<a class="text-on-surface-variant font-body-md hover:bg-surface-container-low transition-colors px-2 py-1" href="#">Services</a>
+<a class="text-on-surface-variant font-body-md hover:bg-surface-container-low transition-colors px-2 py-1" href="#">Areas</a>
+<a class="text-on-surface-variant font-body-md hover:bg-surface-container-low transition-colors px-2 py-1" href="#">Fleet</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden lg:flex flex-col items-end mr-4">
+<span class="font-label-caps text-label-caps text-on-surface-variant">24/7 EMERGENCY LINE</span>
+<span class="font-headline-md text-primary font-black">0161 555 0199</span>
+</div>
+<div class="flex gap-2">
+<button class="material-symbols-outlined text-on-surface-variant p-2 hover:bg-surface-container-low rounded-full transition-colors">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant p-2 hover:bg-surface-container-low rounded-full transition-colors">help_outline</button>
+</div>
+</div>
+</header>
+<main>
+<!-- Hero Section -->
+<section class="relative h-[870px] w-full overflow-hidden flex items-center">
+<div class="absolute inset-0 z-0">
+<div class="w-full h-full bg-cover bg-center" data-alt="A professional heavy-duty flatbed recovery truck branded with navy and amber logos, positioned against the Manchester city skyline with the Beetham Tower in the background during the blue hour. The lighting is crisp and cinematic, emphasizing the industrial strength and reliability of the vehicle in an urban environment." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBnTKZIt1cNJPbvrEaDKFoxgIKKKQA7oiK97BMrXK-2BCNbJ02Zp-v0YcxJzcM458vekZjDTbpRTrfgUprFkeH3RzJsE73LmKCKB1Sl-pqWnmKSxDNiHF3NONAS12YfV6ecURYg_qoQaWCjfc7ENc5bWYDzfEQwuL0WvpWBjmXATeOScvagzztm9UPD58xbYvanQaLBOIZx4T-Xo931CfIcEZaVkQ7WIE6I0DFRTTgVFqMH__awVnL1GOo2NRjrBzm-005EPQ854vU')"></div>
+<div class="absolute inset-0 hero-gradient"></div>
+</div>
+<div class="relative z-10 px-grid-margin max-w-4xl">
+<div class="inline-flex items-center gap-2 bg-secondary-container px-3 py-1 rounded mb-6 animate-pulse">
+<span class="w-2 h-2 rounded-full bg-on-secondary-container"></span>
+<span class="font-label-caps text-label-caps text-on-secondary-container">LIVE DISPATCH ACTIVE IN MANCHESTER</span>
+</div>
+<h1 class="font-display-lg text-[56px] leading-tight text-white mb-6">
+                    Fast, Reliable Vehicle Recovery in <span class="text-secondary-fixed">Greater Manchester</span>
+</h1>
+<p class="text-surface-dim text-headline-md max-w-2xl mb-10 leading-relaxed">
+                    Stranded on the M60 or stuck in the city center? Our professional dispatch team is ready 24/7 with a 30-minute average response time.
+                </p>
+<div class="flex flex-col sm:flex-row gap-4">
+<button class="bg-secondary-container text-on-secondary-container px-8 py-4 font-headline-md font-bold hover:brightness-110 active:scale-95 transition-all flex items-center justify-center gap-3">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">bolt</span>
+                        Request Recovery Now
+                    </button>
+<button class="border-2 border-white text-white px-8 py-4 font-headline-md font-bold hover:bg-white hover:text-on-surface active:scale-95 transition-all flex items-center justify-center gap-3">
+<span class="material-symbols-outlined">call</span>
+                        0161 555 0199
+                    </button>
+</div>
+</div>
+<!-- Stats Overlay Desktop -->
+<div class="absolute bottom-12 right-grid-margin hidden xl:flex gap-6">
+<div class="glass-card p-6 flex flex-col min-w-[180px]">
+<span class="font-display-lg text-primary">30<small class="text-headline-md">min</small></span>
+<span class="font-label-caps text-on-surface-variant">AVG RESPONSE</span>
+</div>
+<div class="glass-card p-6 flex flex-col min-w-[180px]">
+<span class="font-display-lg text-primary">24/7</span>
+<span class="font-label-caps text-on-surface-variant">AVAILABILITY</span>
+</div>
+<div class="glass-card p-6 flex flex-col min-w-[180px]">
+<span class="font-display-lg text-primary">15+</span>
+<span class="font-label-caps text-on-surface-variant">RECOVERY UNITS</span>
+</div>
+</div>
+</section>
+<!-- Services Section: Bento Grid -->
+<section class="py-24 px-grid-margin bg-surface">
+<div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+<div>
+<span class="font-label-caps text-secondary font-bold tracking-widest">OUR EXPERTISE</span>
+<h2 class="font-display-lg text-primary mt-2">Specialist Recovery Services</h2>
+</div>
+<p class="text-on-surface-variant max-w-md text-body-md">
+                    From prestige vehicle transport to heavy-duty accident recovery, our fleet is equipped for every scenario in the Greater Manchester area.
+                </p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Main Service -->
+<div class="md:col-span-8 group relative overflow-hidden h-[400px] bg-primary-container">
+<div class="absolute inset-0 bg-cover bg-center opacity-60 group-hover:scale-105 transition-transform duration-700" data-alt="A detailed shot of a recovery operator in high-visibility safety gear using a winch to secure a car onto a modern flatbed truck. The scene is set on a busy motorway hard shoulder at night, with bright amber safety lights casting a professional and urgent glow over the high-stakes work." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBd9KnMr48deVk7eqY0x2KDGz0nuamuHHZ2qYGXlJmzrTnNqZc4M3WMGkgqr8Y0pimRH6qT11o9cSKViekcR26tisceLS1boHlSuv-lz9wzUG5daHobxwbu4mtjOhoza7F5_l7_JDuPlKZPlKfsrMOw2v5ZVAhq0hGOAwhKm1mv3zUt3bCo18e7GkYnwN-ioXwF2PGvhd8xrpbJFKBDWgIvNkNlIIU2Eya4AyrPKYMjdbkLZM2KMbhD2l3Xl941PHSIWrzZQSQfBD8')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-primary-container via-transparent to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-8">
+<div class="bg-status-provisional text-white px-3 py-1 font-label-caps inline-block mb-4">MOST REQUESTED</div>
+<h3 class="text-white font-display-lg mb-2">Emergency Breakdown</h3>
+<p class="text-surface-variant max-w-lg mb-6">Rapid roadside assistance for all vehicle types. We'll get you and your passengers home safely or to a preferred garage.</p>
+<button class="text-white border-b-2 border-secondary font-bold flex items-center gap-2 hover:gap-4 transition-all">
+                            Learn More <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Secondary Service 1 -->
+<div class="md:col-span-4 group relative overflow-hidden h-[400px] bg-surface-charcoal">
+<div class="absolute inset-0 bg-cover bg-center opacity-50 group-hover:scale-105 transition-transform duration-700" data-alt="A clean, professional photograph of a premium electric SUV being carefully loaded onto a enclosed vehicle transport trailer. The setting is a modern suburban driveway, conveying care, luxury service, and specialized equipment for high-value vehicle logistics." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDy8dGv-qaBERBT_2XKIm11_UNBZsXp9xFQFucFfG-LYGT7SCW5hBHTtcRO_dZTk6sNdNBZDW-NzSeFbZPCaAfIGpzaHe3Kd-_Ud9j4ySSbKSQQiTCOZbiS-U5a4dGquZp2Ty823U8FZH7towHmWAxtQ1_JtEP5tmFn5GOm0y91gFiTvOeD5C0agBF5vKGEms7_oaz17nCN00KunUOlRdZUrDr7mICrlkoAKmXg63DHkqXGnfX5pIgGKWJ1bjuzSNWVHfI4gPVMd18')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-charcoal via-transparent to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-8">
+<h3 class="text-white font-headline-md mb-2">Vehicle Transport</h3>
+<p class="text-surface-variant text-body-sm mb-4">Pre-booked collection and delivery for dealerships and private owners.</p>
+<button class="text-secondary-fixed font-bold flex items-center gap-2">View Rates <span class="material-symbols-outlined">chevron_right</span></button>
+</div>
+</div>
+<!-- Secondary Service 2 -->
+<div class="md:col-span-4 group relative overflow-hidden h-[300px] bg-error">
+<div class="absolute inset-0 bg-cover bg-center opacity-40 group-hover:scale-105 transition-transform duration-700" data-alt="Two professional recovery trucks working together at the scene of a minor traffic accident to clear a damaged vehicle from a junction in Manchester. Emergency services lighting creates a high-visibility, authoritative atmosphere of efficient public service." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuD6ukihROGKLyQUPV6bieHLeAM5wo1Fu1h5oifCtqzqJZBGCWk5dY6AcSyaul2C6ybP-CNN-pKdXOMGffgE78Tqu802zb-d6IaCKuuORh6eI0eRsIunCGMoyo3Dd1aui7WSMn7ya6YVWL6lq5-9JyB55Ibx3hm96aH3FcXXbDn2gAf_dQo3mxVfjjqHtGHmc0yJ2NtVSiLbO8cHoI2RQ-nXek3LjKFmX5_u9TsFHPEp9eIkJec3BtJ9awZH_rbirbBmRx_ou4300Vc')"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-primary via-transparent to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-8">
+<h3 class="text-white font-headline-md mb-2">Accident Recovery</h3>
+<p class="text-surface-variant text-body-sm mb-4">Direct liaison with insurance providers and secure vehicle storage.</p>
+</div>
+</div>
+<!-- Secondary Service 3 -->
+<div class="md:col-span-8 bg-surface-container-high p-8 flex flex-col justify-center border border-outline-variant">
+<div class="flex flex-wrap gap-8">
+<div class="flex-1 min-w-[200px]">
+<span class="material-symbols-outlined text-primary text-4xl mb-4">car_repair</span>
+<h3 class="font-headline-md text-primary mb-2">Specialist Lifting</h3>
+<p class="text-on-surface-variant text-body-sm">Equipped with spec-lifts and low-entry beds for lowered or high-value sports cars.</p>
+</div>
+<div class="flex-1 min-w-[200px]">
+<span class="material-symbols-outlined text-primary text-4xl mb-4">key</span>
+<h3 class="font-headline-md text-primary mb-2">Lockout &amp; Fuel</h3>
+<p class="text-on-surface-variant text-body-sm">Wrong fuel drainage and non-destructive vehicle entry services available 24/7.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Why Choose Us: Feature Grid -->
+<section class="py-24 px-grid-margin bg-on-surface text-white">
+<div class="max-w-4xl mx-auto text-center mb-16">
+<span class="font-label-caps text-secondary-fixed">THE MANCWAY STANDARD</span>
+<h2 class="font-display-lg mt-4">Built for Reliability. Driven by Professionalism.</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+<div class="flex flex-col items-center text-center">
+<div class="w-16 h-16 rounded-full bg-surface-charcoal border border-outline flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-secondary-fixed text-3xl">schedule</span>
+</div>
+<h3 class="font-headline-md mb-4">24/7 Availability</h3>
+<p class="text-surface-variant text-body-md leading-relaxed">Rain or shine, day or night. Our dispatch center never sleeps, ensuring help is always one call away.</p>
+</div>
+<div class="flex flex-col items-center text-center">
+<div class="w-16 h-16 rounded-full bg-surface-charcoal border border-outline flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-secondary-fixed text-3xl">near_me</span>
+</div>
+<h3 class="font-headline-md mb-4">30-Min Response</h3>
+<p class="text-surface-variant text-body-md leading-relaxed">Strategically stationed units across Greater Manchester allow us to reach most incidents within 30 minutes.</p>
+</div>
+<div class="flex flex-col items-center text-center">
+<div class="w-16 h-16 rounded-full bg-surface-charcoal border border-outline flex items-center justify-center mb-6">
+<span class="material-symbols-outlined text-secondary-fixed text-3xl">verified_user</span>
+</div>
+<h3 class="font-headline-md mb-4">Certified Drivers</h3>
+<p class="text-surface-variant text-body-md leading-relaxed">IVR trained and fully insured. Our operators are uniformed professionals who prioritize your safety.</p>
+</div>
+</div>
+<div class="mt-20 border-t border-surface-charcoal pt-12 flex flex-wrap justify-center gap-12 opacity-60">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined">stars</span>
+<span class="font-label-caps">FULLY INSURED</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined">check_circle</span>
+<span class="font-label-caps">IVR CERTIFIED</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined">shield</span>
+<span class="font-label-caps">PAS 43 ACCREDITED</span>
+</div>
+</div>
+</section>
+<!-- Live Map Section -->
+<section class="py-24 px-grid-margin bg-white">
+<div class="flex flex-col lg:flex-row gap-12 items-center">
+<div class="lg:w-1/3">
+<h2 class="font-display-lg text-primary mb-6">Areas We Cover</h2>
+<p class="text-on-surface-variant text-body-md mb-8">We provide rapid recovery across the entire Greater Manchester conurbation and surrounding motorway networks.</p>
+<ul class="space-y-4">
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary">location_on</span>
+<span class="font-bold">City Center &amp; Salford Quays</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary">location_on</span>
+<span class="font-bold">M60, M62, M56 Motorway Networks</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary">location_on</span>
+<span class="font-bold">Stockport, Bolton &amp; Bury</span>
+</li>
+<li class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary">location_on</span>
+<span class="font-bold">Oldham, Rochdale &amp; Trafford</span>
+</li>
+</ul>
+<div class="mt-10 p-6 bg-surface-container rounded-lg border border-outline-variant">
+<div class="flex items-center gap-4 mb-4">
+<div class="w-3 h-3 bg-status-confirmed rounded-full"></div>
+<span class="font-label-caps text-on-surface">5 UNITS CURRENTLY ACTIVE</span>
+</div>
+<button class="w-full bg-primary text-white py-3 font-bold hover:bg-surface-charcoal transition-colors">Check Local Availability</button>
+</div>
+</div>
+<div class="lg:w-2/3 w-full h-[500px] bg-surface-steel relative overflow-hidden shadow-xl rounded-xl">
+<div class="w-full h-full bg-cover bg-center grayscale contrast-125 opacity-80" data-location="Manchester" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCetZH9SHcxG6XWQCzs_L2pHfHhbFYHkn3PqHCxCxqTrnH0UKVSmHhJ250gW39m6he64r-gQIv5IHMTEapF3wyfsQTwj_n_oDZMxOA_fzdpMWF6yExI6M6vZRqP5qvQq-ZD1JMiiFAhzkktkLbavpEd_uKF1E9BnIc3xN5zautX-h9mGwbk20UjeDho796OxxrTB_UpSiWoYrzs6blyrXLQe5OawwJH2SjANdczke0PVg3qhaFU2VgqaY615Z6KZ-Bncdw44Jg1yMo')"></div>
+<!-- Map Markers Simulation -->
+<div class="absolute top-1/4 left-1/3 w-8 h-8 flex items-center justify-center">
+<div class="absolute inset-0 bg-secondary rounded-full animate-ping opacity-20"></div>
+<span class="material-symbols-outlined text-secondary text-3xl" style="font-variation-settings: 'FILL' 1;">local_shipping</span>
+</div>
+<div class="absolute top-1/2 left-1/2 w-8 h-8 flex items-center justify-center">
+<div class="absolute inset-0 bg-secondary rounded-full animate-ping opacity-20"></div>
+<span class="material-symbols-outlined text-secondary text-3xl" style="font-variation-settings: 'FILL' 1;">local_shipping</span>
+</div>
+<div class="absolute bottom-1/4 right-1/4 w-8 h-8 flex items-center justify-center">
+<div class="absolute inset-0 bg-secondary rounded-full animate-ping opacity-20"></div>
+<span class="material-symbols-outlined text-secondary text-3xl" style="font-variation-settings: 'FILL' 1;">local_shipping</span>
+</div>
+<!-- Floating Map Legend -->
+<div class="absolute bottom-6 left-6 glass-card p-4 rounded shadow-md">
+<div class="flex items-center gap-2 mb-2">
+<span class="w-3 h-3 bg-secondary rounded-full"></span>
+<span class="text-body-sm font-bold">Available Recovery Unit</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 bg-status-in-progress rounded-full"></span>
+<span class="text-body-sm font-bold">Active Recovery Mission</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Emergency CTA Footer Overlay -->
+<section class="bg-secondary-container py-12">
+<div class="px-grid-margin flex flex-col md:flex-row items-center justify-between gap-8">
+<div class="text-on-secondary-container">
+<h2 class="font-display-lg mb-2">Broken down right now?</h2>
+<p class="text-headline-md opacity-80">Our nearest unit is likely closer than you think.</p>
+</div>
+<div class="flex gap-4">
+<a class="bg-on-secondary-container text-white px-10 py-5 rounded-lg font-display-lg flex items-center gap-4 hover:scale-105 transition-transform shadow-xl" href="tel:01615550199">
+<span class="material-symbols-outlined text-4xl">call</span>
+                        0161 555 0199
+                    </a>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-primary-container text-white py-16 px-grid-margin">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+<div class="col-span-1 md:col-span-1">
+<div class="font-headline-md text-headline-md font-black text-white flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-secondary-fixed">cc_attribution</span>
+                    MancWay
+                </div>
+<p class="text-on-primary-container text-body-sm mb-6">
+                    Professional vehicle recovery and logistics specialists based in the heart of Manchester. Dependable service since 2012.
+                </p>
+<div class="flex gap-4">
+<a class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center hover:bg-secondary transition-colors" href="#"><span class="material-symbols-outlined text-sm">qr_code_2</span></a>
+<a class="w-10 h-10 rounded-full border border-outline-variant flex items-center justify-center hover:bg-secondary transition-colors" href="#"><span class="material-symbols-outlined text-sm">share</span></a>
+</div>
+</div>
+<div>
+<h4 class="font-label-caps text-secondary-fixed mb-6">SERVICES</h4>
+<ul class="space-y-3 text-on-primary-container text-body-sm">
+<li><a class="hover:text-white" href="#">Emergency Breakdown</a></li>
+<li><a class="hover:text-white" href="#">Accident Recovery</a></li>
+<li><a class="hover:text-white" href="#">Vehicle Transport</a></li>
+<li><a class="hover:text-white" href="#">Motorway Recovery</a></li>
+<li><a class="hover:text-white" href="#">Heavy Lifting</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-label-caps text-secondary-fixed mb-6">COMPANY</h4>
+<ul class="space-y-3 text-on-primary-container text-body-sm">
+<li><a class="hover:text-white" href="#">About Us</a></li>
+<li><a class="hover:text-white" href="#">Our Fleet</a></li>
+<li><a class="hover:text-white" href="#">Service Areas</a></li>
+<li><a class="hover:text-white" href="#">Reviews</a></li>
+<li><a class="hover:text-white" href="#">Contact</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-label-caps text-secondary-fixed mb-6">LEGAL</h4>
+<ul class="space-y-3 text-on-primary-container text-body-sm">
+<li><a class="hover:text-white" href="#">Terms of Service</a></li>
+<li><a class="hover:text-white" href="#">Privacy Policy</a></li>
+<li><a class="hover:text-white" href="#">Insurance Details</a></li>
+<li><a class="hover:text-white" href="#">Cookie Policy</a></li>
+</ul>
+</div>
+</div>
+<div class="border-t border-outline-variant pt-8 flex flex-col md:flex-row justify-between items-center text-on-primary-container text-body-sm gap-4">
+<p>© 2024 MancWay Recovery Limited. Registered in England &amp; Wales.</p>
+<div class="flex gap-8">
+<span class="flex items-center gap-2"><span class="material-symbols-outlined text-xs">mail</span> info@mancway.co.uk</span>
+<span class="flex items-center gap-2"><span class="material-symbols-outlined text-xs">location_on</span> Trafford Park, Manchester</span>
+</div>
+</div>
+</footer>
+<!-- Mobile Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full md:hidden flex justify-around py-2 px-4 bg-surface dark:bg-surface-charcoal border-t border-outline-variant shadow-lg z-50">
+<a class="flex flex-col items-center justify-center text-primary dark:text-secondary-fixed-dim scale-95 duration-100" href="#">
+<span class="material-symbols-outlined">local_shipping</span>
+<span class="font-label-caps text-label-caps">Jobs</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant active:bg-surface-container scale-95 duration-100" href="#">
+<span class="material-symbols-outlined">map</span>
+<span class="font-label-caps text-label-caps">Map</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant active:bg-surface-container scale-95 duration-100" href="#">
+<span class="material-symbols-outlined">forum</span>
+<span class="font-label-caps text-label-caps">Chat</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant active:bg-surface-container scale-95 duration-100" href="#">
+<span class="material-symbols-outlined">notifications</span>
+<span class="font-label-caps text-label-caps">Alerts</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant active:bg-surface-container scale-95 duration-100" href="#">
+<span class="material-symbols-outlined">menu</span>
+<span class="font-label-caps text-label-caps">Menu</span>
+</a>
+</nav>
+<script>
+        // Micro-interactions and scroll effects
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 20) {
+                header.classList.add('shadow-md');
+                header.classList.add('bg-white');
+            } else {
+                header.classList.remove('shadow-md');
+            }
+        });
+
+        // Simple animation trigger for map markers
+        const markers = document.querySelectorAll('.animate-ping');
+        setInterval(() => {
+            markers.forEach((marker, index) => {
+                setTimeout(() => {
+                    marker.style.animation = 'none';
+                    marker.offsetHeight; // trigger reflow
+                    marker.style.animation = 'ping 2s cubic-bezier(0, 0, 0.2, 1) infinite';
+                }, index * 400);
+            });
+        }, 3000);
+    </script>
+</body></html>

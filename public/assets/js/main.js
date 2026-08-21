@@ -14,9 +14,9 @@
     });
 
     // Close menu when a link is clicked (mobile)
-    document.querySelectorAll('.nav-menu a').forEach(function (link) {
+    document.querySelectorAll('.nav-menu a, .admin-nav a').forEach(function (link) {
       link.addEventListener('click', function () {
-        var menu = link.closest('.nav-menu');
+        var menu = link.closest('.nav-menu, .admin-nav');
         if (menu) menu.classList.remove('open');
         var btn = document.querySelector('.nav-toggle');
         if (btn) btn.setAttribute('aria-expanded', 'false');

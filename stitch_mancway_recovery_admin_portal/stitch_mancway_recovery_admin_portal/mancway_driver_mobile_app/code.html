@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RecoveryPro Driver - Job Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-fixed": "#271901",
+                    "error-container": "#ffdad6",
+                    "on-secondary-fixed": "#2a1700",
+                    "on-background": "#0b1c30",
+                    "surface-dim": "#cbdbf5",
+                    "secondary-container": "#fea619",
+                    "surface-container": "#e5eeff",
+                    "on-secondary-fixed-variant": "#653e00",
+                    "on-primary-fixed-variant": "#3f465c",
+                    "surface": "#f8f9ff",
+                    "outline": "#76777d",
+                    "on-surface": "#0b1c30",
+                    "on-primary-container": "#7c839b",
+                    "surface-bright": "#f8f9ff",
+                    "on-error": "#ffffff",
+                    "secondary-fixed-dim": "#ffb95f",
+                    "primary-fixed": "#dae2fd",
+                    "tertiary-fixed": "#fcdeb5",
+                    "on-tertiary": "#ffffff",
+                    "primary": "#000000",
+                    "surface-variant": "#d3e4fe",
+                    "on-secondary": "#ffffff",
+                    "status-provisional": "#F97316",
+                    "primary-fixed-dim": "#bec6e0",
+                    "surface-tint": "#565e74",
+                    "surface-container-highest": "#d3e4fe",
+                    "on-error-container": "#93000a",
+                    "surface-container-lowest": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "on-primary-fixed": "#131b2e",
+                    "on-tertiary-container": "#98805d",
+                    "tertiary-container": "#271901",
+                    "tertiary-fixed-dim": "#dec29a",
+                    "on-secondary-container": "#684000",
+                    "inverse-primary": "#bec6e0",
+                    "tertiary": "#000000",
+                    "error": "#ba1a1a",
+                    "surface-container-high": "#dce9ff",
+                    "surface-steel": "#F1F5F9",
+                    "inverse-surface": "#213145",
+                    "background": "#f8f9ff",
+                    "inverse-on-surface": "#eaf1ff",
+                    "status-conflict": "#EF4444",
+                    "surface-container-low": "#eff4ff",
+                    "status-in-progress": "#3B82F6",
+                    "secondary-fixed": "#ffddb8",
+                    "status-completed": "#8B5CF6",
+                    "primary-container": "#131b2e",
+                    "status-confirmed": "#10B981",
+                    "outline-variant": "#c6c6cd",
+                    "on-tertiary-fixed-variant": "#574425",
+                    "surface-charcoal": "#1E293B"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "density-comfortable": "16px",
+                    "density-compact": "8px",
+                    "gutter": "16px",
+                    "grid-margin": "24px",
+                    "unit": "4px"
+            },
+            "fontFamily": {
+                    "body-sm": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "data-mono": ["JetBrains Mono"],
+                    "label-caps": ["Inter"],
+                    "headline-md": ["Inter"]
+            },
+            "fontSize": {
+                    "body-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                    "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "data-mono": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "label-caps": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                    "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-tab .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1;
+        }
+        /* Custom signature pad simulation */
+        #signature-canvas {
+            background-color: #f8f9ff;
+            border: 2px dashed #c6c6cd;
+            touch-action: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface font-body-md text-on-surface">
+<!-- TopNavBar (Shared Component Logic) -->
+<nav class="bg-surface docked full-width top-0 sticky z-40 border-b border-outline-variant shadow-sm flex items-center justify-between px-grid-margin h-16 w-full">
+<div class="flex items-center gap-3">
+<span class="font-headline-md text-headline-md font-black text-primary">RecoveryPro CRM</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex gap-2">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-low transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined text-primary">notifications</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container-low transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined text-primary">sms</span>
+</button>
+</div>
+<div class="w-8 h-8 rounded-full bg-surface-container-high border border-outline-variant overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Close up portrait of a professional driver with a friendly expression, wearing a high-visibility industrial vest. The background is a blurred vehicle maintenance depot with clean, industrial lighting in a modern light-mode setting. The style is sharp, authoritative, and dependable." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA72xh0TD1P8oDNJsKq64BkL30epsfphcj61YiiUB781Beu8l1Nf9V4YAmhjngOImpej1e5XVV7VKhYDcP82W3SDBPQYVl88USPaAUFzF9cxtQfsyJc61j925fr43-wiPFDwPPMV50CsGMJLU0gcOKvimkCqq3jA78p4_qVjSeHJR3wVNBtIWQ0WImY49qXmpi2-dLMFpAzDISVXhkwlY0FoSx4mWiuqnBlqcAK3pp0Xo10_a3LeVtLtam-AjnYys8MiKynliOI5FM"/>
+</div>
+</div>
+</nav>
+<!-- Content Canvas -->
+<main class="pb-24 pt-4 px-4 space-y-4">
+<!-- Driver Profile Summary -->
+<header class="flex items-center justify-between bg-surface-container-lowest p-4 rounded-xl shadow-sm border border-outline-variant">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant">CURRENT UNIT</p>
+<p class="font-headline-md text-headline-md font-bold text-primary">Recovery Unit 01</p>
+<p class="text-body-sm text-on-surface-variant">Dispatcher: Mike (HQ)</p>
+</div>
+<div class="text-right">
+<span class="bg-status-confirmed text-white px-3 py-1 rounded-full font-label-caps text-label-caps">ACTIVE</span>
+</div>
+</header>
+<!-- Current Job Focus Card -->
+<section class="space-y-3">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-md text-headline-md font-bold">Assigned Jobs (3)</h2>
+<span class="text-body-sm text-status-provisional font-bold">Next: 14:00</span>
+</div>
+<!-- Active Job Card (Detailed) -->
+<div class="bg-white rounded-xl border-l-4 border-status-provisional shadow-lg overflow-hidden border border-outline-variant">
+<div class="p-4 bg-surface-container-low flex justify-between items-start">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-status-provisional scale-75">emergency</span>
+<span class="font-data-mono text-data-mono bg-surface-charcoal text-white px-2 py-0.5 rounded">R-90221</span>
+</div>
+<h3 class="font-headline-md text-headline-md font-black">Broken Down SUV</h3>
+</div>
+<div class="text-right">
+<p class="font-label-caps text-label-caps text-on-surface-variant">ETA</p>
+<p class="font-headline-md text-headline-md font-bold text-primary">15 MIN</p>
+</div>
+</div>
+<div class="p-4 space-y-6">
+<!-- Quick Actions Row -->
+<div class="grid grid-cols-2 gap-3">
+<a class="flex items-center justify-center gap-3 bg-primary text-white py-4 rounded-lg font-bold active:scale-95 transition-transform shadow-md" href="tel:+447700900000">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">call</span>
+<span>CALL CLIENT</span>
+</a>
+<button class="flex items-center justify-center gap-3 bg-surface-steel border-2 border-primary text-primary py-4 rounded-lg font-bold active:scale-95 transition-transform" onclick="window.open('https://www.google.com/maps')">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">directions_car</span>
+<span>NAVIGATE</span>
+</button>
+</div>
+<!-- Addresses -->
+<div class="grid grid-cols-1 gap-4">
+<div class="flex gap-4">
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-status-provisional">location_on</span>
+<div class="w-0.5 h-10 bg-outline-variant my-1"></div>
+<span class="material-symbols-outlined text-primary">flag</span>
+</div>
+<div class="flex-1 space-y-4">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant">COLLECTION</p>
+<p class="font-body-md text-body-md font-bold">M25 Junction 14, Heathrow</p>
+<p class="text-body-sm text-on-surface-variant">Shoulder Lane - Hazard Lights On</p>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant">DESTINATION</p>
+<p class="font-body-md text-body-md font-bold">Main Street Garage, Slough SL1 1AB</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Vehicle Info -->
+<div class="bg-surface-steel p-3 rounded-lg flex items-center justify-between border border-outline-variant">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant">local_shipping</span>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant">VEHICLE</p>
+<p class="font-body-md text-body-md font-bold">Land Rover Discovery (Silver)</p>
+</div>
+</div>
+<div class="font-data-mono text-headline-md font-black bg-white px-3 py-1 border border-primary rounded">
+                            RE66 OVY
+                        </div>
+</div>
+<!-- Driver Job Actions -->
+<div class="space-y-3 pt-2">
+<p class="font-label-caps text-label-caps text-on-surface-variant">PROGRESS CONTROL</p>
+<div class="grid grid-cols-1 gap-2">
+<button class="w-full py-4 bg-status-provisional text-white font-bold rounded-lg flex items-center justify-center gap-2 active:bg-orange-700" id="enRouteBtn">
+<span class="material-symbols-outlined">departure_board</span>
+                                MARK EN ROUTE
+                            </button>
+<button class="w-full py-4 border-2 border-outline-variant text-on-surface-variant font-bold rounded-lg flex items-center justify-center gap-2 opacity-50 cursor-not-allowed">
+<span class="material-symbols-outlined">where_to_vote</span>
+                                MARK ARRIVED
+                            </button>
+</div>
+</div>
+<!-- Media & Notes -->
+<div class="space-y-3">
+<button class="w-full py-3 bg-surface-container-high border border-outline-variant rounded-lg flex items-center justify-center gap-2 font-bold text-primary active:bg-surface-container-highest">
+<span class="material-symbols-outlined">add_a_photo</span>
+                            UPLOAD PHOTOS (0/4)
+                        </button>
+<div class="p-3 bg-on-tertiary-fixed/5 rounded-lg border border-on-tertiary-container/20">
+<p class="font-label-caps text-label-caps text-on-tertiary-container">JOB NOTES</p>
+<p class="text-body-sm italic">"Client has two children and a dog. Needs priority drop off."</p>
+</div>
+</div>
+<!-- Final Completion Step -->
+<div class="pt-6 border-t border-outline-variant space-y-4">
+<div class="flex items-center justify-between">
+<h4 class="font-bold">Customer Signature</h4>
+<button class="text-body-sm text-status-conflict font-bold underline">Clear</button>
+</div>
+<div class="w-full h-40 rounded-xl flex items-center justify-center relative overflow-hidden" id="signature-canvas">
+<p class="text-on-surface-variant text-body-sm opacity-40">Sign here upon delivery</p>
+<!-- Visual simulation of a signature path -->
+<svg class="absolute inset-0 w-full h-full opacity-60" viewbox="0 0 400 160">
+<path class="hidden" d="M50,100 Q100,20 150,100 T250,80 T350,120" fill="none" id="signature-path" stroke="black" stroke-width="3"></path>
+</svg>
+</div>
+<button class="w-full py-5 bg-status-confirmed text-white font-black text-headline-md rounded-xl shadow-lg active:scale-95 transition-transform uppercase">
+                            Complete Job
+                        </button>
+</div>
+</div>
+</div>
+<!-- Upcoming Jobs (List View) -->
+<div class="space-y-2 opacity-60">
+<div class="bg-white p-4 rounded-xl border border-outline-variant flex justify-between items-center">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center">
+<span class="material-symbols-outlined">schedule</span>
+</div>
+<div>
+<p class="font-bold">VW Golf Recovery</p>
+<p class="text-body-sm">Slough • 17:30</p>
+</div>
+</div>
+<span class="material-symbols-outlined">chevron_right</span>
+</div>
+<div class="bg-white p-4 rounded-xl border border-outline-variant flex justify-between items-center">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center">
+<span class="material-symbols-outlined">schedule</span>
+</div>
+<div>
+<p class="font-bold">Ford Transit Flatbed</p>
+<p class="text-body-sm">Maidenhead • 19:00</p>
+</div>
+</div>
+<span class="material-symbols-outlined">chevron_right</span>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Shared Component Logic) -->
+<nav class="fixed bottom-0 left-0 w-full md:hidden flex justify-around py-2 px-4 bg-surface border-t border-outline-variant shadow-lg z-50">
+<a class="flex flex-col items-center justify-center text-primary active-tab" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">local_shipping</span>
+<span class="font-label-caps text-label-caps">Jobs</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">map</span>
+<span class="font-label-caps text-label-caps">Map</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant relative" href="#">
+<span class="material-symbols-outlined">forum</span>
+<span class="font-label-caps text-label-caps">Chat</span>
+<span class="absolute top-0 right-1 w-2 h-2 bg-status-conflict rounded-full"></span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">notifications</span>
+<span class="font-label-caps text-label-caps">Alerts</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant" href="#">
+<span class="material-symbols-outlined">menu</span>
+<span class="font-label-caps text-label-caps">Menu</span>
+</a>
+</nav>
+<!-- Map FAB (Suppressed on detail view as per rule, but shown here for initial view context) -->
+<!-- Suppressed since this is a task-focused screen -->
+<script>
+        // Micro-interaction for status button toggle simulation
+        const enRouteBtn = document.getElementById('enRouteBtn');
+        if(enRouteBtn) {
+            enRouteBtn.addEventListener('click', function() {
+                this.classList.toggle('bg-status-provisional');
+                this.classList.toggle('bg-status-confirmed');
+                this.innerHTML = this.classList.contains('bg-status-confirmed') 
+                    ? '<span class="material-symbols-outlined">check_circle</span> EN ROUTE' 
+                    : '<span class="material-symbols-outlined">departure_board</span> MARK EN ROUTE';
+            });
+        }
+
+        // Signature Canvas interaction simulation
+        const sigPad = document.getElementById('signature-canvas');
+        const sigPath = document.getElementById('signature-path');
+        if(sigPad) {
+            sigPad.addEventListener('click', function() {
+                sigPath.classList.remove('hidden');
+                sigPad.querySelector('p').classList.add('hidden');
+            });
+        }
+    </script>
+</body></html>

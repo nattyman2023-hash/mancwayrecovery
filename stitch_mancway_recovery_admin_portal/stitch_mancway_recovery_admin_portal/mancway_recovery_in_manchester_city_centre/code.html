@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Manchester City Centre | RecoveryPro CRM Dispatch</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-fixed": "#271901",
+                        "surface-bright": "#f8f9ff",
+                        "on-background": "#0b1c30",
+                        "inverse-surface": "#213145",
+                        "status-provisional": "#F97316",
+                        "surface-steel": "#F1F5F9",
+                        "on-primary-fixed": "#131b2e",
+                        "secondary": "#855300",
+                        "on-tertiary-container": "#98805d",
+                        "on-secondary-fixed": "#2a1700",
+                        "status-conflict": "#EF4444",
+                        "surface-container": "#e5eeff",
+                        "surface-charcoal": "#1E293B",
+                        "on-tertiary-fixed-variant": "#574425",
+                        "outline": "#76777d",
+                        "surface-dim": "#cbdbf5",
+                        "on-primary": "#ffffff",
+                        "surface-container-high": "#dce9ff",
+                        "on-tertiary": "#ffffff",
+                        "inverse-primary": "#bec6e0",
+                        "primary-fixed-dim": "#bec6e0",
+                        "surface": "#f8f9ff",
+                        "status-confirmed": "#10B981",
+                        "primary": "#000000",
+                        "tertiary-container": "#271901",
+                        "surface-tint": "#565e74",
+                        "background": "#f8f9ff",
+                        "secondary-container": "#fea619",
+                        "secondary-fixed": "#ffddb8",
+                        "outline-variant": "#c6c6cd",
+                        "on-surface": "#0b1c30",
+                        "surface-container-highest": "#d3e4fe",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed-variant": "#3f465c",
+                        "on-secondary-container": "#684000",
+                        "tertiary-fixed": "#fcdeb5",
+                        "surface-container-low": "#eff4ff",
+                        "secondary-fixed-dim": "#ffb95f",
+                        "on-secondary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "tertiary-fixed-dim": "#dec29a",
+                        "surface-variant": "#d3e4fe",
+                        "status-completed": "#8B5CF6",
+                        "primary-container": "#131b2e",
+                        "on-primary-container": "#7c839b",
+                        "on-surface-variant": "#45464d",
+                        "on-secondary-fixed-variant": "#653e00",
+                        "on-error": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "status-cancelled": "#94A3B8",
+                        "primary-fixed": "#dae2fd",
+                        "tertiary": "#000000",
+                        "status-in-progress": "#3B82F6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "16px",
+                        "grid-margin": "24px",
+                        "density-comfortable": "16px",
+                        "unit": "4px",
+                        "density-compact": "8px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "data-mono": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["11px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700" }],
+                        "body-sm": ["13px", { "lineHeight": "18px", "fontWeight": "400" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "display-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "data-mono": ["12px", { "lineHeight": "16px", "fontWeight": "500" }]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+    </style>
+</head>
+<body class="bg-surface-steel font-body-md text-on-surface antialiased">
+<!-- TopNavBar -->
+<header class="bg-surface dark:bg-surface-charcoal border-b border-outline-variant dark:border-outline shadow-sm docked full-width top-0 sticky z-40 flex items-center justify-between px-grid-margin h-16 w-full">
+<div class="flex items-center gap-8">
+<span class="font-headline-md text-headline-md font-black text-primary dark:text-inverse-primary">RecoveryPro CRM</span>
+<div class="hidden md:flex items-center gap-4">
+<span class="text-primary font-bold font-body-md text-body-md cursor-pointer">Dashboard</span>
+<span class="text-on-surface-variant font-body-md text-body-md hover:bg-surface-container-low transition-colors px-3 py-1 rounded cursor-pointer">Map View</span>
+<span class="text-on-surface-variant font-body-md text-body-md hover:bg-surface-container-low transition-colors px-3 py-1 rounded cursor-pointer">Dispatch</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="pl-10 pr-4 py-1.5 bg-surface-container rounded-lg border-none focus:ring-2 focus:ring-secondary-container w-64 text-body-sm font-body-sm" placeholder="Search Manchester..." type="text"/>
+</div>
+<div class="flex items-center gap-3">
+<button class="material-symbols-outlined text-primary hover:bg-surface-container-low p-2 rounded-full transition-colors active:scale-95 duration-150">notifications</button>
+<button class="material-symbols-outlined text-primary hover:bg-surface-container-low p-2 rounded-full transition-colors active:scale-95 duration-150">sms</button>
+<div class="h-8 w-8 rounded-full bg-surface-container-highest overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a senior dispatch manager wearing a navy blue uniform, set against a blurred high-tech control center background. The lighting is crisp and cinematic, emphasizing a sense of authority and logistical expertise. The overall aesthetic is clean, modern, and industrial with blue and steel tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBoNtVsM-j7ANWKYvHJe5_58OOzw9s2LH0bLtuYOxyp1G4Oxm5QZEdijws3BxF7yMXyV3bDMJNFALDYPgPfdHHH5UfaMd-Gm5kqbB1syTlTL5O2BGTLv7lZbfRma4KAOx7q0w1ENs98zeVVcQDW166OSpl1WUgrBji36pSTGxHafcXiRcLdoB1rTfU7jwYuSXpkh628mfbQjHSUj_LG6446w2vIXSrez_tf4HI8aPXOQoHcybw4PYNzeR_b2ZNbAQmU8lfp5nyZEKA"/>
+</div>
+</div>
+</div>
+</header>
+<div class="flex min-h-[calc(100vh-4rem)]">
+<!-- SideNavBar (Desktop Only) -->
+<aside class="bg-surface-container-lowest dark:bg-inverse-surface border-r border-outline-variant flex flex-col h-screen sticky top-16 overflow-y-auto hidden md:flex w-64 shrink-0">
+<div class="p-6">
+<div class="flex items-center gap-3 mb-8">
+<div class="w-10 h-10 bg-primary flex items-center justify-center rounded">
+<span class="material-symbols-outlined text-white">cc_attribution</span>
+</div>
+<div>
+<h2 class="text-primary font-headline-md text-headline-md leading-none">Dispatch Center</h2>
+<p class="text-on-surface-variant text-label-caps font-label-caps opacity-70">Recovery Unit 01</p>
+</div>
+</div>
+<nav class="space-y-1">
+<!-- Dashboard maps to Home/Active context -->
+<a class="flex items-center gap-3 px-4 py-3 text-primary dark:text-inverse-primary border-l-4 border-status-provisional bg-surface-container-high transition-all duration-200 ease-in-out font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined">dashboard</span> DASHBOARD
+                    </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-surface-charcoal transition-all duration-200 ease-in-out font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined">calendar_month</span> CALENDAR
+                    </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-surface-charcoal transition-all duration-200 ease-in-out font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined">contact_support</span> ENQUIRIES
+                    </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-surface-charcoal transition-all duration-200 ease-in-out font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined">local_shipping</span> VEHICLES
+                    </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-surface-charcoal transition-all duration-200 ease-in-out font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined">analytics</span> REPORTS
+                    </a>
+</nav>
+</div>
+<div class="mt-auto p-6 border-t border-outline-variant">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container transition-all font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined">settings</span> SETTINGS
+                </a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 p-6 md:p-8 space-y-8 overflow-x-hidden">
+<!-- Hero Section: Location Identity -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
+<div class="lg:col-span-8">
+<nav class="flex items-center gap-2 text-on-surface-variant text-label-caps font-label-caps mb-4">
+<span>UK OPERATIONS</span>
+<span class="material-symbols-outlined text-[12px]">chevron_right</span>
+<span>NORTH WEST</span>
+<span class="material-symbols-outlined text-[12px]">chevron_right</span>
+<span class="text-primary font-bold">MANCHESTER CITY CENTRE</span>
+</nav>
+<h1 class="font-display-lg text-display-lg text-on-background mb-2">Manchester City Centre <span class="text-status-confirmed">Live</span></h1>
+<p class="text-on-surface-variant max-w-2xl font-body-md text-body-md">
+                        Strategic recovery hub for the Greater Manchester area. High-density coverage across the M60 corridor, Deansgate, Ancoats, and the Northern Quarter. Managed by Dispatch Center Unit 01.
+                    </p>
+</div>
+<div class="lg:col-span-4 flex flex-wrap gap-4 justify-end">
+<button class="bg-primary text-on-primary px-6 py-3 font-label-caps text-label-caps flex items-center gap-2 hover:bg-primary-container transition-colors shadow-sm">
+<span class="material-symbols-outlined">add</span> NEW DISPATCH JOB
+                    </button>
+</div>
+</section>
+<!-- Bento Grid: Real-time Stats & Localized Map -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Map Widget -->
+<div class="lg:col-span-2 lg:row-span-2 relative group overflow-hidden bg-white border border-outline-variant shadow-sm min-h-[400px]">
+<div class="absolute inset-0 bg-surface-container-high animate-pulse"></div>
+<img class="absolute inset-0 w-full h-full object-cover grayscale opacity-90 group-hover:grayscale-0 transition-all duration-700" data-location="Manchester City Centre" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCtPYXjyJy4TFt7B9ivqS9JM9WrjRYy0ZO-4Hz517s3OedMh1kyyLXTlZduTPKqnLxc9bwNJHK_9yO_AS_p40Y1a3MvHHRbZRHB_Yu2H5s7p9LjsDCifVmQhW3DofMMv-h_9L0iZ-a3P5s0EwhgYklw2lxXCLEbA33eo2JHUzRSoFHO3rLVGt3nieV8tKyHiWeCCfGPdC3mypHOw_UkZKzoDbXmZ-UtS8gwhtRo1yU95VkV6zSOjjpds16A5w_DE9uzlU4J14E_69c"/>
+<div class="absolute top-4 left-4 glass-panel p-3 shadow-md">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-status-confirmed animate-ping"></span>
+<span class="font-label-caps text-label-caps text-on-surface">14 ACTIVE UNITS</span>
+</div>
+</div>
+<div class="absolute bottom-4 right-4 flex flex-col gap-2">
+<button class="bg-white p-2 border border-outline-variant shadow hover:bg-surface-steel"><span class="material-symbols-outlined">add</span></button>
+<button class="bg-white p-2 border border-outline-variant shadow hover:bg-surface-steel"><span class="material-symbols-outlined">remove</span></button>
+</div>
+</div>
+<!-- Neighborhood Response Times -->
+<div class="lg:col-span-2 glass-panel p-6">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline-md text-headline-md text-primary">Local Response Performance</h3>
+<span class="text-label-caps font-label-caps text-on-surface-variant">Last 60m</span>
+</div>
+<div class="space-y-4">
+<div class="flex items-center justify-between group">
+<div class="flex flex-col">
+<span class="font-body-md text-body-md font-bold text-on-surface">Ancoats &amp; Northern Quarter</span>
+<span class="text-label-caps font-label-caps text-on-surface-variant">High Traffic Density</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="font-data-mono text-data-mono text-status-confirmed">12 MIN AVG</span>
+<div class="w-24 h-1.5 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-status-confirmed w-[85%]"></div>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between group">
+<div class="flex flex-col">
+<span class="font-body-md text-body-md font-bold text-on-surface">Spinningfields</span>
+<span class="text-label-caps font-label-caps text-on-surface-variant">Restricted Access Zones</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="font-data-mono text-data-mono text-status-provisional">18 MIN AVG</span>
+<div class="w-24 h-1.5 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-status-provisional w-[60%]"></div>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between group">
+<div class="flex flex-col">
+<span class="font-body-md text-body-md font-bold text-on-surface">Deansgate Corridor</span>
+<span class="text-label-caps font-label-caps text-on-surface-variant">Optimal Coverage</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="font-data-mono text-data-mono text-status-confirmed">09 MIN AVG</span>
+<div class="w-24 h-1.5 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-status-confirmed w-[95%]"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Local Driver Highlights -->
+<div class="lg:col-span-1 glass-panel p-6 flex flex-col justify-between">
+<div>
+<span class="text-label-caps font-label-caps text-on-surface-variant mb-2 block">TOP PERFORMER</span>
+<div class="flex items-center gap-3 mb-4">
+<div class="w-12 h-12 rounded bg-surface-container-highest border border-outline-variant overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Close-up portrait of a friendly-looking recovery driver named Marc, wearing a bright orange high-visibility vest and a black cap with a company logo. He is standing outdoors in a slightly overcast urban environment in Manchester. The photo has a professional, industrial photography style with natural lighting and sharp focus." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2I1GLrc7NeEKI2j_sNwvkEkUNc9GikFH_28mCzIOVKaLrJde6XNKNOYy8FtB0mNj4RoQIVhEMmkkRmId6Bd41RU-gcrIZV4MOA-s18oZoXhFxgabBpHogdcMIeq0PYtl8UVk76OaylD6YaRIeYbeNm_iJrsUi_tCF5rA5Pc3hw4C5-WtJKIB53C2WWPNb-PDYvQ_uFI6dSuTgcmZyP5qiRo2TrLY4wmcdvYO7jlBN8fWL_LrXCrgm9PWrIQQLm_Q88G3XtuWE3mk"/>
+</div>
+<div>
+<h4 class="font-body-md text-body-md font-bold">Marc J.</h4>
+<p class="text-label-caps font-label-caps text-on-surface-variant">Unit MCR-042</p>
+</div>
+</div>
+</div>
+<div class="bg-surface-steel p-3 border-l-4 border-status-confirmed">
+<p class="font-body-sm text-body-sm italic text-on-surface">"98% satisfaction rating in the Central zone today."</p>
+</div>
+</div>
+<!-- Quick Request Form (Embedded) -->
+<div class="lg:col-span-1 glass-panel p-6">
+<h3 class="font-label-caps text-label-caps text-primary mb-4 border-b border-outline-variant pb-2">INSTANT REQUEST</h3>
+<form class="space-y-3" onsubmit="event.preventDefault();">
+<div>
+<label class="block text-label-caps font-label-caps text-on-surface-variant mb-1">REGISTRATION</label>
+<input class="w-full bg-white border border-outline-variant p-2 font-data-mono text-data-mono focus:ring-1 focus:ring-secondary-container outline-none" placeholder="MA57 TER" type="text"/>
+</div>
+<div>
+<label class="block text-label-caps font-label-caps text-on-surface-variant mb-1">VEHICLE TYPE</label>
+<select class="w-full bg-white border border-outline-variant p-2 font-body-sm text-body-sm focus:ring-1 focus:ring-secondary-container outline-none appearance-none">
+<option>Flatbed</option>
+<option>Spec-Lift</option>
+<option>Heavy Recovery</option>
+</select>
+</div>
+<button class="w-full py-2 bg-secondary-container text-on-secondary-container font-label-caps text-label-caps hover:bg-secondary transition-colors mt-2">
+                            DISPATCH NEAREST
+                        </button>
+</form>
+</div>
+</section>
+<!-- Active Jobs Data Grid -->
+<section class="glass-panel overflow-hidden">
+<div class="p-6 border-b border-outline-variant flex items-center justify-between bg-surface-container-low">
+<h3 class="font-headline-md text-headline-md text-primary">Active Jobs: Manchester Central</h3>
+<div class="flex gap-2">
+<button class="px-3 py-1.5 border border-outline-variant text-label-caps font-label-caps hover:bg-surface-steel transition-colors">EXPORT</button>
+<button class="px-3 py-1.5 bg-primary text-on-primary text-label-caps font-label-caps hover:opacity-90 transition-colors">FILTER</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full border-collapse">
+<thead class="bg-surface-steel border-b border-outline-variant">
+<tr>
+<th class="text-left p-4 font-label-caps text-label-caps text-on-surface-variant">JOB ID</th>
+<th class="text-left p-4 font-label-caps text-label-caps text-on-surface-variant">VEHICLE</th>
+<th class="text-left p-4 font-label-caps text-label-caps text-on-surface-variant">LOCATION</th>
+<th class="text-left p-4 font-label-caps text-label-caps text-on-surface-variant">STATUS</th>
+<th class="text-left p-4 font-label-caps text-label-caps text-on-surface-variant">ETA</th>
+<th class="text-right p-4 font-label-caps text-label-caps text-on-surface-variant">ACTION</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="p-4 font-data-mono text-data-mono text-primary">#MCR-9821</td>
+<td class="p-4">
+<div class="flex flex-col">
+<span class="font-body-md text-body-md font-bold">Ford Transit (Blue)</span>
+<span class="text-label-caps font-label-caps px-2 py-0.5 bg-surface-steel w-fit mt-1 rounded">SPEC-LIFT</span>
+</div>
+</td>
+<td class="p-4 font-body-sm text-body-sm text-on-surface-variant">Great Ancoats St, M4</td>
+<td class="p-4">
+<span class="inline-flex items-center gap-1 px-2 py-1 bg-status-in-progress/10 text-status-in-progress text-label-caps font-label-caps border border-status-in-progress/20">
+<span class="w-1.5 h-1.5 rounded-full bg-status-in-progress"></span> IN-PROGRESS
+                                    </span>
+</td>
+<td class="p-4 font-data-mono text-data-mono text-on-surface">06 MIN</td>
+<td class="p-4 text-right">
+<button class="text-primary hover:bg-surface-container p-2 rounded transition-all active:scale-95">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="p-4 font-data-mono text-data-mono text-primary">#MCR-9822</td>
+<td class="p-4">
+<div class="flex flex-col">
+<span class="font-body-md text-body-md font-bold">VW Golf (Grey)</span>
+<span class="text-label-caps font-label-caps px-2 py-0.5 bg-surface-steel w-fit mt-1 rounded">FLATBED</span>
+</div>
+</td>
+<td class="p-4 font-body-sm text-body-sm text-on-surface-variant">Portland Street, M1</td>
+<td class="p-4">
+<span class="inline-flex items-center gap-1 px-2 py-1 bg-status-provisional/10 text-status-provisional text-label-caps font-label-caps border border-status-provisional/20">
+<span class="w-1.5 h-1.5 rounded-full bg-status-provisional"></span> PENDING
+                                    </span>
+</td>
+<td class="p-4 font-data-mono text-data-mono text-on-surface">14 MIN</td>
+<td class="p-4 text-right">
+<button class="text-primary hover:bg-surface-container p-2 rounded transition-all active:scale-95">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="p-4 font-data-mono text-data-mono text-primary">#MCR-9819</td>
+<td class="p-4">
+<div class="flex flex-col">
+<span class="font-body-md text-body-md font-bold">Tesla Model 3</span>
+<span class="text-label-caps font-label-caps px-2 py-0.5 bg-surface-steel w-fit mt-1 rounded">FLATBED</span>
+</div>
+</td>
+<td class="p-4 font-body-sm text-body-sm text-on-surface-variant">Bridge Street, M3</td>
+<td class="p-4">
+<span class="inline-flex items-center gap-1 px-2 py-1 bg-status-confirmed/10 text-status-confirmed text-label-caps font-label-caps border border-status-confirmed/20">
+<span class="w-1.5 h-1.5 rounded-full bg-status-confirmed"></span> COMPLETED
+                                    </span>
+</td>
+<td class="p-4 font-data-mono text-data-mono text-on-surface-variant">--</td>
+<td class="p-4 text-right">
+<button class="text-primary hover:bg-surface-container p-2 rounded transition-all active:scale-95">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</main>
+</div>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="fixed bottom-0 left-0 w-full md:hidden bg-surface dark:bg-surface-charcoal border-t border-outline-variant shadow-lg z-50 flex justify-around py-2 px-4">
+<a class="flex flex-col items-center justify-center text-primary dark:text-secondary-fixed-dim transition-all active:scale-95 duration-100" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">local_shipping</span>
+<span class="font-label-caps text-label-caps">JOBS</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant transition-all active:scale-95 duration-100" href="#">
+<span class="material-symbols-outlined">map</span>
+<span class="font-label-caps text-label-caps">MAP</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant transition-all active:scale-95 duration-100" href="#">
+<span class="material-symbols-outlined">forum</span>
+<span class="font-label-caps text-label-caps">CHAT</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant transition-all active:scale-95 duration-100" href="#">
+<span class="material-symbols-outlined">notifications</span>
+<span class="font-label-caps text-label-caps">ALERTS</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant transition-all active:scale-95 duration-100" href="#">
+<span class="material-symbols-outlined">menu</span>
+<span class="font-label-caps text-label-caps">MENU</span>
+</a>
+</nav>
+<script>
+        // Simple micro-interaction for the data grid rows
+        document.querySelectorAll('tbody tr').forEach(row => {
+            row.addEventListener('click', () => {
+                const jobId = row.querySelector('.font-data-mono').textContent;
+                console.log(`Opening details for Job: ${jobId}`);
+                // In a real app, this would trigger a modal or navigation
+            });
+        });
+    </script>
+</body></html>

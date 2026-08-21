@@ -9,8 +9,8 @@ No static demo, no WordPress — a real, admin-managed, production-ready site.
 | Area | Pages / Features |
 |------|------------------|
 | Public site | Home, Services list, Service detail, Areas, Booking form, Contact form, Testimonials, About, FAQ, 404, sitemap, robots |
-| Admin panel | Dashboard, Bookings (view + status), Messages inbox, Services CRUD, Areas CRUD, Testimonials (approve/edit), Settings, Change password |
-| Database | `services`, `areas`, `bookings`, `messages`, `testimonials`, `settings`, `admins` |
+| Admin panel | Dashboard, CRM enquiries (workflow + dispatch), Recovery Vehicles, Bookings (view + status), Messages inbox, Services CRUD, Areas CRUD, Testimonials (approve/edit), Settings, Change password |
+| Database | `services`, `areas`, `bookings`, `recovery_vehicles`, `messages`, `testimonials`, `settings`, `admins` |
 
 Everything on the public site (services, areas, reviews, contact details) is
 **stored in MySQL and edited from the admin panel** — no code changes needed to
@@ -40,7 +40,8 @@ MancWay/
 │   └── views/layout/          # header / footer / admin partials
 ├── database/
 │   ├── schema.sql             # tables — import first
-│   └── seed.sql                # services, areas, settings, sample reviews
+│   ├── seed.sql                # services, areas, settings, sample reviews
+│   └── migration_crm.sql      # CRM workflow + recovery fleet (import after seed)
 ├── public/                    # <-- contents go into public_html/
 │   ├── index.php, services.php, service.php, areas.php
 │   ├── booking.php, contact.php, testimonials.php, about.php, faq.php
@@ -65,6 +66,7 @@ MancWay/
 1. hPanel → **phpMyAdmin** → select your database → **Import**
 2. Import `database/schema.sql` first
 3. Then import `database/seed.sql`
+4. Then import `database/migration_crm.sql` to enable the CRM and recovery fleet
 
 ### 3. Upload the files
 Upload with the **hPanel File Manager** or FTP (e.g. FileZilla):
@@ -146,6 +148,7 @@ return [
 
 - [ ] `app/config/config.local.php`: set the **3 marked values** — DB password, real domain (`APP_URL`), notification email (`MAIL_TO`). The `SESSION_SECRET` is already generated for you.
 - [ ] `schema.sql` + `seed.sql` imported (phpMyAdmin)
+- [ ] `migration_crm.sql` imported after the base schema and seed
 - [ ] `app/` uploaded to `/home/u514321141/app/`; contents of `public/` into `public_html/` (recommended layout)
 - [ ] SSL enabled (HTTPS works, redirects to https)
 - [ ] `setup.php` run (created your admin) and **deleted**
@@ -178,4 +181,3 @@ Then visit http://localhost:8000 — but you'll need a local MySQL and a
 ---
 
 Built and maintained for MancWay Recovery.
-

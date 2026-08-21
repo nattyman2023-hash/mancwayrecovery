@@ -8,6 +8,8 @@ $admin_title = $admin_title ?? 'Admin';
 $active_admin = $active_admin ?? '';
 $admin_nav = [
     'dashboard'    => ['Dashboard',    url('/admin/index.php')],
+    'crm'          => ['CRM',          url('/admin/crm.php')],
+    'vehicles'     => ['Vehicles',     url('/admin/vehicles.php')],
     'bookings'     => ['Bookings',     url('/admin/bookings.php')],
     'messages'     => ['Messages',     url('/admin/messages.php')],
     'services'     => ['Services',     url('/admin/services.php')],
@@ -26,14 +28,17 @@ $admin_nav = [
     <link rel="icon" type="image/svg+xml" href="<?= e(asset('img/favicon.svg')) ?>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="<?= e(asset('css/style.css')) ?>">
+    <link rel="stylesheet" href="<?= e(asset('css/admin-crm.css')) ?>">
 </head>
 <body class="admin-body">
 <header class="admin-topbar">
     <div class="container admin-topbar-inner">
         <a class="brand brand-admin" href="<?= e(url('/admin/index.php')) ?>">
-            <span class="brand-text">Manc<span class="brand-accent">Way</span> <small>Admin</small></span>
+            <img class="brand-logo" src="<?= e(asset('img/logo.jpeg')) ?>" alt="<?= e(site_name()) ?> logo">
+            <span class="brand-text">Manc<span style="color:var(--mw-amber)">Way</span> <small>CRM</small></span>
         </a>
         <button class="nav-toggle" aria-expanded="false" aria-controls="admin-menu" aria-label="Menu"><span></span><span></span><span></span></button>
         <nav id="admin-menu" class="admin-nav" aria-label="Admin">
