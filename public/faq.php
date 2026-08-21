@@ -29,7 +29,7 @@ $page_schema = [
 require APP_DIR . '/views/layout/header.php';
 ?>
 
-<section class="page-hero">
+<section class="page-hero" style="--page-hero-image:url('<?= e(asset('img/recovery-hero.jpg')) ?>')">
     <div class="container">
         <span class="pill">FAQ</span>
         <h1>Frequently asked questions</h1>

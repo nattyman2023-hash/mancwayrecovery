@@ -7,7 +7,7 @@ $page_title = 'Page not found — ' . site_name();
 $active = '';
 require APP_DIR . '/views/layout/header.php';
 ?>
-<section class="section">
+<section class="page-hero" style="--page-hero-image:url('<?= e(asset('img/recovery-hero.jpg')) ?>')">
     <div class="container center narrow">
         <p class="big-404">404</p>
         <h1>Page not found</h1>

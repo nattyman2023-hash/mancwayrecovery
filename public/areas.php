@@ -83,7 +83,7 @@ require APP_DIR . '/views/layout/header.php';
 ?>
 
 <?php if ($area): ?>
-<section class="page-hero">
+<section class="page-hero" style="--page-hero-image:url('<?= e(asset('img/recovery-loading.jpg')) ?>')">
     <div class="container">
         <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="<?= e(url('/')) ?>">Home</a> &rsaquo; <a href="<?= e(url('/areas')) ?>">Areas covered</a> &rsaquo; <span><?= e($area['name']) ?></span></nav>
         <span class="pill">Greater Manchester coverage</span>
@@ -135,7 +135,7 @@ require APP_DIR . '/views/layout/header.php';
     </div>
 </section>
 <?php else: ?>
-<section class="page-hero">
+<section class="page-hero" style="--page-hero-image:url('<?= e(asset('img/recovery-loading.jpg')) ?>')">
     <div class="container">
         <span class="pill">Coverage</span>
         <h1>Areas we cover</h1>

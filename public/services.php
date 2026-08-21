@@ -24,7 +24,7 @@ $page_schema = [
 require APP_DIR . '/views/layout/header.php';
 ?>
 
-<section class="page-hero">
+<section class="page-hero" style="--page-hero-image:url('<?= e(asset('img/recovery-hero.jpg')) ?>')">
     <div class="container">
         <span class="pill">Services</span>
         <h1>Vehicle recovery services</h1>

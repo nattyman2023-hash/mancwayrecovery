@@ -12,7 +12,7 @@ $active = 'testimonials';
 require APP_DIR . '/views/layout/header.php';
 ?>
 
-<section class="page-hero">
+<section class="page-hero" style="--page-hero-image:url('<?= e(asset('img/recovery-loading.jpg')) ?>')">
     <div class="container">
         <span class="pill">Reviews</span>
         <h1>What our customers say</h1>
