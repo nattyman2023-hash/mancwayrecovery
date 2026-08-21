@@ -127,6 +127,15 @@ require APP_DIR . '/views/layout/header.php';
                 <input type="email" id="email" name="email" value="<?= old('email') ?>">
                 <?= field_error($errors, 'email') ?>
             </div>
+            <div class="field vehicle-lookup" data-vehicle-lookup data-endpoint="<?= e(url('/api/dvla-vehicle.php')) ?>">
+                <label for="vehicle_reg">Vehicle registration</label>
+                <div class="vehicle-lookup-row">
+                    <input type="text" id="vehicle_reg" name="vehicle_reg" value="<?= old('vehicle_reg') ?>" placeholder="e.g. AB12 CDE" autocomplete="off" autocapitalize="characters" spellcheck="false">
+                    <button type="button" class="btn btn-outline vehicle-lookup-button" data-vehicle-lookup-button>Find details</button>
+                </div>
+                <p class="vehicle-lookup-help">Enter the registration and we’ll fill in the details DVLA holds.</p>
+                <p class="vehicle-lookup-status" data-vehicle-lookup-status role="status" aria-live="polite"></p>
+            </div>
             <div class="form-row">
                 <div class="field<?= isset($errors['vehicle_make']) ? ' has-error' : '' ?>">
                     <label for="vehicle_make">Vehicle make *</label>
@@ -137,15 +146,6 @@ require APP_DIR . '/views/layout/header.php';
                     <label for="vehicle_model">Vehicle model</label>
                     <input type="text" id="vehicle_model" name="vehicle_model" value="<?= old('vehicle_model') ?>" placeholder="e.g. Focus 1.6">
                 </div>
-            </div>
-            <div class="field vehicle-lookup" data-vehicle-lookup data-endpoint="<?= e(url('/api/dvla-vehicle.php')) ?>">
-                <label for="vehicle_reg">Vehicle registration</label>
-                <div class="vehicle-lookup-row">
-                    <input type="text" id="vehicle_reg" name="vehicle_reg" value="<?= old('vehicle_reg') ?>" placeholder="e.g. AB12 CDE" autocomplete="off" autocapitalize="characters" spellcheck="false">
-                    <button type="button" class="btn btn-outline vehicle-lookup-button" data-vehicle-lookup-button>Find details</button>
-                </div>
-                <p class="vehicle-lookup-help">Enter the registration and we’ll fill in the details DVLA holds.</p>
-                <p class="vehicle-lookup-status" data-vehicle-lookup-status role="status" aria-live="polite"></p>
             </div>
             <div class="field">
                 <label for="service_id">Service required</label>
