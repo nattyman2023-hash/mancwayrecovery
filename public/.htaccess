@@ -75,5 +75,12 @@ RedirectMatch 403 /\.env
     ExpiresByType image/x-icon "access plus 1 year"
 </IfModule>
 
+# Revalidate versioned CSS and JavaScript after deployments. The asset helper
+# still adds a file-version query string, while this prevents an old page tab
+# from keeping stale layout rules indefinitely.
+<FilesMatch "\.(css|js)$">
+    Header always set Cache-Control "no-cache, must-revalidate"
+</FilesMatch>
+
 # Custom error pages
 ErrorDocument 404 /404.php
