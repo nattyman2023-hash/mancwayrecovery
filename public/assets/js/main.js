@@ -148,11 +148,12 @@
           actionWrap.className = 'mw-chat-actions';
           actions.forEach(function (action) {
             if (!action || !action.label) return;
-            if (action.type === 'call' && action.href) {
+            if (action.href) {
               var link = document.createElement('a');
-              link.className = 'mw-chat-action';
+              link.className = 'mw-chat-action' + (action.type === 'payment' ? ' is-primary' : '');
               link.href = action.href;
               link.textContent = action.label;
+              if (action.external) { link.target = '_blank'; link.rel = 'noopener'; }
               actionWrap.appendChild(link);
               return;
             }
@@ -277,7 +278,10 @@
               if (!result.ok) throw new Error(result.data.message || 'Please check the booking details.');
               toggleBooking(false);
               bookingForm.reset();
-              addMessage(result.data.message + (result.data.reference ? ' Your reference is ' + result.data.reference + '.' : ''), 'bot', [{ type: 'call', label: 'Call the recovery team', href: 'tel:' + (widget.dataset.phone || '') }]);
+              var bookingActions = [{ type: 'call', label: 'Call the recovery team', href: 'tel:' + (widget.dataset.phone || '') }];
+              if (result.data.payment_url) bookingActions.unshift({ type: 'payment', label: 'Pay £50 deposit', href: result.data.payment_url, external: true });
+              if (result.data.invoice_url) bookingActions.push({ type: 'invoice', label: 'View invoice', href: result.data.invoice_url, external: true });
+              addMessage(result.data.message + (result.data.reference ? ' Your reference is ' + result.data.reference + '.' : ''), 'bot', bookingActions);
             })
             .catch(function (error) { bookingError.textContent = error.message; })
             .finally(function () {
@@ -320,6 +324,41 @@
         button.setAttribute('aria-pressed', showing ? 'false' : 'true');
         button.setAttribute('aria-label', showing ? 'Show value' : 'Hide value');
       });
+    });
+  }
+
+  function setupPricingCalculators() {
+    document.querySelectorAll('[data-pricing-calculator]').forEach(function (form) {
+      var service = form.querySelector('#service_id');
+      var miles = form.querySelector('#distance_miles');
+      var summary = form.querySelector('[data-pricing-summary]');
+      if (!service || !miles || !summary) return;
+      var total = summary.querySelector('[data-pricing-total]');
+      var deposit = summary.querySelector('[data-pricing-deposit]');
+      var balance = summary.querySelector('[data-pricing-balance]');
+      var config = {};
+      try { config = JSON.parse(form.getAttribute('data-pricing-config') || '{}'); } catch (e) { config = {}; }
+      var currency = new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' });
+
+      function update() {
+        var item = config[service.value];
+        var distance = Math.max(0, parseFloat(miles.value || '0') || 0);
+        if (!item) {
+          total.textContent = 'Choose a service';
+          deposit.textContent = currency.format(50);
+          balance.textContent = '—';
+          return;
+        }
+        var quote = (Number(item.base) || 0) + (distance * (Number(item.rate) || 2.5));
+        var due = Number(item.deposit) || 50;
+        total.textContent = currency.format(quote);
+        deposit.textContent = currency.format(due);
+        balance.textContent = currency.format(Math.max(0, quote - due));
+      }
+
+      service.addEventListener('change', update);
+      miles.addEventListener('input', update);
+      update();
     });
   }
 
@@ -420,8 +459,8 @@
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function () { setupNavToggles(); setupHeroSlideshows(); setupChatWidgets(); setupYear(); setupConfirm(); setupPasswordToggles(); setupVehicleLookup(); });
+    document.addEventListener('DOMContentLoaded', function () { setupNavToggles(); setupHeroSlideshows(); setupChatWidgets(); setupPricingCalculators(); setupYear(); setupConfirm(); setupPasswordToggles(); setupVehicleLookup(); });
   } else {
-    setupNavToggles(); setupHeroSlideshows(); setupChatWidgets(); setupYear(); setupConfirm(); setupPasswordToggles(); setupVehicleLookup();
+    setupNavToggles(); setupHeroSlideshows(); setupChatWidgets(); setupPricingCalculators(); setupYear(); setupConfirm(); setupPasswordToggles(); setupVehicleLookup();
   }
 })();

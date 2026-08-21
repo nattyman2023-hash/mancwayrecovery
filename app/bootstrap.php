@@ -17,6 +17,7 @@ require APP_DIR . '/db.php';
 require APP_DIR . '/helpers.php';
 require APP_DIR . '/csrf.php';
 require APP_DIR . '/auth.php';
+require APP_ROOT . '/app/payments.php';
 
 // Harden session cookie + start session.
 if (session_status() === PHP_SESSION_NONE) {

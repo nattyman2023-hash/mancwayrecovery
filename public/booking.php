@@ -5,6 +5,15 @@ require __DIR__ . '/../app/bootstrap.php';
 $services = db()->query('SELECT id, slug, title, price_from FROM services WHERE is_active = 1 ORDER BY sort_order')->fetchAll();
 $serviceMap = [];
 foreach ($services as $s) { $serviceMap[$s['slug']] = $s; }
+$pricingConfig = [];
+foreach ($services as $s) {
+    $pricingConfig[(string)$s['id']] = [
+        'slug' => (string)$s['slug'],
+        'base' => booking_base_price_for_service((string)$s['slug'], (float)$s['price_from']),
+        'rate' => 2.50,
+        'deposit' => 50.00,
+    ];
+}
 
 $prefillSlug = trim($_GET['service'] ?? '');
 $prefillId   = isset($serviceMap[$prefillSlug]) ? $serviceMap[$prefillSlug]['id'] : '';
@@ -20,6 +29,8 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
     $vmake     = trim($_POST['vehicle_make'] ?? '');
     $vmodel    = trim($_POST['vehicle_model'] ?? '');
     $vreg      = trim($_POST['vehicle_reg'] ?? '');
+    $distanceRaw = trim((string)($_POST['distance_miles'] ?? ''));
+    $distanceMiles = $distanceRaw === '' ? 0.0 : (float)$distanceRaw;
     $serviceId = (int)($_POST['service_id'] ?? 0);
     $address   = trim($_POST['address'] ?? '');
     $postcode  = trim($_POST['postcode'] ?? '');
@@ -31,21 +42,35 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
     if ($email !== '' && !valid_email($email))        $errors['email'] = 'Please enter a valid email address.';
     if (!valid_phone($phone))                         $errors['phone'] = 'Please enter a valid phone number.';
     if ($vreg === '')                                 $errors['vehicle_reg'] = 'Please enter the vehicle registration.';
+    if ($distanceRaw !== '' && (!is_numeric($distanceRaw) || $distanceMiles < 0 || $distanceMiles > 10000)) $errors['distance_miles'] = 'Please enter estimated miles between 0 and 10,000.';
     if ($address === '')                              $errors['address'] = 'Please enter your address.';
     if (!valid_postcode($postcode))                   $errors['postcode'] = 'Please enter a valid UK postcode.';
     if ($pdate === '' || strtotime($pdate) < strtotime(date('Y-m-d'))) $errors['preferred_date'] = 'Please choose a valid date (today or later).';
     if ($ptime === '')                                $errors['preferred_time'] = 'Please choose a preferred time.';
 
+    $serviceSlug = '';
+    $serviceFallback = 0.0;
+    foreach ($services as $service) {
+        if ((int)$service['id'] === $serviceId) {
+            $serviceSlug = (string)$service['slug'];
+            $serviceFallback = (float)$service['price_from'];
+            break;
+        }
+    }
+    $quote = booking_quote_for_service($serviceSlug, $distanceMiles, $serviceFallback);
+
     if (!$errors) {
+        ensure_payment_schema();
         $reference = generate_reference();
         $ins = db()->prepare('INSERT INTO bookings
-            (reference, name, email, phone, vehicle_make, vehicle_model, vehicle_reg, service_id, address, postcode, preferred_date, preferred_time, notes, status, ip, created_at)
-            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,' . 'NOW())');
+            (reference, name, email, phone, vehicle_make, vehicle_model, vehicle_reg, distance_miles, quoted_total, deposit_amount, deposit_status, balance_status, service_id, address, postcode, preferred_date, preferred_time, notes, status, ip, created_at)
+            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,' . 'NOW())');
         $ins->execute([
-            $reference, $name, $email, $phone, $vmake, $vmodel, strtoupper($vreg),
-            $serviceId > 0 ? $serviceId : null, $address, strtoupper($postcode),
-            $pdate, $ptime, mb_substr($notes, 0, 2000), 'new', client_ip()
+            $reference, $name, $email, $phone, $vmake, $vmodel, strtoupper($vreg), $distanceMiles, $quote['total'], 50.00, 'unpaid', 'not_due',
+            $serviceId > 0 ? $serviceId : null, $address, strtoupper($postcode), $pdate, $ptime, mb_substr($notes, 0, 2000), 'new', client_ip()
         ]);
+        $bookingId = (int)db()->lastInsertId();
+        $depositInvoice = create_booking_deposit_invoice($bookingId);
         $svcName = 'General enquiry';
         if ($serviceId > 0) {
             $svc = db()->prepare('SELECT title FROM services WHERE id = ?');
@@ -68,10 +93,10 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
             $customerBody .= '<p>If you need to speak to us now, call <a href="tel:' . e(setting('phone_href', site_phone())) . '">' . e(site_phone()) . '</a>.</p>';
             send_customer_email($email, 'Your MancWay recovery request ' . $reference, $customerBody);
         }
-        redirect_with(url('/booking.php?done=' . $reference), ['success' => $reference]);
+        redirect_with(url('/booking.php?done=' . $reference), ['success' => $reference, 'invoice_id' => $depositInvoice ? (int)$depositInvoice['id'] : 0]);
     }
 
-    foreach (['name','email','phone','vehicle_make','vehicle_model','vehicle_reg','address','postcode','preferred_date','preferred_time','notes'] as $f) {
+    foreach (['name','email','phone','vehicle_make','vehicle_model','vehicle_reg','distance_miles','address','postcode','preferred_date','preferred_time','notes'] as $f) {
         $_SESSION['_flash']['input_' . $f] = $$f;
     }
     $_SESSION['_flash']['input_service_id'] = $serviceId;
@@ -81,6 +106,8 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
 
 $success = flash('success');
 $errors  = flash('errors', []);
+$invoiceId = (int)flash('invoice_id', 0);
+$depositInvoice = $invoiceId > 0 ? get_invoice($invoiceId) : null;
 
 $page_title       = 'Book Vehicle Recovery — Manchester | ' . site_name();
 $page_description = 'Book vehicle recovery online. Breakdown, accident and specialist recovery, plus long-distance transport, across Greater Manchester.';
@@ -94,6 +121,18 @@ require APP_DIR . '/views/layout/header.php';
         <h1>Booking received!</h1>
         <p>Thank you. Your booking reference is <strong><?= e($success) ?></strong>. One of our recovery team will be in touch shortly to confirm.</p>
         <p class="muted">We've sent the details to our team. Keep your reference handy in case you need to contact us about this booking.</p>
+        <?php if ($depositInvoice): ?>
+            <div class="invoice-callout">
+                <strong>£50 deposit required for this booking</strong>
+                <?php if ($depositInvoice['payment_method'] === 'stripe' && $depositInvoice['stripe_payment_link_url']): ?>
+                    <p>Pay securely online to reserve your request.</p>
+                    <a class="btn btn-primary" href="<?= e($depositInvoice['stripe_payment_link_url']) ?>" target="_blank" rel="noopener">Pay £50 deposit</a>
+                <?php else: ?>
+                    <p>We've created invoice <?= e($depositInvoice['invoice_number']) ?> for bank transfer. The invoice includes the payment instructions.</p>
+                <?php endif; ?>
+                <p><a class="link" href="<?= e(invoice_public_url($depositInvoice)) ?>" target="_blank" rel="noopener">View invoice <?= e($depositInvoice['invoice_number']) ?></a></p>
+            </div>
+        <?php endif; ?>
         <p class="mt-2">
             <a class="btn btn-primary" href="<?= e(url('/')) ?>">Back to home</a>
             <a class="btn btn-outline" href="tel:<?= e(setting('phone_href', site_phone())) ?>">Call <?= e(site_phone()) ?></a>
@@ -107,7 +146,7 @@ require APP_DIR . '/views/layout/header.php';
     </div></section>
     <section class="section"><div class="container grid grid-2-1"><div>
         <?php if ($errors): ?><div class="alert alert-error">Please correct the highlighted fields below.</div><?php endif; ?>
-        <form method="post" action="<?= e(url('/booking.php')) ?>" class="form" novalidate>
+        <form method="post" action="<?= e(url('/booking.php')) ?>" class="form" novalidate data-pricing-calculator data-pricing-config="<?= e(json_encode($pricingConfig, JSON_UNESCAPED_SLASHES)) ?>">
             <?= csrf_field() ?>
             <div class="hp" aria-hidden="true"><label>Leave empty<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
             <div class="form-row">
@@ -154,9 +193,20 @@ require APP_DIR . '/views/layout/header.php';
                     <option value="">Select a service…</option>
                     <?php foreach ($services as $s):
                         $sel = (((int)old('service_id', (string)$prefillId)) === (int)$s['id']) ? ' selected' : ''; ?>
-                        <option value="<?= (int)$s['id'] ?>"<?= $sel ?>><?= e($s['title']) ?> — from <?= e(format_price($s['price_from'])) ?></option>
+                        <option value="<?= (int)$s['id'] ?>"<?= $sel ?>><?= e($s['title']) ?> — from <?= e(format_price(booking_base_price_for_service((string)$s['slug'], (float)$s['price_from']))) ?></option>
                     <?php endforeach; ?>
                 </select>
+            </div>
+            <div class="field<?= isset($errors['distance_miles']) ? ' has-error' : '' ?>">
+                <label for="distance_miles">Estimated recovery miles <span class="muted">(optional)</span></label>
+                <input type="number" id="distance_miles" name="distance_miles" value="<?= old('distance_miles') ?>" min="0" max="10000" step="0.1" placeholder="e.g. 18" inputmode="decimal">
+                <small class="muted">Pricing starts at the service rate plus £2.50 per mile. A £50 deposit is due for every booking; the final balance can be invoiced after confirmation.</small>
+                <?= field_error($errors, 'distance_miles') ?>
+            </div>
+            <div class="pricing-summary" data-pricing-summary aria-live="polite">
+                <div><span>Estimated total</span><strong data-pricing-total>Choose a service</strong></div>
+                <div><span>Deposit due</span><strong data-pricing-deposit>£50.00</strong></div>
+                <div><span>Balance after deposit</span><strong data-pricing-balance>—</strong></div>
             </div>
             <div class="field<?= isset($errors['address']) ? ' has-error' : '' ?>">
                 <label for="address">Pickup address / breakdown location *</label>

@@ -17,9 +17,9 @@ SET NAMES utf8mb4;
 -- ---------------------------------------------------------------------
 INSERT IGNORE INTO services (slug, title, icon, short_desc, description, price_from, sort_order, is_active) VALUES
 ('breakdown-recovery',   'Breakdown Recovery',                              'truck',   'Fast roadside recovery when your car won''t start or move.',
- 'Broken down at the roadside, at home, or won''t start? We reach you across Greater Manchester and either get you moving again or recover the vehicle safely to a garage, home or compound of your choice.', 60.00, 1, 1),
+ 'Broken down at the roadside, at home, or won''t start? We reach you across Greater Manchester and either get you moving again or recover the vehicle safely to a garage, home or compound of your choice.', 50.00, 1, 1),
 ('accident-recovery',    'Accident Recovery',                               'shield',  'Careful recovery after a collision.',
- 'Recovery for vehicles involved in a collision — to a bodyshop, insurer-approved compound, or your home. Handled carefully and discreetly, with clear communication throughout.', 75.00, 2, 1),
+ 'Recovery for vehicles involved in a collision — to a bodyshop, insurer-approved compound, or your home. Handled carefully and discreetly, with clear communication throughout.', 120.00, 2, 1),
 ('vehicle-transport',    'Long-Distance Vehicle Transport',                 'map',     'Nationwide transport for cars, vans and non-runners.',
  'Moving a vehicle between two locations — dealer-to-dealer, house move, or getting a non-runner to a specialist garage. We quote based on the exact pickup and drop-off locations.', 120.00, 3, 1),
 ('specialist-recovery',  'Specialist Recovery (4x4 / Off-Road / Motorbike)', 'bike',    'Winching and recovery for vehicles standard tow trucks can''t handle.',

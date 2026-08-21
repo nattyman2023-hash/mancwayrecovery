@@ -54,7 +54,7 @@ partial('partials/photo-strip', compact('photo_items', 'photo_kicker', 'photo_ti
                     <h3><?= e($s['title']) ?></h3>
                     <p><?= e($s['short_desc']) ?></p>
                     <div class="service-foot">
-                        <span class="price">From <?= e(format_price($s['price_from'])) ?></span>
+                        <span class="price">From <?= e(format_price(booking_base_price_for_service((string)$s['slug'], (float)$s['price_from']))) ?></span>
                     <a class="link" href="<?= e(url('/services/' . $s['slug'])) ?>">Details →</a>
                     </div>
                     <a class="btn btn-outline btn-block" href="<?= e(url('/booking.php?service=' . $s['slug'])) ?>">Request this service</a>

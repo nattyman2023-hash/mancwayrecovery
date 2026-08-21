@@ -26,7 +26,7 @@ function chat_fallback_reply(string $message, array $services): string
     $phone = site_phone();
     $serviceLines = [];
     foreach ($services as $service) {
-        $serviceLines[] = $service['title'] . ' from ' . format_price($service['price_from']);
+        $serviceLines[] = $service['title'] . ' from ' . format_price(booking_base_price_for_service((string)$service['slug'], (float)$service['price_from']));
     }
 
     if (preg_match('/\b(book|booking|recover me|send someone|need help|breakdown|stranded|won.t start|won.t move)\b/i', $text)) {
@@ -34,7 +34,7 @@ function chat_fallback_reply(string $message, array $services): string
     }
     if (preg_match('/\b(price|cost|how much|quote|charge|expensive)\b/i', $text)) {
         $summary = $serviceLines ? implode('; ', $serviceLines) : 'pricing depends on the vehicle and distance';
-        return 'We keep pricing clear and confirm the exact cost before dispatch. Current service guide: ' . $summary . '. For an accurate quote, tell us the pickup postcode, vehicle registration and where it needs to go.';
+        return 'Our guide prices are Breakdown £50, Accident £120 and Long-Distance Transport £120, plus £2.50 per mile. Every booking has a £50 deposit. We confirm the exact cost before dispatch. Current service guide: ' . $summary . '. For an accurate quote, tell us the pickup postcode, vehicle registration and where it needs to go.';
     }
     if (preg_match('/\b(area|where|cover|postcode|salford|stockport|bolton|bury|oldham|rochdale|tameside|trafford|wigan)\b/i', $text)) {
         return 'MancWay Recovery covers Greater Manchester, including Manchester, Salford, Trafford, Stockport, Tameside, Bury, Bolton, Rochdale, Oldham and Wigan, plus longer-distance transport. Tell me your postcode and I’ll point you to the right next step.';
@@ -89,7 +89,7 @@ $_SESSION['chat_window_count'] = $windowCount + 1;
 
 $services = [];
 try {
-    $services = db()->query('SELECT title, price_from FROM services WHERE is_active = 1 ORDER BY sort_order')->fetchAll();
+    $services = db()->query('SELECT slug, title, price_from FROM services WHERE is_active = 1 ORDER BY sort_order')->fetchAll();
 } catch (Throwable $e) {
     error_log('MancWay chat could not load services.');
 }
@@ -122,13 +122,14 @@ if ($apiKey === '' || !function_exists('curl_init')) {
 $serviceContext = 'No service prices are currently available.';
 if ($services) {
     $serviceContext = implode('; ', array_map(static function (array $service): string {
-        return $service['title'] . ' from ' . format_price($service['price_from']);
+        return $service['title'] . ' from ' . format_price(booking_base_price_for_service((string)$service['slug'], (float)$service['price_from']));
     }, $services));
 }
 $system = 'You are the friendly online assistant for MancWay Recovery, a UK vehicle recovery business. '
     . 'Answer in concise, warm British English. The business provides breakdown recovery, accident recovery, specialist recovery and vehicle transport across Greater Manchester and beyond. '
     . 'It is available 24/7. The business address is ' . setting('address', 'Upper Cyrus St, Manchester M40 7FD') . '. '
     . 'The phone number is ' . site_phone() . '. Current service guide: ' . $serviceContext . '. '
+    . 'Pricing rules are Breakdown Recovery £50 base, Accident Recovery £120 base and Long-Distance Vehicle Transport £120 base, all plus £2.50 per estimated mile. Every booking requires a £50 deposit, with the balance invoiced after confirmation. '
     . 'Help visitors understand services, coverage, vehicle registration lookup, what details are needed and the next step. '
     . 'Never say a booking is confirmed: the website can collect a booking request, and the recovery team confirms it by phone. '
     . 'For immediate danger or injury, tell the visitor to call 999 first. Do not invent availability, exact quotes, arrival times or DVLA data. '

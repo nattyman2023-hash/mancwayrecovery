@@ -56,6 +56,7 @@ $chat_phone = site_phone();
                         </select>
                     </label>
                 </div>
+                <label>Estimated recovery miles <span>(optional · £2.50 per mile)</span><input type="number" name="distance_miles" min="0" max="10000" step="0.1" inputmode="decimal" placeholder="e.g. 18"></label>
                 <label>What happened? <span>(optional)</span><textarea name="notes" rows="2" maxlength="1000" placeholder="Tell us briefly what you need help with"></textarea></label>
                 <p class="mw-chat-form-error" data-chat-booking-error role="alert"></p>
                 <button type="submit" class="mw-chat-submit">Send booking request <span aria-hidden="true">→</span></button>

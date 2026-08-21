@@ -279,6 +279,20 @@ p{margin:.5em 0}
 .vehicle-lookup-status.is-loading{color:var(--navy)}
 .vehicle-lookup-status.is-success{color:#18794e}
 .vehicle-lookup-status.is-error{color:var(--err)}
+.pricing-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:14px;border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--soft)}
+.pricing-summary div{display:flex;flex-direction:column;gap:3px;min-width:0}
+.pricing-summary span{color:var(--muted);font-size:.76rem}
+.pricing-summary strong{color:var(--navy);font-size:1.04rem}
+.invoice-callout{margin:1.4rem auto 0;padding:18px;max-width:520px;border:1px solid rgba(245,166,35,.55);border-radius:var(--radius);background:#fffaf0;text-align:left}
+.invoice-callout p:last-child{margin-bottom:0}
+.invoice-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:clamp(20px,4vw,36px);box-shadow:var(--shadow)}
+.invoice-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;padding-bottom:20px;border-bottom:1px solid var(--line)}
+.invoice-card-head h2{margin:.25rem 0 0}
+.invoice-details{margin:22px 0;padding:16px;border-radius:var(--radius-sm);background:var(--soft)}
+.invoice-total{font-size:1.35rem;font-weight:800;color:var(--navy)}
+.invoice-payment-box{margin-top:20px;padding:20px;border:1px solid rgba(245,166,35,.55);border-radius:var(--radius-sm);background:#fffaf0}
+.invoice-payment-box h3{margin-top:0}
+.invoice-foot{margin:24px 0 0;text-align:center}
 .hp{position:absolute;left:-9999px;top:0}
 .alert{padding:.85rem 1rem;border-radius:10px;margin-bottom:1rem;font-weight:600}
 .alert-error{background:#fdecec;color:var(--err);border:1px solid #f5c6c6}
@@ -327,6 +341,10 @@ p{margin:.5em 0}
 .badge-confirmed{background:#e0ecff;color:#1d5dc4}
 .badge-complete{background:#e7f7ee;color:var(--ok)}
 .badge-cancelled{background:#fdecec;color:var(--err)}
+.badge-sent{background:#fff4d6;color:var(--amber-d)}
+.badge-paid{background:#e7f7ee;color:var(--ok)}
+.badge-failed{background:#fdecec;color:var(--err)}
+.badge-void{background:#edf0f3;color:var(--muted)}
 .msg-list{display:flex;flex-direction:column;gap:14px}
 .msg-card{border:1px solid var(--line);border-radius:12px;padding:16px;background:#fff}
 .msg-card.is-unread{border-left:4px solid var(--amber)}
@@ -414,6 +432,8 @@ p{margin:.5em 0}
 @media(max-width:520px){
   .vehicle-lookup-row{flex-direction:column}
   .vehicle-lookup-button{width:100%}
+  .pricing-summary{grid-template-columns:1fr}
+  .invoice-card-head{flex-direction:column}
   .hero{padding:42px 0 86px}
   .hero h1{font-size:clamp(2rem,10vw,2.65rem)}
   .hero .lead{font-size:1.02rem}

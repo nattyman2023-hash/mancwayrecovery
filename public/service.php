@@ -60,7 +60,7 @@ require APP_DIR . '/views/layout/header.php';
         <p class="lead"><?= e($service['short_desc']) ?></p>
         <div class="hero-cta">
             <a class="btn btn-primary btn-lg" href="<?= e(url('/booking.php?service=' . $service['slug'])) ?>">Book this service</a>
-            <span class="price-tag">From <?= e(format_price($service['price_from'])) ?></span>
+            <span class="price-tag">From <?= e(format_price(booking_base_price_for_service((string)$service['slug'], (float)$service['price_from']))) ?></span>
         </div>
     </div>
 </section>
@@ -83,7 +83,7 @@ require APP_DIR . '/views/layout/header.php';
         </div>
         <aside class="card side-cta">
             <h3>Book <?= e($service['title']) ?></h3>
-            <p class="price">From <?= e(format_price($service['price_from'])) ?></p>
+            <p class="price">From <?= e(format_price(booking_base_price_for_service((string)$service['slug'], (float)$service['price_from']))) ?></p>
             <p>Call now or request online and we'll come to you.</p>
             <a class="btn btn-primary btn-block btn-lg" href="<?= e(url('/booking.php?service=' . $service['slug'])) ?>">Book online</a>
             <hr>

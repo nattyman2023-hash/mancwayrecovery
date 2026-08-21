@@ -39,6 +39,8 @@ $vehicleReg = strtoupper(trim((string)($payload['vehicle_reg'] ?? '')));
 $address = trim((string)($payload['address'] ?? ''));
 $postcode = strtoupper(trim((string)($payload['postcode'] ?? '')));
 $serviceSlug = trim((string)($payload['service'] ?? ''));
+$distanceRaw = trim((string)($payload['distance_miles'] ?? ''));
+$distanceMiles = $distanceRaw === '' ? 0.0 : (float)$distanceRaw;
 $notes = trim((string)($payload['notes'] ?? ''));
 $errors = [];
 
@@ -48,11 +50,13 @@ if (!valid_phone($phone)) $errors['phone'] = 'Please enter a valid phone number.
 if ($vehicleReg === '' || mb_strlen($vehicleReg) > 20) $errors['vehicle_reg'] = 'Please enter the vehicle registration.';
 if ($address === '') $errors['address'] = 'Please enter the pickup address.';
 if (!valid_postcode($postcode)) $errors['postcode'] = 'Please enter a valid UK postcode.';
+if ($distanceRaw !== '' && (!is_numeric($distanceRaw) || $distanceMiles < 0 || $distanceMiles > 10000)) $errors['distance_miles'] = 'Please enter estimated miles between 0 and 10,000.';
 
 $serviceId = null;
 $serviceName = 'General recovery';
+$service = [];
 if ($serviceSlug !== '') {
-    $serviceStmt = db()->prepare('SELECT id, title FROM services WHERE slug = ? AND is_active = 1 LIMIT 1');
+    $serviceStmt = db()->prepare('SELECT id, title, price_from FROM services WHERE slug = ? AND is_active = 1 LIMIT 1');
     $serviceStmt->execute([$serviceSlug]);
     $service = $serviceStmt->fetch();
     if ($service) {
@@ -65,19 +69,23 @@ if ($errors) {
     chat_booking_json_response(['ok' => false, 'message' => reset($errors), 'errors' => $errors], 422);
 }
 
+$quote = booking_quote_for_service($serviceSlug, $distanceMiles, (float)($service['price_from'] ?? 0));
+ensure_payment_schema();
 $reference = generate_reference();
 $insert = db()->prepare('INSERT INTO bookings
-    (reference, name, email, phone, vehicle_make, vehicle_model, vehicle_reg, service_id, address, postcode, preferred_date, preferred_time, notes, status, ip, created_at)
-    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,NOW())');
+    (reference, name, email, phone, vehicle_make, vehicle_model, vehicle_reg, distance_miles, quoted_total, deposit_amount, deposit_status, balance_status, service_id, address, postcode, preferred_date, preferred_time, notes, status, ip, created_at)
+    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,NOW())');
 $insert->execute([
-    $reference, $name, $email, $phone, '', '', $vehicleReg, $serviceId, $address, $postcode,
+    $reference, $name, $email, $phone, '', '', $vehicleReg, $distanceMiles, $quote['total'], 50.00, 'unpaid', 'not_due', $serviceId, $address, $postcode,
     date('Y-m-d'), 'Chat request', mb_substr($notes, 0, 1000), 'new', client_ip()
 ]);
+$bookingId = (int)db()->lastInsertId();
+$depositInvoice = create_booking_deposit_invoice($bookingId);
 
 $body = '<h2>New chat booking — ' . e($reference) . '</h2>';
 $body .= '<p><strong>Service:</strong> ' . e($serviceName) . '<br><strong>Name:</strong> ' . e($name) . '<br>';
 $body .= '<strong>Phone:</strong> ' . e($phone) . '<br><strong>Email:</strong> ' . e($email ?: '—') . '<br>';
-$body .= '<strong>Vehicle registration:</strong> ' . e($vehicleReg) . '<br><strong>Pickup:</strong> ' . e($address) . ', ' . e($postcode) . '</p>';
+$body .= '<strong>Vehicle registration:</strong> ' . e($vehicleReg) . '<br><strong>Estimated miles:</strong> ' . e((string)$distanceMiles) . '<br><strong>Pickup:</strong> ' . e($address) . ', ' . e($postcode) . '</p>';
 $body .= '<p><strong>Notes:</strong><br>' . nl2br(e($notes ?: '—')) . '</p>';
 $body .= '<p>This request was collected by the website assistant. Confirm the booking by phone.</p>';
 send_site_email('New chat booking ' . $reference . ' — ' . $serviceName, $body, $email);
@@ -92,5 +100,8 @@ if ($email !== '') {
 chat_booking_json_response([
     'ok' => true,
     'reference' => $reference,
+    'invoice_id' => $depositInvoice ? (int)$depositInvoice['id'] : 0,
+    'invoice_url' => $depositInvoice ? invoice_public_url($depositInvoice) : '',
+    'payment_url' => ($depositInvoice && $depositInvoice['payment_method'] === 'stripe') ? (string)$depositInvoice['stripe_payment_link_url'] : '',
     'message' => 'Thanks — your request has been sent. Our recovery team will contact you to confirm it.',
 ]);

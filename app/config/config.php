@@ -52,6 +52,9 @@ define('DVLA_API_URL',   'https://driver-vehicle-licensing.api.gov.uk/vehicle-en
 define('DEEPSEEK_API_KEY', trim((string) cfg('DEEPSEEK_API_KEY', '')));
 define('DEEPSEEK_API_URL', rtrim((string) cfg('DEEPSEEK_API_URL', 'https://api.deepseek.com'), '/'));
 define('DEEPSEEK_MODEL',   trim((string) cfg('DEEPSEEK_MODEL', 'deepseek-v4-flash')));
+define('STRIPE_SECRET_KEY',      trim((string) cfg('STRIPE_SECRET_KEY', '')));
+define('STRIPE_PUBLISHABLE_KEY', trim((string) cfg('STRIPE_PUBLISHABLE_KEY', '')));
+define('STRIPE_WEBHOOK_SECRET',  trim((string) cfg('STRIPE_WEBHOOK_SECRET', '')));
 define('IS_DEV',         APP_ENV === 'development');
 
 // Error reporting — show errors in dev, hide & log in production.

@@ -24,6 +24,7 @@ DirectoryIndex public/index.php
     RewriteRule ^areas/([a-z0-9-]+)/?$ public/areas.php?slug=$1 [L,QSA]
     RewriteRule ^services/?$ public/services.php [L]
     RewriteRule ^services/([a-z0-9-]+)/?$ public/service.php?slug=$1 [L,QSA]
+    RewriteRule ^invoice/?$ public/invoice.php [L]
 
     # Route everything through public/ without exposing it in the URL.
     RewriteCond %{REQUEST_URI} !^/public/

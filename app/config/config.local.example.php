@@ -45,4 +45,10 @@ return [
     'DEEPSEEK_API_KEY' => '',
     'DEEPSEEK_API_URL' => 'https://api.deepseek.com',
     'DEEPSEEK_MODEL'   => 'deepseek-v4-flash',
+
+    // Stripe is configured from CRM → Settings → Payment & invoicing, or
+    // with these server-side values. Never add Stripe keys to public JS.
+    'STRIPE_SECRET_KEY'      => '',
+    'STRIPE_PUBLISHABLE_KEY' => '',
+    'STRIPE_WEBHOOK_SECRET'  => '',
 ];

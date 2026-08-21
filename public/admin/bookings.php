@@ -14,7 +14,7 @@ try {
     $crmReady = false;
 }
 $statusOptions = $crmReady ? enquiry_statuses() : ['new', 'confirmed', 'complete', 'cancelled'];
-$services = db()->query('SELECT id, title, price_from FROM services WHERE is_active = 1 ORDER BY sort_order')->fetchAll();
+$services = db()->query('SELECT id, slug, title, price_from FROM services WHERE is_active = 1 ORDER BY sort_order')->fetchAll();
 $vehicles = $crmReady
     ? db()->query('SELECT id, name, registration FROM recovery_vehicles WHERE is_active = 1 ORDER BY id')->fetchAll()
     : [];
@@ -33,6 +33,8 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
         $vmake      = trim((string)($_POST['vehicle_make'] ?? ''));
         $vmodel     = trim((string)($_POST['vehicle_model'] ?? ''));
         $vreg       = strtoupper(trim((string)($_POST['vehicle_reg'] ?? '')));
+        $distanceRaw = trim((string)($_POST['distance_miles'] ?? ''));
+        $distanceMiles = $distanceRaw === '' ? 0.0 : (float)$distanceRaw;
         $serviceId  = (int)($_POST['service_id'] ?? 0);
         $vehicleId  = (int)($_POST['vehicle_id'] ?? 0);
         $address    = trim((string)($_POST['address'] ?? ''));
@@ -47,6 +49,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
         if ($email !== '' && !valid_email($email)) $errors['email'] = 'Please enter a valid email address.';
         if (!valid_phone($phone)) $errors['phone'] = 'Please enter a valid phone number.';
         if ($vreg === '') $errors['vehicle_reg'] = 'Please enter the vehicle registration.';
+        if ($distanceRaw !== '' && (!is_numeric($distanceRaw) || $distanceMiles < 0 || $distanceMiles > 10000)) $errors['distance_miles'] = 'Please enter estimated miles between 0 and 10,000.';
         if ($address === '') $errors['address'] = 'Please enter the pickup address.';
         if (!valid_postcode($postcode)) $errors['postcode'] = 'Please enter a valid UK postcode.';
         if ($pdate === '' || strtotime($pdate) < strtotime(date('Y-m-d'))) $errors['preferred_date'] = 'Please choose today or a future date.';
@@ -64,31 +67,44 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
             if ((int)$check->fetchColumn() === 0) $errors['vehicle_id'] = 'Please choose an active recovery vehicle.';
         }
 
+        $serviceSlug = '';
+        $serviceFallback = 0.0;
+        foreach ($services as $service) {
+            if ((int)$service['id'] === $serviceId) {
+                $serviceSlug = (string)$service['slug'];
+                $serviceFallback = (float)$service['price_from'];
+                break;
+            }
+        }
+        $quote = booking_quote_for_service($serviceSlug, $distanceMiles, $serviceFallback);
+
         if (!$errors) {
+            ensure_payment_schema();
             $reference = generate_reference();
             if ($crmReady) {
                 $ins = db()->prepare('INSERT INTO bookings
-                    (reference, name, email, phone, vehicle_make, vehicle_model, vehicle_reg, service_id, vehicle_id, address, postcode, preferred_date, preferred_time, notes, status, ip, created_at)
-                    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,NOW())');
+                    (reference, name, email, phone, vehicle_make, vehicle_model, vehicle_reg, distance_miles, quoted_total, deposit_amount, deposit_status, balance_status, service_id, vehicle_id, address, postcode, preferred_date, preferred_time, notes, status, ip, created_at)
+                    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,NOW())');
                 $ins->execute([
-                    $reference, $name, $email, $phone, $vmake, $vmodel, $vreg,
+                    $reference, $name, $email, $phone, $vmake, $vmodel, $vreg, $distanceMiles, $quote['total'], 50.00, 'unpaid', 'not_due',
                     $serviceId > 0 ? $serviceId : null, $vehicleId > 0 ? $vehicleId : null,
                     $address, $postcode, $pdate, $ptime, mb_substr($notes, 0, 2000), $status, client_ip()
                 ]);
             } else {
                 $ins = db()->prepare('INSERT INTO bookings
-                    (reference, name, email, phone, vehicle_make, vehicle_model, vehicle_reg, service_id, address, postcode, preferred_date, preferred_time, notes, status, ip, created_at)
-                    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,NOW())');
+                    (reference, name, email, phone, vehicle_make, vehicle_model, vehicle_reg, distance_miles, quoted_total, deposit_amount, deposit_status, balance_status, service_id, address, postcode, preferred_date, preferred_time, notes, status, ip, created_at)
+                    VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,NOW())');
                 $ins->execute([
-                    $reference, $name, $email, $phone, $vmake, $vmodel, $vreg,
-                    $serviceId > 0 ? $serviceId : null, $address, $postcode,
-                    $pdate, $ptime, mb_substr($notes, 0, 2000), $status, client_ip()
+                    $reference, $name, $email, $phone, $vmake, $vmodel, $vreg, $distanceMiles, $quote['total'], 50.00, 'unpaid', 'not_due',
+                    $serviceId > 0 ? $serviceId : null, $address, $postcode, $pdate, $ptime, mb_substr($notes, 0, 2000), $status, client_ip()
                 ]);
             }
-            redirect_with(url('/admin/bookings.php?view=' . (int)db()->lastInsertId()), ['flash' => 'Booking created. Reference ' . $reference . '.']);
+            $bookingId = (int)db()->lastInsertId();
+            create_booking_deposit_invoice($bookingId);
+            redirect_with(url('/admin/bookings.php?view=' . $bookingId), ['flash' => 'Booking created. Reference ' . $reference . '. Deposit invoice created.']);
         }
 
-        foreach (['name','email','phone','vehicle_make','vehicle_model','vehicle_reg','address','postcode','preferred_date','preferred_time','notes','status'] as $field) {
+        foreach (['name','email','phone','vehicle_make','vehicle_model','vehicle_reg','distance_miles','address','postcode','preferred_date','preferred_time','notes','status'] as $field) {
             $_SESSION['_flash']['input_' . $field] = $$field;
         }
         $_SESSION['_flash']['input_service_id'] = $serviceId;
@@ -118,7 +134,7 @@ if ($newBooking) {
     $active_admin = 'bookings';
     $admin_actions_html = '<a class="btn btn-outline btn-sm" href="' . e(url('/admin/bookings.php')) . '">← All bookings</a>';
     $form = [];
-    foreach (['name','email','phone','vehicle_make','vehicle_model','vehicle_reg','address','postcode','preferred_date','preferred_time','notes'] as $field) {
+    foreach (['name','email','phone','vehicle_make','vehicle_model','vehicle_reg','distance_miles','address','postcode','preferred_date','preferred_time','notes'] as $field) {
         $form[$field] = old($field);
     }
     $formServiceId = (int)old('service_id', '0');
@@ -148,7 +164,8 @@ if ($newBooking) {
                     <div class="field"><label for="vehicle_model">Model <span class="muted">(optional)</span></label><input type="text" id="vehicle_model" name="vehicle_model" value="<?= $form['vehicle_model'] ?>" maxlength="120"></div>
                 </div>
                 <h3>Recovery details</h3>
-                <div class="field"><label for="service_id">Service</label><select id="service_id" name="service_id"><option value="0">General recovery</option><?php foreach ($services as $service): ?><option value="<?= (int)$service['id'] ?>" <?= $formServiceId === (int)$service['id'] ? 'selected' : '' ?>><?= e($service['title']) ?><?= (float)$service['price_from'] > 0 ? ' — from ' . e(format_price($service['price_from'])) : '' ?></option><?php endforeach; ?></select></div>
+                <div class="field"><label for="service_id">Service</label><select id="service_id" name="service_id"><option value="0">General recovery</option><?php foreach ($services as $service): ?><option value="<?= (int)$service['id'] ?>" <?= $formServiceId === (int)$service['id'] ? 'selected' : '' ?>><?= e($service['title']) ?><?= (float)$service['price_from'] > 0 ? ' — from ' . e(format_price(booking_base_price_for_service((string)$service['slug'], (float)$service['price_from']))) : '' ?></option><?php endforeach; ?></select></div>
+                <div class="field<?= isset($errors['distance_miles']) ? ' has-error' : '' ?>"><label for="distance_miles">Estimated recovery miles <span class="muted">(optional)</span></label><input type="number" id="distance_miles" name="distance_miles" value="<?= $form['distance_miles'] ?>" min="0" max="10000" step="0.1" placeholder="e.g. 18"><?= field_error($errors, 'distance_miles') ?></div>
                 <div class="field<?= isset($errors['address']) ? ' has-error' : '' ?>"><label for="address">Pickup address / breakdown location *</label><input type="text" id="address" name="address" value="<?= $form['address'] ?>" required><?= field_error($errors, 'address') ?></div>
                 <div class="field<?= isset($errors['postcode']) ? ' has-error' : '' ?>"><label for="postcode">Postcode *</label><input type="text" id="postcode" name="postcode" value="<?= $form['postcode'] ?>" maxlength="12" required><?= field_error($errors, 'postcode') ?></div>
                 <div class="form-row">
@@ -176,6 +193,7 @@ if ($newBooking) {
 
 // ---- Detail view ----
 if ($viewId) {
+    ensure_payment_schema();
     $stmt = db()->prepare('SELECT b.*, s.title AS service_title FROM bookings b LEFT JOIN services s ON s.id=b.service_id WHERE b.id=? LIMIT 1');
     $stmt->execute([$viewId]);
     $b = $stmt->fetch();
@@ -187,6 +205,9 @@ if ($viewId) {
         require APP_DIR . '/views/layout/admin_footer.php';
         exit;
     }
+    $invoiceStmt = db()->prepare('SELECT * FROM invoices WHERE booking_id=? ORDER BY created_at DESC');
+    $invoiceStmt->execute([$viewId]);
+    $bookingInvoices = $invoiceStmt->fetchAll();
     $admin_title = 'Booking ' . $b['reference'];
     $active_admin = 'bookings';
     $admin_actions_html = '<a class="btn btn-outline btn-sm" href="' . e(url('/admin/bookings.php')) . '">← All bookings</a>';
@@ -215,6 +236,14 @@ if ($viewId) {
                 <dt>Submitted</dt><dd><?= e(date('j M Y H:i', strtotime($b['created_at']))) ?></dd>
             </dl>
             <?php if ($b['notes']): ?><h3>Notes</h3><p><?= nl2br(e($b['notes'])) ?></p><?php endif; ?>
+            <h3>Pricing &amp; payments</h3>
+            <dl class="kv"><dt>Estimated miles</dt><dd><?= e((string)($b['distance_miles'] ?? '0')) ?></dd>
+                <dt>Estimated total</dt><dd><?= e(format_price($b['quoted_total'] ?? 0)) ?></dd>
+                <dt>Deposit</dt><dd><?= e(ucfirst((string)($b['deposit_status'] ?? 'unpaid'))) ?></dd>
+                <dt>Balance</dt><dd><?= e(ucfirst((string)($b['balance_status'] ?? 'not due'))) ?></dd>
+            </dl>
+            <?php if ($bookingInvoices): ?><ul class="footer-links invoice-list"><?php foreach ($bookingInvoices as $invoice): ?><li><a href="<?= e(invoice_public_url($invoice)) ?>" target="_blank" rel="noopener"><?= e($invoice['invoice_number']) ?> · <?= e(format_price($invoice['amount_due'])) ?> · <?= e(invoice_status_label($invoice['status'])) ?></a></li><?php endforeach; ?></ul><?php endif; ?>
+            <p><a class="btn btn-outline btn-sm" href="<?= e(url('/admin/invoices.php?booking=' . (int)$b['id'])) ?>">Create / manage invoices</a></p>
         </div>
         <div class="panel">
             <h3>Update status</h3>

@@ -8,6 +8,7 @@ declare(strict_types=1);
 $page_title       = $page_title       ?? site_name() . ' — Vehicle Recovery in Manchester';
 $page_description = $page_description ?? setting('tagline', "Manchester's trusted vehicle recovery. Breakdown, accident and specialist recovery across Greater Manchester — we come to you, day or night.");
 $page_canonical   = $page_canonical   ?? '';
+$page_robots      = $page_robots      ?? 'index,follow,max-image-preview:large';
 $active           = $active           ?? '';
 $page_schema      = $page_schema      ?? [];
 $nav = [
@@ -74,7 +75,7 @@ $schema_json = json_encode(
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><?= e($page_title) ?></title>
     <meta name="description" content="<?= e($page_description) ?>">
-    <meta name="robots" content="index,follow,max-image-preview:large">
+    <meta name="robots" content="<?= e($page_robots) ?>">
     <?php if ($page_canonical): ?><link rel="canonical" href="<?= e($page_canonical) ?>"><?php endif; ?>
     <meta name="theme-color" content="#0b1f3a">
     <link rel="icon" type="image/jpeg" href="<?= e(asset('img/logo.jpeg')) ?>">

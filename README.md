@@ -9,8 +9,8 @@ No static demo, no WordPress — a real, admin-managed, production-ready site.
 | Area | Pages / Features |
 |------|------------------|
 | Public site | Home, Services list, Service detail, Areas, Booking form, Contact form, Testimonials, About, FAQ, 404, sitemap, robots |
-| Admin panel | Dashboard, CRM enquiries (workflow + dispatch), Recovery Vehicles, Bookings (view + status), Messages inbox, Services CRUD, Areas CRUD, Testimonials (approve/edit), Settings, Change password |
-| Database | `services`, `areas`, `bookings`, `recovery_vehicles`, `messages`, `testimonials`, `settings`, `integration_secrets`, `admins` |
+| Admin panel | Dashboard, CRM enquiries (workflow + dispatch), Recovery Vehicles, Bookings (view + status + phone bookings), Invoices (Stripe links or bank transfer), Messages inbox, Services CRUD, Areas CRUD, Testimonials (approve/edit), Settings, Change password |
+| Database | `services`, `areas`, `bookings`, `invoices`, `recovery_vehicles`, `messages`, `testimonials`, `settings`, `integration_secrets`, `admins` |
 
 Everything on the public site (services, areas, reviews, contact details) is
 **stored in MySQL and edited from the admin panel** — no code changes needed to
@@ -83,6 +83,13 @@ MancWay/
 accounts, bookings, messages or settings. Avoid re-importing `seed.sql` after
 customising production content; it is starter data, not a reset or backup file.
 
+After the CRM migration, import `database/migration_payments.sql` once (or
+open a booking, which will create the payment columns and invoice table
+lazily). The public booking form, chat booking form and CRM phone-booking form
+use the same pricing rules: Breakdown Recovery £50 base, Accident Recovery
+£120 base, Long-Distance Vehicle Transport £120 base, plus £2.50 per estimated
+mile. Each booking creates a £50 deposit invoice automatically.
+
 ### 3. Upload the files
 Upload with the **hPanel File Manager** or FTP (e.g. FileZilla):
 
@@ -145,6 +152,23 @@ separate `integration_secrets` table, so starter-content imports cannot
 overwrite them; a server-level key takes priority. Vehicle registration is the only required vehicle field on the
 booking form; make/model are filled when DVLA provides them and remain editable
 when it does not.
+
+### Stripe and bank-transfer invoices
+
+Open **Admin → Settings → Payment & invoicing** and save the Stripe secret key,
+publishable key and webhook signing secret. Only the secret key is used by the
+server to create hosted Stripe Payment Links; no secret is sent to visitors.
+Set the default payment method to Stripe or bank transfer. Bank details saved
+in the same panel are printed on bank-transfer invoices. In **Admin →
+Invoices**, create a balance or full-amount invoice after the booking has been
+confirmed, choose bank transfer for an individual invoice when needed, resend
+the email, or mark a transfer as paid.
+
+In Stripe, add a webhook endpoint at
+`https://mancwayrecovery.co.uk/api/stripe-webhook.php` for
+`checkout.session.completed` and
+`checkout.session.async_payment_succeeded`. The webhook signing secret is what
+lets the CRM mark Stripe invoices and booking payment statuses as paid.
 
 ### 5. Enable SSL & set the domain
 1. hPanel → **SSL** → install free **Let's Encrypt SSL** for your domain

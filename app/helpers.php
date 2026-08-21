@@ -290,7 +290,7 @@ function url(string $path = ''): string
     // Keep public URLs canonical and extension-free. Admin routes remain
     // unchanged because they are intentionally private PHP endpoints.
     $path = (string)preg_replace(
-        '#^/(services|areas|booking|contact|testimonials|about|faq)\.php(?=($|\?))#i',
+        '#^/(services|areas|booking|contact|testimonials|about|faq|invoice)\.php(?=($|\?))#i',
         '/$1',
         $path
     );

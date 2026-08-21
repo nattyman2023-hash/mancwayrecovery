@@ -57,6 +57,11 @@ CREATE TABLE IF NOT EXISTS bookings (
   vehicle_make   VARCHAR(80)  NOT NULL DEFAULT '',
   vehicle_model  VARCHAR(120) NOT NULL DEFAULT '',
   vehicle_reg    VARCHAR(20)  NOT NULL DEFAULT '',
+  distance_miles DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+  quoted_total   DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+  deposit_amount DECIMAL(10,2) NOT NULL DEFAULT 50.00,
+  deposit_status ENUM('unpaid','paid','refunded') NOT NULL DEFAULT 'unpaid',
+  balance_status ENUM('not_due','unpaid','paid') NOT NULL DEFAULT 'not_due',
   service_id     INT UNSIGNED NULL,
   address        VARCHAR(255) NOT NULL DEFAULT '',
   postcode       VARCHAR(12)  NOT NULL DEFAULT '',
@@ -72,6 +77,39 @@ CREATE TABLE IF NOT EXISTS bookings (
   KEY status (status),
   KEY created_at (created_at),
   CONSTRAINT bookings_service_fk FOREIGN KEY (service_id) REFERENCES services (id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ---------------------------------------------------------------------
+-- Invoices (created automatically for the £50 deposit)
+-- ---------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS invoices (
+  id                         INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  booking_id                 INT UNSIGNED NOT NULL,
+  invoice_number             VARCHAR(24) NOT NULL,
+  public_token               CHAR(64) NOT NULL,
+  invoice_type               ENUM('deposit','balance','full') NOT NULL DEFAULT 'deposit',
+  description                VARCHAR(255) NOT NULL DEFAULT '',
+  subtotal                   DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+  amount_due                 DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+  currency                   CHAR(3) NOT NULL DEFAULT 'GBP',
+  payment_method             ENUM('stripe','bank_transfer') NOT NULL DEFAULT 'stripe',
+  status                     ENUM('draft','sent','paid','void','failed') NOT NULL DEFAULT 'draft',
+  stripe_payment_link_id     VARCHAR(100) NOT NULL DEFAULT '',
+  stripe_payment_link_url    TEXT,
+  stripe_checkout_session_id VARCHAR(100) NOT NULL DEFAULT '',
+  stripe_payment_intent_id   VARCHAR(100) NOT NULL DEFAULT '',
+  stripe_error               TEXT,
+  bank_reference             VARCHAR(60) NOT NULL DEFAULT '',
+  email_sent_at              DATETIME NULL,
+  paid_at                    DATETIME NULL,
+  created_at                 DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at                 DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  UNIQUE KEY invoice_number (invoice_number),
+  UNIQUE KEY public_token (public_token),
+  KEY booking_id (booking_id),
+  KEY status (status),
+  KEY stripe_payment_link_id (stripe_payment_link_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ---------------------------------------------------------------------

@@ -19,8 +19,8 @@ Options -Indexes
     # Canonical public URLs: permanently redirect direct PHP requests.
     # THE_REQUEST prevents these rules from firing after an internal rewrite.
     RewriteCond %{REQUEST_METHOD} !POST
-    RewriteCond %{THE_REQUEST} \s/+((services|areas|booking|contact|testimonials|about|faq)\.php)(?:[?\s]) [NC]
-    RewriteRule ^(services|areas|booking|contact|testimonials|about|faq)\.php$ /$1 [R=301,L,NE]
+    RewriteCond %{THE_REQUEST} \s/+((services|areas|booking|contact|testimonials|about|faq|invoice)\.php)(?:[?\s]) [NC]
+    RewriteRule ^(services|areas|booking|contact|testimonials|about|faq|invoice)\.php$ /$1 [R=301,L,NE]
 
     RewriteCond %{REQUEST_METHOD} !POST
     RewriteCond %{THE_REQUEST} \s/+sitemap\.xml\.php(?:[?\s]) [NC]
@@ -29,7 +29,7 @@ Options -Indexes
     # Canonical collection, booking and utility routes.
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^(services|areas|booking|contact|testimonials|about|faq)/?$ $1.php [L,QSA]
+    RewriteRule ^(services|areas|booking|contact|testimonials|about|faq|invoice)/?$ $1.php [L,QSA]
 
     # Canonical detail routes.
     RewriteCond %{REQUEST_FILENAME} !-f
