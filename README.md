@@ -16,6 +16,14 @@ Everything on the public site (services, areas, reviews, contact details) is
 **stored in MySQL and edited from the admin panel** — no code changes needed to
 update content.
 
+### Public URL structure
+
+Public pages use clean, extension-free URLs: `/booking`, `/contact`,
+`/services`, `/services/<service-slug>`, `/areas`, `/areas/<area-slug>`,
+`/testimonials`, `/about`, `/faq`, and `/sitemap.xml`. Older `.php` links
+redirect permanently to their clean equivalent, so existing bookmarks remain
+usable without creating duplicate SEO URLs.
+
 ## Requirements
 
 - PHP 8.0 or newer (8.2+ recommended)

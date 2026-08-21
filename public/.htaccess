@@ -16,20 +16,37 @@ Options -Indexes
     RewriteCond %{HTTP:X-Forwarded-Proto} !=https
     RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-    # Pretty URLs (optional, graceful): /services -> /services.php
+    # Canonical public URLs: permanently redirect direct PHP requests.
+    # THE_REQUEST prevents these rules from firing after an internal rewrite.
+    RewriteCond %{THE_REQUEST} \s/+((services|areas|booking|contact|testimonials|about|faq)\.php)(?:[?\s]) [NC]
+    RewriteRule ^(services|areas|booking|contact|testimonials|about|faq)\.php$ /$1 [R=301,L,NE]
+
+    RewriteCond %{THE_REQUEST} \s/+sitemap\.xml\.php(?:[?\s]) [NC]
+    RewriteRule ^sitemap\.xml\.php$ /sitemap.xml [R=301,L,NE]
+
+    # Canonical collection, booking and utility routes.
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule ^(services|areas|booking|contact|testimonials|about|faq)/?$ $1.php [L,QSA]
 
-    # Single service: /service/<slug> -> /service.php?slug=<slug>
+    # Canonical detail routes.
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^service/([a-z0-9-]+)/?$ service.php?slug=$1 [L,QSA]
+    RewriteRule ^services/([a-z0-9-]+)/?$ service.php?slug=$1 [L,QSA]
 
-    # Single area: /area/<slug> -> /areas.php?slug=<slug>
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule ^area/([a-z0-9-]+)/?$ areas.php?slug=$1 [L,QSA]
+    RewriteRule ^areas/([a-z0-9-]+)/?$ areas.php?slug=$1 [L,QSA]
+
+    # Preserve older singular detail routes with a permanent redirect.
+    RewriteRule ^service/([a-z0-9-]+)/?$ /services/$1 [R=301,L,NE]
+    RewriteRule ^area/([a-z0-9-]+)/?$ /areas/$1 [R=301,L,NE]
+
+    # Sitemap is published at its normal XML URL.
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^sitemap\.xml/?$ sitemap.xml.php [L,QSA]
+
 </IfModule>
 
 # --- Security headers ------------------------------------------------

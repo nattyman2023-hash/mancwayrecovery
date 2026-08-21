@@ -269,7 +269,20 @@ function asset(string $path): string
 /** Build an absolute site URL. */
 function url(string $path = ''): string
 {
-    return APP_URL . '/' . ltrim($path, '/');
+    $path = '/' . ltrim($path, '/');
+    // Keep public URLs canonical and extension-free. Admin routes remain
+    // unchanged because they are intentionally private PHP endpoints.
+    $path = (string)preg_replace(
+        '#^/(services|areas|booking|contact|testimonials|about|faq)\.php(?=($|\?))#i',
+        '/$1',
+        $path
+    );
+    $path = (string)preg_replace(
+        '#^/sitemap\.xml\.php(?=($|\?))#i',
+        '/sitemap.xml',
+        $path
+    );
+    return APP_URL . $path;
 }
 
 /** Output a hidden CSRF field for forms. */
