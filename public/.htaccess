@@ -18,9 +18,11 @@ Options -Indexes
 
     # Canonical public URLs: permanently redirect direct PHP requests.
     # THE_REQUEST prevents these rules from firing after an internal rewrite.
+    RewriteCond %{REQUEST_METHOD} !POST
     RewriteCond %{THE_REQUEST} \s/+((services|areas|booking|contact|testimonials|about|faq)\.php)(?:[?\s]) [NC]
     RewriteRule ^(services|areas|booking|contact|testimonials|about|faq)\.php$ /$1 [R=301,L,NE]
 
+    RewriteCond %{REQUEST_METHOD} !POST
     RewriteCond %{THE_REQUEST} \s/+sitemap\.xml\.php(?:[?\s]) [NC]
     RewriteRule ^sitemap\.xml\.php$ /sitemap.xml [R=301,L,NE]
 
