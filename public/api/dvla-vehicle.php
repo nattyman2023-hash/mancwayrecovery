@@ -38,7 +38,8 @@ if ($registration === '' || strlen($registration) > 8) {
     ], 422);
 }
 
-if (DVLA_API_KEY === '' || str_contains(DVLA_API_KEY, 'PASTE_') || str_contains(DVLA_API_KEY, 'CHANGE_ME')) {
+$dvlaKey = dvla_api_key();
+if ($dvlaKey === '' || str_contains($dvlaKey, 'PASTE_') || str_contains($dvlaKey, 'CHANGE_ME')) {
     dvla_json_response([
         'ok' => false,
         'code' => 'not_configured',
@@ -82,7 +83,7 @@ curl_setopt_array($curl, [
     CURLOPT_HTTPHEADER => [
         'Accept: application/json',
         'Content-Type: application/json',
-        'x-api-key: ' . DVLA_API_KEY,
+        'x-api-key: ' . $dvlaKey,
         'X-Correlation-Id: mancway-' . bin2hex(random_bytes(8)),
     ],
 ]);

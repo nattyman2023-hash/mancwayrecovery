@@ -63,6 +63,19 @@ function setting(string $key, $default = '')
     return $cache[$key] ?? $default;
 }
 
+/**
+ * Return the DVLA key without exposing where it came from.
+ * A server/environment value wins; the admin setting is a convenient fallback.
+ */
+function dvla_api_key(): string
+{
+    $serverKey = trim(DVLA_API_KEY);
+    if ($serverKey !== '' && !str_contains($serverKey, 'PASTE_') && !str_contains($serverKey, 'CHANGE_ME')) {
+        return $serverKey;
+    }
+    return trim((string) setting('dvla_api_key', ''));
+}
+
 /** Output the brand/business name. */
 function site_name(): string
 {

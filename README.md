@@ -125,8 +125,10 @@ Enquiry response does not include a model value.
 Add the key to `app/config/config.local.php` on the server, or set the
 `DVLA_API_KEY` environment variable. Do not put the key in JavaScript, HTML,
 Git, or a publicly accessible `.env` file. PHP cURL must be enabled on the
-hosting account. If the key is not present, the form continues to work with
-manual vehicle entry.
+hosting account. Once you can access the CRM, you can also save or replace the
+key from **Admin → Settings → API integrations**; a server-level key takes
+priority. If no key is present, the form continues to work with manual vehicle
+entry.
 
 ### 5. Enable SSL & set the domain
 1. hPanel → **SSL** → install free **Let's Encrypt SSL** for your domain

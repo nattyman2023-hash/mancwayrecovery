@@ -27,6 +27,15 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
     $fields = ['business_name','tagline','phone','phone_href','email','address','hours_weekday','hours_weekend','service_radius','google_maps_embed','facebook','instagram','whatsapp','admin_email','vat_number','company_number'];
     $upd = db()->prepare('INSERT INTO settings (`key`, value) VALUES (?, ?) ON DUPLICATE KEY UPDATE value=VALUES(value)');
     foreach ($fields as $k) { $upd->execute([$k, trim($_POST[$k] ?? '')]); }
+
+    // Keep the secret out of the rendered page. A blank field leaves the
+    // current DB-stored key unchanged; the checkbox explicitly clears it.
+    $submittedDvlaKey = trim((string)($_POST['dvla_api_key'] ?? ''));
+    if (!empty($_POST['clear_dvla_api_key'])) {
+        $upd->execute(['dvla_api_key', '']);
+    } elseif ($submittedDvlaKey !== '') {
+        $upd->execute(['dvla_api_key', $submittedDvlaKey]);
+    }
     redirect_with(url('/admin/settings.php'), ['flash' => 'Settings saved.']);
 }
 
@@ -34,6 +43,8 @@ $rows = db()->query('SELECT `key`, value FROM settings')->fetchAll();
 $s = [];
 foreach ($rows as $r) { $s[$r['key']] = $r['value']; }
 function sv(array $s, string $k, string $def=''): string { return e($s[$k] ?? $def); }
+$serverDvlaConfigured = DVLA_API_KEY !== '' && !str_contains(DVLA_API_KEY, 'PASTE_') && !str_contains(DVLA_API_KEY, 'CHANGE_ME');
+$dvlaConfigured = dvla_api_key() !== '';
 
 $admin_title = 'Settings';
 $active_admin = 'settings';
@@ -64,6 +75,17 @@ require APP_DIR . '/views/layout/admin_header.php';
             <div class="field"><label for="hours_weekend">Weekend hours</label><input type="text" id="hours_weekend" name="hours_weekend" value="<?= sv($s,'hours_weekend') ?>"></div>
         </div>
         <div class="field"><label for="service_radius">Coverage line</label><input type="text" id="service_radius" name="service_radius" value="<?= sv($s,'service_radius') ?>"></div>
+    </section>
+    <section class="panel">
+        <div class="panel-head"><h2>API integrations</h2></div>
+        <p class="muted">DVLA vehicle lookup status: <strong><?= $dvlaConfigured ? 'Configured' : 'Not configured' ?></strong>. The key is never shown after saving.</p>
+        <?php if ($serverDvlaConfigured): ?><p class="muted">A server-level DVLA key is active and takes priority over this admin setting.</p><?php endif; ?>
+        <div class="field">
+            <label for="dvla_api_key">DVLA Vehicle Enquiry API key</label>
+            <input type="password" id="dvla_api_key" name="dvla_api_key" value="" autocomplete="new-password" placeholder="Paste a new DVLA API key to save or replace it">
+            <small class="muted">Leave blank to keep the current key. This setting is used only by the server-side vehicle lookup.</small>
+        </div>
+        <label class="field-check"><input type="checkbox" name="clear_dvla_api_key" value="1"> Clear the saved admin setting</label>
     </section>
     <section class="panel">
         <div class="panel-head"><h2>Online presence</h2></div>
