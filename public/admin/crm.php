@@ -9,8 +9,23 @@ declare(strict_types=1);
  */
 require __DIR__ . '/../../app/bootstrap.php';
 require_admin();
+require_once APP_DIR . '/crm_migration.php';
 
 $flash = flash('flash');
+$migrationError = flash('crm_migration_error');
+
+if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
+    csrf_check();
+    if (($_POST['action'] ?? '') === 'install_crm_migration') {
+        try {
+            install_crm_migration(db());
+            redirect_with(url('/admin/crm.php'), ['flash' => 'CRM migration installed. Your enquiries and settings were preserved.']);
+        } catch (Throwable $e) {
+            error_log('CRM migration failed: ' . $e->getMessage());
+            redirect_with(url('/admin/crm.php'), ['crm_migration_error' => 'The CRM migration could not be installed. Check that schema.sql has been imported first, then try again.']);
+        }
+    }
+}
 
 // Guard: the CRM migration adds recovery_vehicles + bookings.vehicle_id.
 $crmReady = false;
@@ -27,15 +42,21 @@ if (!$crmReady) {
     $active_admin = 'crm';
     require APP_DIR . '/views/layout/admin_header.php';
     ?>
+    <?php if ($migrationError): ?><div class="alert alert-error"><?= e($migrationError) ?></div><?php endif; ?>
     <div class="alert alert-error">
-        <strong>CRM not set up yet.</strong> Import
-        <code>database/migration_crm.sql</code> via phpMyAdmin
-        (run it after <code>schema.sql</code> + <code>seed.sql</code>), then
-        reload this page.
+        <strong>CRM not set up yet.</strong> Install the CRM tables and fields
+        below to enable enquiries, vehicle assignment and dispatch workflow.
     </div>
     <p class="muted">The migration adds the <code>recovery_vehicles</code> table
        and the <code>bookings.vehicle_id</code> + <code>status</code> columns
-       the CRM relies on. It is safe to re-run.</p>
+       the CRM relies on. It is safe to re-run and does not delete bookings,
+       admin accounts or settings.</p>
+    <form method="post" class="form" style="margin-top:20px">
+        <?= csrf_field() ?>
+        <input type="hidden" name="action" value="install_crm_migration">
+        <button type="submit" class="btn btn-primary">Install CRM now</button>
+    </form>
+    <p class="muted" style="margin-top:12px">If your hosting account blocks schema changes from the site, you can still import <code>database/migration_crm.sql</code> in phpMyAdmin after the base schema.</p>
     <?php
     require APP_DIR . '/views/layout/admin_footer.php';
     exit;
