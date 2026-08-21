@@ -69,7 +69,7 @@ require APP_DIR . '/views/layout/admin_header.php';
     <aside class="panel">
         <h2>Payment setup</h2>
         <p class="muted">Stripe invoices create a hosted Payment Link and send it to the customer by email. Bank-transfer invoices show your bank details and invoice reference instead.</p>
-        <p><a class="btn btn-outline" href="<?= e(url('/admin/settings.php')) ?>">Open payment settings</a></p>
+        <p><a class="btn btn-outline" href="<?= e(url('/admin/settings.php#payments')) ?>">Open payment settings</a></p>
         <p class="muted">For bank payments, mark the invoice paid here after the transfer clears. The booking’s deposit or balance status will update too.</p>
     </aside>
 </div>
