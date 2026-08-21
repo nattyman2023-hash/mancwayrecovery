@@ -33,7 +33,7 @@ if ($adminExists > 0) {
         $password = $_POST['password'] ?? '';
         $confirm  = $_POST['confirm'] ?? '';
 
-        if (!preg_match('/^[a-zA-Z0-9_.-]{3,60}$/', $username)) $errors['username'] = 'Username must be 3–60 chars (letters, numbers, . - _).';
+        if (!preg_match('/^[a-zA-Z0-9_.@-]{3,60}$/', $username)) $errors['username'] = 'Username must be 3–60 chars (letters, numbers, @, . - _).';
         if ($email !== '' && !valid_email($email))              $errors['email'] = 'Please enter a valid email address.';
         if (strlen($password) < 10)                            $errors['password'] = 'Password must be at least 10 characters.';
         if ($password !== $confirm)                             $errors['confirm'] = 'Passwords do not match.';
@@ -82,7 +82,7 @@ require APP_DIR . '/views/layout/admin_header.php';
                 <?= csrf_field() ?>
                 <div class="field">
                     <label for="username">Username</label>
-                    <input type="text" id="username" name="username" value="<?= old('username') ?>" required minlength="3" maxlength="60" pattern="[a-zA-Z0-9_.\-]+" title="Letters, numbers, dot, dash, underscore">
+                    <input type="text" id="username" name="username" value="<?= old('username') ?>" required minlength="3" maxlength="60" pattern="[a-zA-Z0-9_.@\-]+" title="Letters, numbers, @, dot, dash, underscore">
                 </div>
                 <div class="field">
                     <label for="email">Email <span class="muted">(optional)</span></label>
