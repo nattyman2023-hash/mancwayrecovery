@@ -52,7 +52,7 @@ $page_schema = [
 require APP_DIR . '/views/layout/header.php';
 ?>
 
-<section class="page-hero" style="--page-hero-image:url('<?= e(asset('img/recovery-hero.jpg')) ?>')">
+<section class="page-hero" style="--page-hero-image:url('<?= e(asset('img/recovery-transport.png')) ?>')">
     <div class="container">
         <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="<?= e(url('/')) ?>">Home</a> › <a href="<?= e(url('/services')) ?>">Services</a> › <span><?= e($service['title']) ?></span></nav>
         <span class="pill">Recovery Service</span>

@@ -24,13 +24,25 @@ $page_schema = [
 require APP_DIR . '/views/layout/header.php';
 ?>
 
-<section class="page-hero" style="--page-hero-image:url('<?= e(asset('img/recovery-hero.jpg')) ?>')">
+<section class="page-hero" style="--page-hero-image:url('<?= e(asset('img/recovery-transport.png')) ?>')">
     <div class="container">
         <span class="pill">Services</span>
         <h1>Vehicle recovery services</h1>
         <p class="lead">Honest, fixed pricing for breakdown, accident and specialist recovery — wherever you are across Greater Manchester. Can't see what you need? <a href="<?= e(url('/contact.php')) ?>">Just ask</a>.</p>
     </div>
 </section>
+
+<?php
+$photo_items = [
+    ['image' => 'recovery-transport.png', 'alt' => 'Recovery operator securing a silver car to a flatbed truck at a motorway service area', 'title' => 'Long-distance transport', 'text' => 'Careful loading for vehicle moves across the UK.'],
+    ['image' => 'recovery-assistance.png', 'alt' => 'Recovery operator talking with a driver beside a car with its bonnet open', 'title' => 'Breakdown support', 'text' => 'Straightforward help when your vehicle stops unexpectedly.'],
+    ['image' => 'recovery-dusk.png', 'alt' => 'Recovery operator securing a vehicle on a flatbed truck at dusk', 'title' => 'Specialist recovery', 'text' => 'The right approach for difficult locations, weather and vehicle types.'],
+];
+$photo_kicker = 'The work behind the service';
+$photo_title = 'Equipped for the job in front of us.';
+$photo_intro = 'From a quick roadside assist to a planned vehicle move, every recovery starts with careful handling.';
+partial('partials/photo-strip', compact('photo_items', 'photo_kicker', 'photo_title', 'photo_intro'));
+?>
 
 <section class="section">
     <div class="container">

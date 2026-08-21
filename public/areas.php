@@ -83,7 +83,7 @@ require APP_DIR . '/views/layout/header.php';
 ?>
 
 <?php if ($area): ?>
-<section class="page-hero" style="--page-hero-image:url('<?= e(asset('img/recovery-loading.jpg')) ?>')">
+<section class="page-hero" style="--page-hero-image:url('<?= e(asset('img/recovery-assistance.png')) ?>')">
     <div class="container">
         <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="<?= e(url('/')) ?>">Home</a> &rsaquo; <a href="<?= e(url('/areas')) ?>">Areas covered</a> &rsaquo; <span><?= e($area['name']) ?></span></nav>
         <span class="pill">Greater Manchester coverage</span>
@@ -124,6 +124,18 @@ require APP_DIR . '/views/layout/header.php';
     </div>
 </section>
 
+<?php
+$photo_items = [
+    ['image' => 'recovery-assistance.png', 'alt' => 'Recovery operator talking with a driver beside a car with its bonnet open', 'title' => 'Local roadside support', 'text' => 'A calm, practical response wherever you are in ' . $area['name'] . '.'],
+    ['image' => 'recovery-roadside.png', 'alt' => 'Recovery operator loading a blue hatchback onto a flatbed truck on a wet Manchester street', 'title' => 'Careful loading', 'text' => 'The right equipment for safe recovery from busy streets and driveways.'],
+    ['image' => 'recovery-dusk.png', 'alt' => 'Recovery operator securing a vehicle on a flatbed truck at dusk', 'title' => 'Available when you need us', 'text' => 'Day or night, we can help arrange the next step for your vehicle.'],
+];
+$photo_kicker = 'Recovery in ' . $area['name'];
+$photo_title = 'A local response, wherever the road takes you.';
+$photo_intro = 'Our recovery team serves ' . $area['name'] . ' and nearby postcodes with clear communication and careful vehicle handling.';
+partial('partials/photo-strip', compact('photo_items', 'photo_kicker', 'photo_title', 'photo_intro'));
+?>
+
 <section class="section bg-soft">
     <div class="container narrow">
         <div class="section-head"><span class="eyebrow">Helpful answers</span><h2><?= e($area['name']) ?> recovery FAQs</h2></div>
@@ -135,13 +147,24 @@ require APP_DIR . '/views/layout/header.php';
     </div>
 </section>
 <?php else: ?>
-<section class="page-hero" style="--page-hero-image:url('<?= e(asset('img/recovery-loading.jpg')) ?>')">
+<section class="page-hero" style="--page-hero-image:url('<?= e(asset('img/recovery-roadside.png')) ?>')">
     <div class="container">
         <span class="pill">Coverage</span>
         <h1>Areas we cover</h1>
         <p class="lead">Our recovery vehicles come to you across every Greater Manchester borough. Choose your area for local coverage, postcode and booking information.</p>
     </div>
 </section>
+
+<?php
+$photo_items = [
+    ['image' => 'recovery-roadside.png', 'alt' => 'Recovery operator loading a blue hatchback onto a flatbed truck on a wet Manchester street', 'title' => 'Greater Manchester coverage', 'text' => 'A practical recovery response across local roads, estates and motorways.'],
+    ['image' => 'recovery-transport.png', 'alt' => 'Recovery operator securing a silver car to a flatbed truck at a motorway service area', 'title' => 'Beyond the boroughs', 'text' => 'Long-distance transport is available when your vehicle needs to go further.'],
+];
+$photo_kicker = 'Where we work';
+$photo_title = 'Help is closer than you think.';
+$photo_intro = 'Choose your location to see local coverage, postcodes and the best way to book.';
+partial('partials/photo-strip', compact('photo_items', 'photo_kicker', 'photo_title', 'photo_intro'));
+?>
 
 <section class="section">
     <div class="container">

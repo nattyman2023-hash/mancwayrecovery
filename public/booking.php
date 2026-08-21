@@ -100,7 +100,7 @@ require APP_DIR . '/views/layout/header.php';
         </p>
     </div></section>
 <?php else: ?>
-    <section class="page-hero" style="--page-hero-image:url('<?= e(asset('img/recovery-loading.jpg')) ?>')"><div class="container">
+    <section class="page-hero" style="--page-hero-image:url('<?= e(asset('img/recovery-roadside.png')) ?>')"><div class="container">
         <span class="pill">Booking</span>
         <h1>Book vehicle recovery</h1>
         <p class="lead">Tell us what's happened and we'll come to you. It takes under a minute.</p>

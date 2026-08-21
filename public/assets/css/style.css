@@ -123,6 +123,12 @@ p{margin:.5em 0}
 .photo-card figcaption strong{color:var(--navy);font-size:1rem}
 .photo-card figcaption span{color:var(--muted);font-size:.88rem}
 .photo-disclaimer{margin:13px 0 0;text-align:right;color:var(--muted);font-size:.76rem}
+.photo-strip-section{background:#fff}
+.photo-scroller{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(290px,34%);gap:18px;overflow-x:auto;padding:4px 4px 18px;scroll-snap-type:x proximity;overscroll-behavior-inline:contain;scrollbar-color:var(--amber) var(--soft)}
+.photo-scroller:focus-visible{outline:3px solid var(--amber);outline-offset:5px;border-radius:var(--radius)}
+.photo-scroller-card{scroll-snap-align:start}
+.photo-scroller-card img{height:300px}
+.photo-scroll-hint{margin:0;color:var(--muted);font-size:.78rem;text-align:right}
 .page-hero{position:relative;display:flex;align-items:center;min-height:280px;overflow:hidden;background-color:var(--navy);background-image:linear-gradient(90deg,rgba(11,31,58,.98) 0%,rgba(11,31,58,.9) 42%,rgba(11,31,58,.58) 76%,rgba(11,31,58,.44) 100%),var(--page-hero-image,url('/assets/img/recovery-hero.jpg'));background-position:center;background-size:cover;color:#fff;padding:clamp(44px,6vw,72px) 0;text-align:left;border-bottom:1px solid rgba(11,31,58,.18)}
 .page-hero::after{content:"";position:absolute;inset:0;background:radial-gradient(560px 260px at 84% 0%,rgba(245,166,35,.22),transparent 68%);pointer-events:none}
 .page-hero .container{position:relative;z-index:1}
@@ -307,6 +313,8 @@ p{margin:.5em 0}
   .hero-photo{background-position:62% center}
   .photo-grid{grid-template-columns:1fr}
   .photo-card img,.photo-card-wide img{height:240px}
+  .photo-scroller{grid-auto-columns:minmax(78vw,1fr);gap:14px}
+  .photo-scroller-card img{height:240px}
   .photo-disclaimer{text-align:left}
   .grid-2,.grid-3,.grid-4,.form-row,.stat-grid,.footer-grid,.footer-bottom{grid-template-columns:1fr}
   .hero{padding:48px 0}

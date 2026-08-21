@@ -56,7 +56,7 @@ require APP_DIR . '/views/layout/header.php';
         <p class="mt-2"><a class="btn btn-primary" href="<?= e(url('/')) ?>">Back to home</a></p>
     </div></section>
 <?php else: ?>
-    <section class="page-hero" style="--page-hero-image:url('<?= e(asset('img/recovery-fleet.jpg')) ?>')"><div class="container">
+    <section class="page-hero" style="--page-hero-image:url('<?= e(asset('img/recovery-dusk.png')) ?>')"><div class="container">
         <span class="pill">Contact</span>
         <h1>Get in touch</h1>
         <p class="lead">Questions about a service, a quote or a booking? Send us a message — or just call.</p>

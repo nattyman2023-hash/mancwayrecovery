@@ -12,13 +12,25 @@ $active = 'testimonials';
 require APP_DIR . '/views/layout/header.php';
 ?>
 
-<section class="page-hero" style="--page-hero-image:url('<?= e(asset('img/recovery-loading.jpg')) ?>')">
+<section class="page-hero" style="--page-hero-image:url('<?= e(asset('img/recovery-assistance.png')) ?>')">
     <div class="container">
         <span class="pill">Reviews</span>
         <h1>What our customers say</h1>
         <p class="lead">Honest feedback from drivers across Greater Manchester. <strong><?= e($avg) ?>★</strong> average from <?= count($reviews) ?> reviews.</p>
     </div>
 </section>
+
+<?php
+$photo_items = [
+    ['image' => 'recovery-assistance.png', 'alt' => 'Recovery operator talking with a driver beside a car with its bonnet open', 'title' => 'Clear communication', 'text' => 'We keep customers informed so the next step is easy to understand.'],
+    ['image' => 'recovery-roadside.png', 'alt' => 'Recovery operator loading a blue hatchback onto a flatbed truck on a wet Manchester street', 'title' => 'Careful roadside work', 'text' => 'Safe loading and secure handling are part of every recovery.'],
+    ['image' => 'recovery-dusk.png', 'alt' => 'Recovery operator securing a vehicle on a flatbed truck at dusk', 'title' => 'There when it matters', 'text' => 'Support for difficult breakdowns, including evenings and weekends.'],
+];
+$photo_kicker = 'Behind the reviews';
+$photo_title = 'The moments our customers remember.';
+$photo_intro = 'Reliable communication and careful vehicle handling are what turn a stressful breakdown into a manageable journey.';
+partial('partials/photo-strip', compact('photo_items', 'photo_kicker', 'photo_title', 'photo_intro'));
+?>
 
 <section class="section">
     <div class="container">

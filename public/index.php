@@ -13,7 +13,7 @@ $active = 'home';
 require APP_DIR . '/views/layout/header.php';
 ?>
 
-<section class="hero hero-photo" style="--hero-image: url('<?= e(asset('img/recovery-hero.jpg')) ?>');">
+<section class="hero hero-photo" style="--hero-image: url('<?= e(asset('img/recovery-roadside.png')) ?>');">
     <div class="container hero-inner">
         <div class="hero-text">
             <span class="hero-badge">24/7 recovery dispatch — Greater Manchester</span>
@@ -44,6 +44,20 @@ require APP_DIR . '/views/layout/header.php';
         </div>
     </div>
 </section>
+
+<?php
+$photo_items = [
+    ['image' => 'recovery-roadside.png', 'alt' => 'Recovery operator loading a blue hatchback onto a flatbed truck on a wet Manchester street', 'title' => 'Roadside help, handled calmly', 'text' => 'A clear plan and the right equipment when your vehicle will not move.'],
+    ['image' => 'recovery-assistance.png', 'alt' => 'Recovery operator talking with a driver beside a car with its bonnet open', 'title' => 'Practical roadside assistance', 'text' => 'We explain what is happening and keep you informed at every step.'],
+    ['image' => 'recovery-transport.png', 'alt' => 'Recovery operator securing a silver car to a flatbed truck at a motorway service area', 'title' => 'Secure vehicle transport', 'text' => 'Proper straps and careful loading for local or long-distance moves.'],
+    ['image' => 'recovery-dusk.png', 'alt' => 'Recovery operator securing a vehicle on a flatbed truck at dusk', 'title' => 'Ready day or night', 'text' => 'Recovery support when the road, weather or time makes things harder.'],
+    ['image' => 'recovery-fleet.jpg', 'alt' => 'Two recovery trucks parked outside a small industrial depot', 'title' => 'A practical recovery fleet', 'text' => 'Vehicles and equipment prepared for breakdowns, transport and specialist jobs.'],
+];
+$photo_kicker = 'Out on the road';
+$photo_title = 'Recovery that feels reassuring from the first call.';
+$photo_intro = 'Scroll through a few moments from the work we do across Greater Manchester and beyond.';
+partial('partials/photo-strip', compact('photo_items', 'photo_kicker', 'photo_title', 'photo_intro'));
+?>
 
 <section class="section photo-section">
     <div class="container">
