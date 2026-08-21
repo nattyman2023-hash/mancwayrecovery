@@ -13,7 +13,7 @@ $active = 'home';
 require APP_DIR . '/views/layout/header.php';
 ?>
 
-<section class="hero">
+<section class="hero hero-photo" style="--hero-image: url('<?= e(asset('img/recovery-hero.jpg')) ?>');">
     <div class="container hero-inner">
         <div class="hero-text">
             <span class="hero-badge">24/7 recovery dispatch — Greater Manchester</span>
@@ -42,6 +42,27 @@ require APP_DIR . '/views/layout/header.php';
             <a class="hero-quick" href="<?= e(url('/contact.php')) ?>"><span>💬 Send a message</span><span>→</span></a>
             <p class="hero-card-foot"><?= e(setting('hours_weekday')) ?></p>
         </div>
+    </div>
+</section>
+
+<section class="section photo-section">
+    <div class="container">
+        <div class="section-head">
+            <span class="eyebrow">Our equipment</span>
+            <h2>Recovery built for real roads.</h2>
+            <p>From roadside loading to secure transport, the right equipment makes a difficult moment feel straightforward.</p>
+        </div>
+        <div class="photo-grid">
+            <figure class="photo-card photo-card-wide">
+                <img src="<?= e(asset('img/recovery-loading.jpg')) ?>" alt="Recovery operator loading a car onto a flatbed truck in wet conditions" loading="lazy">
+                <figcaption><strong>Careful roadside loading</strong><span>Ramps, winch and proper securing equipment for safe vehicle movement.</span></figcaption>
+            </figure>
+            <figure class="photo-card">
+                <img src="<?= e(asset('img/recovery-fleet.jpg')) ?>" alt="Two recovery trucks parked outside a small industrial depot" loading="lazy">
+                <figcaption><strong>Ready across Greater Manchester</strong><span>A practical fleet for breakdowns, transport and specialist recovery.</span></figcaption>
+            </figure>
+        </div>
+        <p class="photo-disclaimer">Representative imagery — vehicle specification and livery may vary by job.</p>
     </div>
 </section>
 
