@@ -22,11 +22,15 @@ try {
     $crmReady = false;
 }
 $recent = db()->query("SELECT b.*, s.title AS service_title FROM bookings b LEFT JOIN services s ON s.id=b.service_id ORDER BY b.created_at DESC LIMIT 5")->fetchAll();
+$flash = flash('flash');
+$contactError = flash('contact_error');
 
 $admin_title = 'Dashboard';
 $active_admin = 'dashboard';
 require APP_DIR . '/views/layout/admin_header.php';
 ?>
+<?php if ($flash): ?><div class="alert alert-success"><?= e($flash) ?></div><?php endif; ?>
+<?php if ($contactError): ?><div class="alert alert-error"><?= e($contactError) ?></div><?php endif; ?>
 <?php if ($crmReady): ?>
 <section class="crm-dashboard-banner">
     <div>
@@ -64,6 +68,26 @@ require APP_DIR . '/views/layout/admin_header.php';
         <strong><?= $counts['total_services'] ?></strong><span>Services listed</span>
     </a>
 </div>
+
+<section class="panel" id="contact-details">
+    <div class="panel-head">
+        <h2>Quick contact details</h2>
+        <a class="btn btn-outline btn-sm" href="<?= e(url('/admin/settings.php#contact')) ?>">Full settings</a>
+    </div>
+    <p class="muted">These details appear on the public website, booking form, contact page and email notifications.</p>
+    <form method="post" action="<?= e(url('/admin/settings.php')) ?>" class="form">
+        <?= csrf_field() ?>
+        <input type="hidden" name="action" value="contact">
+        <input type="hidden" name="return_to" value="dashboard">
+        <div class="form-row">
+            <div class="field"><label for="quick-phone">Phone</label><input type="text" id="quick-phone" name="phone" value="<?= e(setting('phone')) ?>" placeholder="0161 000 0000" required></div>
+            <div class="field"><label for="quick-email">Public email</label><input type="email" id="quick-email" name="email" value="<?= e(setting('email')) ?>" required></div>
+        </div>
+        <div class="field"><label for="quick-address">Business address</label><input type="text" id="quick-address" name="address" value="<?= e(setting('address')) ?>" required></div>
+        <input type="hidden" name="admin_email" value="<?= e(setting('admin_email')) ?>">
+        <button type="submit" class="btn btn-primary">Save contact details</button>
+    </form>
+</section>
 
 <section class="panel">
     <div class="panel-head">

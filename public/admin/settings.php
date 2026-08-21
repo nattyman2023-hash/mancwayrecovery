@@ -10,6 +10,38 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
     csrf_check();
     $action = $_POST['action'] ?? 'save';
 
+    if ($action === 'contact') {
+        $phone      = trim((string)($_POST['phone'] ?? ''));
+        $email      = trim((string)($_POST['email'] ?? ''));
+        $address    = trim((string)($_POST['address'] ?? ''));
+        $adminEmail = trim((string)($_POST['admin_email'] ?? ''));
+        $returnTo   = ($_POST['return_to'] ?? '') === 'dashboard'
+            ? url('/admin/index.php')
+            : url('/admin/settings.php#contact');
+
+        if (!valid_phone($phone)) {
+            redirect_with($returnTo, ['contact_error' => 'Please enter a valid phone number.']);
+        }
+        if (!valid_email($email)) {
+            redirect_with($returnTo, ['contact_error' => 'Please enter a valid public email address.']);
+        }
+        if ($address === '') {
+            redirect_with($returnTo, ['contact_error' => 'Please enter the business address.']);
+        }
+        if ($adminEmail !== '' && !valid_email($adminEmail)) {
+            redirect_with($returnTo, ['contact_error' => 'Please enter a valid notification email address.']);
+        }
+
+        $upd = db()->prepare('INSERT INTO settings (`key`, value) VALUES (?, ?) ON DUPLICATE KEY UPDATE value=VALUES(value)');
+        $upd->execute(['phone', $phone]);
+        // Keep telephone links in sync automatically when the display number changes.
+        $upd->execute(['phone_href', (string)preg_replace('/[^0-9+]/', '', $phone)]);
+        $upd->execute(['email', $email]);
+        $upd->execute(['address', $address]);
+        $upd->execute(['admin_email', $adminEmail]);
+        redirect_with($returnTo, ['flash' => 'Contact details updated.']);
+    }
+
     if ($action === 'password') {
         $new = $_POST['new_password'] ?? '';
         $confirm = $_POST['confirm_password'] ?? '';
@@ -27,6 +59,9 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
     $fields = ['business_name','tagline','phone','phone_href','email','address','hours_weekday','hours_weekend','service_radius','google_maps_embed','facebook','instagram','whatsapp','admin_email','vat_number','company_number'];
     $upd = db()->prepare('INSERT INTO settings (`key`, value) VALUES (?, ?) ON DUPLICATE KEY UPDATE value=VALUES(value)');
     foreach ($fields as $k) { $upd->execute([$k, trim($_POST[$k] ?? '')]); }
+    if (isset($_POST['phone'])) {
+        $upd->execute(['phone_href', (string)preg_replace('/[^0-9+]/', '', trim((string)$_POST['phone']))]);
+    }
 
     // Keep the secret out of the rendered page. A blank field leaves the
     // current DB-stored key unchanged; the checkbox explicitly clears it.
@@ -57,16 +92,19 @@ function sv(array $s, string $k, string $def=''): string { return e($s[$k] ?? $d
 $serverDvlaConfigured = DVLA_API_KEY !== '' && !str_contains(DVLA_API_KEY, 'PASTE_') && !str_contains(DVLA_API_KEY, 'CHANGE_ME');
 $dvlaConfigured = dvla_api_key() !== '';
 
+$contactError = flash('contact_error');
 $admin_title = 'Settings';
 $active_admin = 'settings';
 require APP_DIR . '/views/layout/admin_header.php';
 ?>
 <?php if ($flash): ?><div class="alert alert-success"><?= e($flash) ?></div><?php endif; ?>
+<?php if ($contactError): ?><div class="alert alert-error"><?= e($contactError) ?></div><?php endif; ?>
 
 <form method="post" class="form" novalidate>
     <?= csrf_field() ?><input type="hidden" name="action" value="save">
-    <section class="panel">
-        <div class="panel-head"><h2>Business details</h2></div>
+    <section class="panel" id="contact">
+        <div class="panel-head"><h2>Contact details &amp; business basics</h2><span class="muted">Shown across the website</span></div>
+        <p class="muted">For the quickest update, use the Quick contact details panel on the admin dashboard. Phone links update automatically when the display number changes.</p>
         <p class="muted">Website forms are saved in the CRM and inbox first. Email notifications currently go to <strong><?= e(site_notification_email() ?: 'No valid notification email configured') ?></strong>; the server-level <code>MAIL_TO</code> value takes priority when set.</p>
         <div class="form-row">
             <div class="field"><label for="business_name">Business name</label><input type="text" id="business_name" name="business_name" value="<?= sv($s,'business_name','MancWay Recovery') ?>"></div>
@@ -77,10 +115,10 @@ require APP_DIR . '/views/layout/admin_header.php';
             <div class="field"><label for="phone_href">Phone for tel: links (no spaces)</label><input type="text" id="phone_href" name="phone_href" value="<?= sv($s,'phone_href') ?>" placeholder="01610000000"></div>
         </div>
         <div class="form-row">
-            <div class="field"><label for="email">Email</label><input type="email" id="email" name="email" value="<?= sv($s,'email') ?>"></div>
+            <div class="field"><label for="email">Public email</label><input type="email" id="email" name="email" value="<?= sv($s,'email') ?>"></div>
             <div class="field"><label for="admin_email">Notification email (where forms send)</label><input type="email" id="admin_email" name="admin_email" value="<?= sv($s,'admin_email') ?>"></div>
         </div>
-        <div class="field"><label for="address">Address / base</label><input type="text" id="address" name="address" value="<?= sv($s,'address') ?>"></div>
+        <div class="field"><label for="address">Business address</label><input type="text" id="address" name="address" value="<?= sv($s,'address') ?>"></div>
         <div class="form-row">
             <div class="field"><label for="hours_weekday">Weekday hours</label><input type="text" id="hours_weekday" name="hours_weekday" value="<?= sv($s,'hours_weekday') ?>"></div>
             <div class="field"><label for="hours_weekend">Weekend hours</label><input type="text" id="hours_weekend" name="hours_weekend" value="<?= sv($s,'hours_weekend') ?>"></div>

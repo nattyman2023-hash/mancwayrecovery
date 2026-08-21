@@ -48,7 +48,7 @@ INSERT IGNORE INTO settings (`key`, value) VALUES
 ('phone',         '0161 000 0000'),
 ('phone_href',    '01610000000'),
 ('email',         'info@mancwayrecovery.co.uk'),
-('address',       'Manchester, Greater Manchester, UK'),
+('address',       'Upper Cyrus St, Manchester M40 7FD'),
 ('hours_weekday', 'Mon–Fri: 7:30am – 6:00pm'),
 ('hours_weekend', 'Sat: 8:00am – 2:00pm · Sun: Closed'),
 ('service_radius', 'Greater Manchester & surrounds'),
