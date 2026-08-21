@@ -47,6 +47,8 @@ define('DB_CHARSET',     (string) cfg('DB_CHARSET', 'utf8mb4'));
 define('SESSION_SECRET', (string) cfg('SESSION_SECRET', 'please-change-this'));
 define('MAIL_TO',        (string) cfg('MAIL_TO', ''));
 define('MAIL_FROM',      (string) cfg('MAIL_FROM', ''));
+define('DVLA_API_KEY',   trim((string) cfg('DVLA_API_KEY', '')));
+define('DVLA_API_URL',   'https://driver-vehicle-licensing.api.gov.uk/vehicle-enquiry/v1/vehicles');
 define('IS_DEV',         APP_ENV === 'development');
 
 // Error reporting — show errors in dev, hide & log in production.

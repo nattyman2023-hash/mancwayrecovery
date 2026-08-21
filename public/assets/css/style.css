@@ -181,6 +181,15 @@ p{margin:.5em 0}
 .has-error input,.has-error select,.has-error textarea{border-color:var(--err)}
 .field-error{color:var(--err);font-size:.82rem;font-weight:600}
 .form-foot{font-size:.82rem;text-align:center}
+.vehicle-lookup-row{display:flex;align-items:stretch;gap:9px}
+.vehicle-lookup-row input{flex:1;min-width:0}
+.vehicle-lookup-button{flex:none;white-space:nowrap}
+.vehicle-lookup-help,.vehicle-lookup-status{margin:0;font-size:.8rem;line-height:1.45}
+.vehicle-lookup-help{color:var(--muted)}
+.vehicle-lookup-status{min-height:1.15em;color:var(--muted)}
+.vehicle-lookup-status.is-loading{color:var(--navy)}
+.vehicle-lookup-status.is-success{color:#18794e}
+.vehicle-lookup-status.is-error{color:var(--err)}
 .hp{position:absolute;left:-9999px;top:0}
 .alert{padding:.85rem 1rem;border-radius:10px;margin-bottom:1rem;font-weight:600}
 .alert-error{background:#fdecec;color:var(--err);border:1px solid #f5c6c6}
@@ -291,4 +300,8 @@ p{margin:.5em 0}
   .section{padding:44px 0}
   .admin-nav{display:none}
   .admin-actions .btn-ghost{display:none}
+}
+@media(max-width:520px){
+  .vehicle-lookup-row{flex-direction:column}
+  .vehicle-lookup-button{width:100%}
 }

@@ -45,6 +45,7 @@ MancWay/
 ├── public/                    # <-- contents go into public_html/
 │   ├── index.php, services.php, service.php, areas.php
 │   ├── booking.php, contact.php, testimonials.php, about.php, faq.php
+│   ├── api/                     # server-side integrations (DVLA lookup)
 │   ├── 404.php, sitemap.xml.php, robots.txt, .htaccess
 │   ├── setup.php              # one-time admin installer — DELETE after use
 │   ├── admin/                 # admin panel
@@ -109,8 +110,23 @@ return [
     'SESSION_SECRET' => 'a-long-random-string-here',
     'MAIL_TO'        => 'you@example.com',          // optional override; otherwise Admin Settings > admin email is used
     'MAIL_FROM'      => 'no-reply@mancwayrecovery.co.uk',
+    'DVLA_API_KEY'   => 'YOUR_DVLA_VES_API_KEY',
 ];
 ```
+
+### DVLA vehicle lookup
+
+The booking form includes a **Find details** button beside the registration
+field. It sends the registration to the server-side DVLA Vehicle Enquiry
+Service endpoint, then fills the make and shows the vehicle information DVLA
+returns. The model field remains editable because the documented Vehicle
+Enquiry response does not include a model value.
+
+Add the key to `app/config/config.local.php` on the server, or set the
+`DVLA_API_KEY` environment variable. Do not put the key in JavaScript, HTML,
+Git, or a publicly accessible `.env` file. PHP cURL must be enabled on the
+hosting account. If the key is not present, the form continues to work with
+manual vehicle entry.
 
 ### 5. Enable SSL & set the domain
 1. hPanel → **SSL** → install free **Let's Encrypt SSL** for your domain
@@ -146,7 +162,7 @@ return [
 
 ## Going live checklist
 
-- [ ] `app/config/config.local.php`: set the **3 marked values** — DB password, real domain (`APP_URL`), notification email (`MAIL_TO`). The `SESSION_SECRET` is already generated for you.
+- [ ] `app/config/config.local.php`: set the DB password, real domain (`APP_URL`), notification email (`MAIL_TO`), and `DVLA_API_KEY` if vehicle lookup is required. The `SESSION_SECRET` is already generated for you.
 - [ ] `schema.sql` + `seed.sql` imported (phpMyAdmin)
 - [ ] `migration_crm.sql` imported after the base schema and seed
 - [ ] `app/` uploaded to `/home/u514321141/app/`; contents of `public/` into `public_html/` (recommended layout)

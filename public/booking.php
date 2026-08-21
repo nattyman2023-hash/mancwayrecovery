@@ -138,9 +138,14 @@ require APP_DIR . '/views/layout/header.php';
                     <input type="text" id="vehicle_model" name="vehicle_model" value="<?= old('vehicle_model') ?>" placeholder="e.g. Focus 1.6">
                 </div>
             </div>
-            <div class="field">
+            <div class="field vehicle-lookup" data-vehicle-lookup data-endpoint="<?= e(url('/api/dvla-vehicle.php')) ?>">
                 <label for="vehicle_reg">Vehicle registration</label>
-                <input type="text" id="vehicle_reg" name="vehicle_reg" value="<?= old('vehicle_reg') ?>" placeholder="e.g. AB12 CDE">
+                <div class="vehicle-lookup-row">
+                    <input type="text" id="vehicle_reg" name="vehicle_reg" value="<?= old('vehicle_reg') ?>" placeholder="e.g. AB12 CDE" autocomplete="off" autocapitalize="characters" spellcheck="false">
+                    <button type="button" class="btn btn-outline vehicle-lookup-button" data-vehicle-lookup-button>Find details</button>
+                </div>
+                <p class="vehicle-lookup-help">Enter the registration and we’ll fill in the details DVLA holds.</p>
+                <p class="vehicle-lookup-status" data-vehicle-lookup-status role="status" aria-live="polite"></p>
             </div>
             <div class="field">
                 <label for="service_id">Service required</label>
@@ -204,5 +209,4 @@ require APP_DIR . '/views/layout/header.php';
     </div></section>
 <?php endif; ?>
 <?php require APP_DIR . '/views/layout/footer.php'; ?>
-
 

@@ -35,4 +35,8 @@ return [
     // admin_email setting in the database is used instead.
     'MAIL_TO'        => 'info@mancwayrecovery.co.uk',
     'MAIL_FROM'      => 'no-reply@mancwayrecovery.co.uk',
+
+    // DVLA Vehicle Enquiry Service key. Keep this server-side; never add it
+    // to public JavaScript or the booking form.
+    'DVLA_API_KEY'   => 'PASTE_DVLA_VES_KEY_HERE',
 ];
