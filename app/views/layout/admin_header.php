@@ -17,6 +17,17 @@ $admin_nav = [
     'testimonials' => ['Testimonials', url('/admin/testimonials.php')],
     'settings'     => ['Settings',     url('/admin/settings.php')],
 ];
+$admin_nav_icons = [
+    'dashboard'    => 'dashboard',
+    'crm'          => 'local_shipping',
+    'vehicles'     => 'airport_shuttle',
+    'bookings'     => 'event_available',
+    'messages'     => 'forum',
+    'services'     => 'build',
+    'areas'        => 'map',
+    'testimonials' => 'reviews',
+    'settings'     => 'settings',
+];
 ?>
 <!DOCTYPE html>
 <html lang="en-GB">
@@ -25,7 +36,8 @@ $admin_nav = [
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex,nofollow">
     <title><?= e($admin_title) ?> · <?= e(site_name()) ?> Admin</title>
-    <link rel="icon" type="image/svg+xml" href="<?= e(asset('img/favicon.svg')) ?>">
+    <link rel="icon" type="image/jpeg" href="<?= e(asset('img/logo.jpeg')) ?>">
+    <link rel="apple-touch-icon" href="<?= e(asset('img/logo.jpeg')) ?>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
@@ -35,26 +47,48 @@ $admin_nav = [
 </head>
 <body class="admin-body">
 <header class="admin-topbar">
-    <div class="container admin-topbar-inner">
-        <a class="brand brand-admin" href="<?= e(url('/admin/index.php')) ?>">
-            <img class="brand-logo" src="<?= e(asset('img/logo.jpeg')) ?>" alt="<?= e(site_name()) ?> logo">
-            <span class="brand-text">Manc<span style="color:var(--mw-amber)">Way</span> <small>CRM</small></span>
-        </a>
-        <button class="nav-toggle" aria-expanded="false" aria-controls="admin-menu" aria-label="Menu"><span></span><span></span><span></span></button>
-        <nav id="admin-menu" class="admin-nav" aria-label="Admin">
-            <ul>
-                <?php foreach ($admin_nav as $key => [$label, $href]):
-                    $cls = ($active_admin === $key) ? ' is-active' : ''; ?>
-                    <li><a class="<?= $cls ?>" href="<?= e($href) ?>"><?= e($label) ?></a></li>
-                <?php endforeach; ?>
-            </ul>
-        </nav>
+    <div class="admin-topbar-inner">
+        <button class="nav-toggle" aria-expanded="false" aria-controls="admin-menu" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </button>
+        <div class="admin-topbar-context">
+            <span class="admin-context-label">MANCWAY RECOVERY / DISPATCH</span>
+            <strong><?= e($admin_title) ?></strong>
+        </div>
         <div class="admin-actions">
-            <a class="btn btn-ghost btn-sm" href="<?= e(url('/')) ?>" target="_blank">View site</a>
-            <a class="btn btn-outline btn-sm" href="<?= e(url('/admin/logout.php')) ?>">Log out</a>
+            <a class="btn btn-ghost btn-sm" href="<?= e(url('/')) ?>" target="_blank">
+                <span class="mw-icon">open_in_new</span><span class="admin-action-label">View site</span>
+            </a>
+            <span class="admin-user"><span class="mw-icon">account_circle</span><?= e($_SESSION['admin_username'] ?? 'Dispatcher') ?></span>
+            <a class="btn btn-outline btn-sm" href="<?= e(url('/admin/logout.php')) ?>">
+                <span class="mw-icon">logout</span><span class="admin-action-label">Log out</span>
+            </a>
         </div>
     </div>
 </header>
+<div class="admin-shell">
+<aside id="admin-menu" class="admin-sidebar" aria-label="Admin navigation">
+    <a class="admin-sidebar-brand" href="<?= e(url('/admin/index.php')) ?>">
+        <img src="<?= e(asset('img/logo.jpeg')) ?>" alt="<?= e(site_name()) ?> logo">
+        <span><strong>Dispatch Center</strong><small><?= e(site_name()) ?></small></span>
+    </a>
+    <nav class="admin-nav">
+        <span class="admin-nav-heading">Operations</span>
+        <ul>
+            <?php foreach ($admin_nav as $key => [$label, $href]):
+                $cls = ($active_admin === $key) ? ' is-active' : ''; ?>
+                <li><a class="<?= $cls ?>" href="<?= e($href) ?>">
+                    <span class="mw-icon"><?= e($admin_nav_icons[$key] ?? 'circle') ?></span>
+                    <span><?= e($label) ?></span>
+                </a></li>
+            <?php endforeach; ?>
+        </ul>
+    </nav>
+    <div class="admin-sidebar-footer">
+        <span class="mw-icon">verified_user</span>
+        <span><strong>Live operations</strong><small>Secure admin workspace</small></span>
+    </div>
+</aside>
 <main class="admin-main container">
     <div class="admin-head">
         <h1 class="admin-h1"><?= e($admin_title) ?></h1>

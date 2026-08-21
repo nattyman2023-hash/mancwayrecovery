@@ -3,10 +3,7 @@
         <div class="container footer-grid">
             <div class="footer-col">
                 <div class="brand brand-footer">
-                    <span class="brand-mark" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.8 2.8-2.4-2.4 2.8-2.8z"/></svg>
-                    </span>
-                    <span class="brand-text">Manc<span class="brand-accent">Way</span></span>
+                    <img class="brand-logo" src="<?= e(asset('img/logo.jpeg')) ?>" alt="<?= e(site_name()) ?> logo">
                 </div>
                 <p class="footer-tagline"><?= e(setting('tagline')) ?></p>
                 <p class="footer-hours"><?= e(setting('hours_weekday')) ?><br><?= e(setting('hours_weekend')) ?></p>

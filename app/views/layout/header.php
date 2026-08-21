@@ -26,13 +26,14 @@ $nav = [
     <meta name="description" content="<?= e($page_description) ?>">
     <?php if ($page_canonical): ?><link rel="canonical" href="<?= e($page_canonical) ?>"><?php endif; ?>
     <meta name="theme-color" content="#0b1f3a">
-    <link rel="icon" type="image/svg+xml" href="<?= e(asset('img/favicon.svg')) ?>">
+    <link rel="icon" type="image/jpeg" href="<?= e(asset('img/logo.jpeg')) ?>">
+    <link rel="apple-touch-icon" href="<?= e(asset('img/logo.jpeg')) ?>">
     <meta property="og:title" content="<?= e($page_title) ?>">
     <meta property="og:description" content="<?= e($page_description) ?>">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="<?= e(site_name()) ?>">
     <meta property="og:url" content="<?= e(rtrim(APP_URL, '/') . ($_SERVER['REQUEST_URI'] ?? '/')) ?>">
-    <meta property="og:image" content="<?= e(url('/assets/img/logo.svg')) ?>">
+    <meta property="og:image" content="<?= e(asset('img/logo.jpeg')) ?>">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -43,7 +44,7 @@ $nav = [
       "@context": "https://schema.org",
       "@type": "AutomotiveBusiness",
       "name": <?= json_encode(site_name()) ?>,
-      "image": <?= json_encode(url('/assets/img/logo.svg')) ?>,
+      "image": <?= json_encode(asset('img/logo.jpeg')) ?>,
       "telephone": <?= json_encode(site_phone()) ?>,
       "email": <?= json_encode(setting('email')) ?>,
       "url": <?= json_encode(APP_URL) ?>,
@@ -67,13 +68,8 @@ $nav = [
 <a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header" id="top">
     <div class="container nav-wrap">
-        <a class="brand" href="<?= e(url('/')) ?>" aria-label="<?= e(site_name()) ?> home">
-            <span class="brand-mark" aria-hidden="true">
-                <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.8 2.8-2.4-2.4 2.8-2.8z"/>
-                </svg>
-            </span>
-            <span class="brand-text">Manc<span class="brand-accent">Way</span><span class="brand-sub">Vehicle Recovery</span></span>
+        <a class="brand brand-public" href="<?= e(url('/')) ?>" aria-label="<?= e(site_name()) ?> home">
+            <img class="brand-logo" src="<?= e(asset('img/logo.jpeg')) ?>" alt="<?= e(site_name()) ?> logo">
         </a>
         <nav class="main-nav" aria-label="Primary">
             <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Menu">

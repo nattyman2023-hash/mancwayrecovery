@@ -163,7 +163,7 @@ return [
 
 - **Colours:** edit the CSS variables at the top of `public/assets/css/style.css`
   (`--navy`, `--amber`, etc.)
-- **Logo:** replace `public/assets/img/logo.svg` and `favicon.svg`
+- **Logo:** the supplied brand logo is `public/assets/img/logo.jpeg`; the public/admin headers, social preview image, and favicon reference it.
 - **Services/areas/reviews/settings:** all editable from the admin panel — no
   code edits required.
 

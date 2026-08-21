@@ -34,7 +34,7 @@ require APP_DIR . '/views/layout/header.php';
         </div>
         <div class="hero-card" aria-hidden="true">
             <div class="hero-card-head">
-                <span class="brand-mark"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.8 2.8-2.4-2.4 2.8-2.8z"/></svg></span>
+                <img class="hero-card-logo" src="<?= e(asset('img/logo.jpeg')) ?>" alt="">
                 <div><strong><?= e(site_name()) ?></strong><small>Recovery &amp; enquiries</small></div>
             </div>
             <a class="hero-quick" href="<?= e(url('/booking.php')) ?>"><span>🚚 Request recovery online</span><span>→</span></a>
@@ -127,4 +127,3 @@ require APP_DIR . '/views/layout/header.php';
 </section>
 
 <?php require APP_DIR . '/views/layout/footer.php'; ?>
-
