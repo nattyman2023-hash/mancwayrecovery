@@ -67,7 +67,9 @@ MancWay/
 1. hPanel → **phpMyAdmin** → select your database → **Import**
 2. Import `database/schema.sql` first
 3. Then import `database/seed.sql` once for starter content
-4. Then import `database/migration_crm.sql` to enable the CRM and recovery fleet
+4. Open **Admin → CRM** and click **Install CRM now** to enable the CRM and
+   recovery fleet. The SQL fallback is `database/migration_crm.sql` if your
+   hosting account does not allow schema changes from the site.
 
 `schema.sql` is non-destructive and can be re-imported without dropping live
 accounts, bookings, messages or settings. Avoid re-importing `seed.sql` after
@@ -171,7 +173,7 @@ when it does not.
 
 - [ ] `app/config/config.local.php`: set the DB password, real domain (`APP_URL`), notification email (`MAIL_TO`), and `DVLA_API_KEY` if vehicle lookup is required. The `SESSION_SECRET` is already generated for you.
 - [ ] `schema.sql` + `seed.sql` imported (phpMyAdmin)
-- [ ] `migration_crm.sql` imported after the base schema and seed
+- [ ] Admin → CRM migration installed (or `migration_crm.sql` imported after the base schema and seed)
 - [ ] `app/` uploaded to `/home/u514321141/app/`; contents of `public/` into `public_html/` (recommended layout)
 - [ ] SSL enabled (HTTPS works, redirects to https)
 - [ ] `setup.php` run (created your admin) and **deleted**
