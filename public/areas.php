@@ -159,6 +159,7 @@ partial('partials/photo-strip', compact('photo_items', 'photo_kicker', 'photo_ti
 $photo_items = [
     ['image' => 'recovery-roadside.png', 'alt' => 'Recovery operator loading a blue hatchback onto a flatbed truck on a wet Manchester street', 'title' => 'Greater Manchester coverage', 'text' => 'A practical recovery response across local roads, estates and motorways.'],
     ['image' => 'recovery-transport.png', 'alt' => 'Recovery operator securing a silver car to a flatbed truck at a motorway service area', 'title' => 'Beyond the boroughs', 'text' => 'Long-distance transport is available when your vehicle needs to go further.'],
+    ['image' => 'recovery-loading.jpg', 'alt' => 'Recovery operator loading a dark hatchback onto a flatbed truck on a wet local road', 'title' => 'Careful vehicle handling', 'text' => 'Safe loading and clear communication from roadside pickup to final destination.'],
 ];
 $photo_kicker = 'Where we work';
 $photo_title = 'Help is closer than you think.';
