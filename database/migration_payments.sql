@@ -19,10 +19,14 @@ SET @sql = IF(@has_balance_status=0, "ALTER TABLE bookings ADD COLUMN balance_st
 
 CREATE TABLE IF NOT EXISTS invoices (
   id INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  booking_id INT UNSIGNED NOT NULL,
+  booking_id INT UNSIGNED NULL,
+  customer_name VARCHAR(120) NOT NULL DEFAULT '',
+  customer_email VARCHAR(190) NOT NULL DEFAULT '',
+  customer_phone VARCHAR(30) NOT NULL DEFAULT '',
+  customer_address VARCHAR(255) NOT NULL DEFAULT '',
   invoice_number VARCHAR(24) NOT NULL,
   public_token CHAR(64) NOT NULL,
-  invoice_type ENUM('deposit','balance','full') NOT NULL DEFAULT 'deposit',
+  invoice_type ENUM('deposit','balance','full','custom') NOT NULL DEFAULT 'deposit',
   description VARCHAR(255) NOT NULL DEFAULT '',
   subtotal DECIMAL(10,2) NOT NULL DEFAULT 0.00,
   amount_due DECIMAL(10,2) NOT NULL DEFAULT 0.00,
@@ -42,3 +46,13 @@ CREATE TABLE IF NOT EXISTS invoices (
   PRIMARY KEY (id), UNIQUE KEY invoice_number (invoice_number), UNIQUE KEY public_token (public_token),
   KEY booking_id (booking_id), KEY status (status), KEY stripe_payment_link_id (stripe_payment_link_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+ALTER TABLE invoices MODIFY booking_id INT UNSIGNED NULL, MODIFY invoice_type ENUM('deposit','balance','full','custom') NOT NULL DEFAULT 'deposit';
+SET @has_customer_name = (SELECT COUNT(*) FROM information_schema.COLUMNS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='invoices' AND COLUMN_NAME='customer_name');
+SET @sql = IF(@has_customer_name=0, "ALTER TABLE invoices ADD COLUMN customer_name VARCHAR(120) NOT NULL DEFAULT '' AFTER booking_id", 'SELECT 1'); PREPARE stmt FROM @sql; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+SET @has_customer_email = (SELECT COUNT(*) FROM information_schema.COLUMNS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='invoices' AND COLUMN_NAME='customer_email');
+SET @sql = IF(@has_customer_email=0, "ALTER TABLE invoices ADD COLUMN customer_email VARCHAR(190) NOT NULL DEFAULT '' AFTER customer_name", 'SELECT 1'); PREPARE stmt FROM @sql; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+SET @has_customer_phone = (SELECT COUNT(*) FROM information_schema.COLUMNS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='invoices' AND COLUMN_NAME='customer_phone');
+SET @sql = IF(@has_customer_phone=0, "ALTER TABLE invoices ADD COLUMN customer_phone VARCHAR(30) NOT NULL DEFAULT '' AFTER customer_email", 'SELECT 1'); PREPARE stmt FROM @sql; EXECUTE stmt; DEALLOCATE PREPARE stmt;
+SET @has_customer_address = (SELECT COUNT(*) FROM information_schema.COLUMNS WHERE TABLE_SCHEMA=DATABASE() AND TABLE_NAME='invoices' AND COLUMN_NAME='customer_address');
+SET @sql = IF(@has_customer_address=0, "ALTER TABLE invoices ADD COLUMN customer_address VARCHAR(255) NOT NULL DEFAULT '' AFTER customer_phone", 'SELECT 1'); PREPARE stmt FROM @sql; EXECUTE stmt; DEALLOCATE PREPARE stmt;

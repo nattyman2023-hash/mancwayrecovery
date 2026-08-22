@@ -14,11 +14,23 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
         $type = (string)($_POST['invoice_type'] ?? 'balance');
         $amount = (float)($_POST['amount_due'] ?? 0);
         $method = (string)($_POST['payment_method'] ?? '');
-        $invoice = create_invoice_for_booking($bookingId, $type, $amount, $method);
+        if ($bookingId > 0) {
+            $invoice = create_invoice_for_booking($bookingId, $type, $amount, $method);
+        } else {
+            $invoice = create_standalone_invoice(
+                (string)($_POST['customer_name'] ?? ''),
+                (string)($_POST['customer_email'] ?? ''),
+                (string)($_POST['customer_phone'] ?? ''),
+                (string)($_POST['customer_address'] ?? ''),
+                (string)($_POST['description'] ?? ''),
+                $amount,
+                $method
+            );
+        }
         if ($invoice) {
             redirect_with(url('/admin/invoices.php'), ['flash' => 'Invoice ' . $invoice['invoice_number'] . ' created and emailed where a customer email is available.']);
         }
-        redirect_with(url('/admin/invoices.php'), ['error' => 'The invoice could not be created. Check the booking and amount.']);
+        redirect_with(url('/admin/invoices.php'), ['error' => 'The invoice could not be created. For a standalone invoice, enter a customer name and an amount.']);
     }
     if ($action === 'mark_paid' && $invoiceId > 0) {
         mark_invoice_paid($invoiceId);
@@ -40,8 +52,8 @@ $error = flash('error');
 $selectedBookingId = (int)($_GET['booking'] ?? 0);
 $bookings = db()->query("SELECT b.id, b.reference, b.name, b.email, b.quoted_total, b.deposit_status, b.distance_miles, s.title AS service_title
     FROM bookings b LEFT JOIN services s ON s.id=b.service_id ORDER BY b.created_at DESC LIMIT 100")->fetchAll();
-$invoices = db()->query("SELECT i.*, b.reference, b.name, b.email, b.quoted_total, s.title AS service_title
-    FROM invoices i JOIN bookings b ON b.id=i.booking_id LEFT JOIN services s ON s.id=b.service_id
+$invoices = db()->query("SELECT i.*, b.reference, COALESCE(NULLIF(i.customer_name, ''), b.name, '') AS display_name, COALESCE(NULLIF(i.customer_email, ''), b.email, '') AS display_email, s.title AS service_title
+    FROM invoices i LEFT JOIN bookings b ON b.id=i.booking_id LEFT JOIN services s ON s.id=b.service_id
     ORDER BY i.created_at DESC LIMIT 100")->fetchAll();
 
 $admin_title = 'Invoices';
@@ -53,14 +65,23 @@ require APP_DIR . '/views/layout/admin_header.php';
 
 <div class="admin-2col">
     <section class="panel">
-        <div class="panel-head"><h2>Create invoice</h2><span class="muted">Deposit or balance</span></div>
-        <p class="muted">Every booking receives a £50 deposit invoice automatically. Use this form for a balance, a full quote or a replacement invoice.</p>
+        <div class="panel-head"><h2>Create invoice</h2><span class="muted">Booking or standalone</span></div>
+        <p class="muted">Choose a booking for a deposit or balance, or leave it unselected to create a normal/custom invoice for someone who has no booking.</p>
         <form method="post" class="form" novalidate>
             <?= csrf_field() ?><input type="hidden" name="action" value="create">
-            <div class="field"><label for="booking_id">Booking</label><select id="booking_id" name="booking_id" required><option value="">Select a booking…</option><?php foreach ($bookings as $booking): ?><option value="<?= (int)$booking['id'] ?>" <?= $selectedBookingId === (int)$booking['id'] ? 'selected' : '' ?>><?= e($booking['reference']) ?> — <?= e($booking['name']) ?><?= $booking['service_title'] ? ' — ' . e($booking['service_title']) : '' ?></option><?php endforeach; ?></select></div>
+            <div class="field"><label for="booking_id">Booking <span class="muted">(optional)</span></label><select id="booking_id" name="booking_id"><option value="0">No booking — standalone invoice</option><?php foreach ($bookings as $booking): ?><option value="<?= (int)$booking['id'] ?>" <?= $selectedBookingId === (int)$booking['id'] ? 'selected' : '' ?>><?= e($booking['reference']) ?> — <?= e($booking['name']) ?><?= $booking['service_title'] ? ' — ' . e($booking['service_title']) : '' ?></option><?php endforeach; ?></select></div>
             <div class="form-row">
-                <div class="field"><label for="invoice_type">Invoice type</label><select id="invoice_type" name="invoice_type"><option value="balance">Balance after deposit</option><option value="full">Full amount</option><option value="deposit">£50 deposit</option></select></div>
-                <div class="field"><label for="amount_due">Amount due <span class="muted">(optional)</span></label><input type="number" id="amount_due" name="amount_due" min="0.01" step="0.01" placeholder="Auto from booking quote"></div>
+                <div class="field"><label for="customer_name">Customer name <span class="muted">(standalone only)</span></label><input type="text" id="customer_name" name="customer_name" maxlength="120" placeholder="Customer or company name"></div>
+                <div class="field"><label for="customer_email">Customer email</label><input type="email" id="customer_email" name="customer_email" placeholder="Send invoice by email"></div>
+            </div>
+            <div class="form-row">
+                <div class="field"><label for="customer_phone">Customer phone</label><input type="tel" id="customer_phone" name="customer_phone"></div>
+                <div class="field"><label for="customer_address">Customer address</label><input type="text" id="customer_address" name="customer_address"></div>
+            </div>
+            <div class="field"><label for="description">Invoice description <span class="muted">(required for standalone invoices)</span></label><textarea id="description" name="description" rows="3" maxlength="255" placeholder="e.g. Vehicle recovery from Manchester to Leeds"></textarea></div>
+            <div class="form-row">
+                <div class="field"><label for="invoice_type">Invoice type</label><select id="invoice_type" name="invoice_type"><option value="balance">Balance after deposit</option><option value="full">Full amount</option><option value="deposit">£50 deposit</option><option value="custom">Standalone / custom invoice</option></select></div>
+                <div class="field"><label for="amount_due">Amount due <span class="muted">(optional for booking quote)</span></label><input type="number" id="amount_due" name="amount_due" min="0.01" step="0.01" placeholder="Auto from booking quote"></div>
             </div>
             <div class="field"><label for="payment_method">Payment method</label><select id="payment_method" name="payment_method"><option value="">Use default setting</option><option value="stripe">Stripe payment link</option><option value="bank_transfer">Bank transfer</option></select></div>
             <button type="submit" class="btn btn-primary">Create and send invoice</button>
@@ -83,7 +104,7 @@ require APP_DIR . '/views/layout/admin_header.php';
             <?php foreach ($invoices as $invoice): ?>
                 <tr>
                     <td><strong><?= e($invoice['invoice_number']) ?></strong><br><small><?= e(invoice_type_label($invoice['invoice_type'])) ?></small></td>
-                    <td><a href="<?= e(url('/admin/bookings.php?view=' . (int)$invoice['booking_id'])) ?>"><?= e($invoice['reference']) ?></a><br><small><?= e($invoice['name']) ?></small></td>
+                    <td><?php if ((int)$invoice['booking_id'] > 0): ?><a href="<?= e(url('/admin/bookings.php?view=' . (int)$invoice['booking_id'])) ?>"><?= e($invoice['reference']) ?></a><?php else: ?><span class="muted">Standalone</span><?php endif; ?><br><small><?= e($invoice['display_name']) ?></small></td>
                     <td><strong><?= e(format_price($invoice['amount_due'])) ?></strong><br><small><?= e($invoice['currency']) ?></small></td>
                     <td><?= $invoice['payment_method'] === 'stripe' ? 'Stripe' : 'Bank transfer' ?></td>
                     <td><span class="badge badge-<?= e($invoice['status']) ?>"><?= e(invoice_status_label($invoice['status'])) ?></span></td>

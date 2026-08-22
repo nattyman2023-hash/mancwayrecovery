@@ -84,10 +84,14 @@ CREATE TABLE IF NOT EXISTS bookings (
 -- ---------------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS invoices (
   id                         INT UNSIGNED NOT NULL AUTO_INCREMENT,
-  booking_id                 INT UNSIGNED NOT NULL,
+  booking_id                 INT UNSIGNED NULL,
+  customer_name              VARCHAR(120) NOT NULL DEFAULT '',
+  customer_email             VARCHAR(190) NOT NULL DEFAULT '',
+  customer_phone             VARCHAR(30) NOT NULL DEFAULT '',
+  customer_address           VARCHAR(255) NOT NULL DEFAULT '',
   invoice_number             VARCHAR(24) NOT NULL,
   public_token               CHAR(64) NOT NULL,
-  invoice_type               ENUM('deposit','balance','full') NOT NULL DEFAULT 'deposit',
+  invoice_type               ENUM('deposit','balance','full','custom') NOT NULL DEFAULT 'deposit',
   description                VARCHAR(255) NOT NULL DEFAULT '',
   subtotal                   DECIMAL(10,2) NOT NULL DEFAULT 0.00,
   amount_due                 DECIMAL(10,2) NOT NULL DEFAULT 0.00,

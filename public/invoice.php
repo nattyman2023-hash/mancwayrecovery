@@ -17,7 +17,9 @@ if (!$invoice) {
 }
 
 $page_title = 'Invoice ' . $invoice['invoice_number'] . ' | ' . site_name();
-$page_description = 'Secure invoice for MancWay Recovery booking ' . $invoice['reference'] . '.';
+$page_description = $invoice['reference'] !== ''
+    ? 'Secure invoice for MancWay Recovery booking ' . $invoice['reference'] . '.'
+    : 'Secure MancWay Recovery invoice.';
 $page_canonical = url('/invoice');
 $page_robots = 'noindex,nofollow';
 require APP_DIR . '/views/layout/header.php';
@@ -25,14 +27,15 @@ require APP_DIR . '/views/layout/header.php';
 <section class="page-hero" style="--page-hero-image:url('<?= e(asset('img/recovery-roadside.png')) ?>')"><div class="container">
     <span class="pill">Payment</span>
     <h1>Invoice <?= e($invoice['invoice_number']) ?></h1>
-    <p class="lead">Booking <?= e($invoice['reference']) ?> · <?= e(invoice_type_label((string)$invoice['invoice_type'])) ?></p>
+    <p class="lead"><?= $invoice['reference'] ? 'Booking ' . e($invoice['reference']) : e($invoice['description']) ?> · <?= e(invoice_type_label((string)$invoice['invoice_type'])) ?></p>
 </div></section>
 <section class="section"><div class="container narrow">
     <div class="invoice-card">
         <div class="invoice-card-head"><div><span class="muted">MancWay Recovery</span><h2><?= e(invoice_type_label((string)$invoice['invoice_type'])) ?></h2></div><span class="badge badge-<?= e($invoice['status']) ?>"><?= e(invoice_status_label((string)$invoice['status'])) ?></span></div>
         <dl class="kv invoice-details">
             <dt>Customer</dt><dd><?= e($invoice['name']) ?></dd>
-            <dt>Booking</dt><dd><?= e($invoice['reference']) ?></dd>
+            <?php if ($invoice['address']): ?><dt>Address</dt><dd><?= e($invoice['address']) ?></dd><?php endif; ?>
+            <?php if ($invoice['reference']): ?><dt>Booking</dt><dd><?= e($invoice['reference']) ?></dd><?php endif; ?>
             <dt>Service</dt><dd><?= e($invoice['service_title'] ?: 'Recovery service') ?></dd>
             <?php if ((float)$invoice['distance_miles'] > 0): ?><dt>Estimated mileage</dt><dd><?= e((string)$invoice['distance_miles']) ?> miles</dd><?php endif; ?>
             <dt>Amount due</dt><dd class="invoice-total"><?= e(format_price($invoice['amount_due'])) ?></dd>

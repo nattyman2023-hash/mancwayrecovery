@@ -56,10 +56,14 @@ function ensure_payment_schema(): void
     $pdo->exec(
         "CREATE TABLE IF NOT EXISTS invoices (
             id                        INT UNSIGNED NOT NULL AUTO_INCREMENT,
-            booking_id                INT UNSIGNED NOT NULL,
+            booking_id                INT UNSIGNED NULL,
+            customer_name             VARCHAR(120) NOT NULL DEFAULT '',
+            customer_email            VARCHAR(190) NOT NULL DEFAULT '',
+            customer_phone            VARCHAR(30) NOT NULL DEFAULT '',
+            customer_address          VARCHAR(255) NOT NULL DEFAULT '',
             invoice_number            VARCHAR(24) NOT NULL,
             public_token              CHAR(64) NOT NULL,
-            invoice_type              ENUM('deposit','balance','full') NOT NULL DEFAULT 'deposit',
+            invoice_type              ENUM('deposit','balance','full','custom') NOT NULL DEFAULT 'deposit',
             description               VARCHAR(255) NOT NULL DEFAULT '',
             subtotal                  DECIMAL(10,2) NOT NULL DEFAULT 0.00,
             amount_due                DECIMAL(10,2) NOT NULL DEFAULT 0.00,
@@ -84,6 +88,30 @@ function ensure_payment_schema(): void
             KEY stripe_payment_link_id (stripe_payment_link_id)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci"
     );
+
+    // Existing installations have the original booking-only invoice shape.
+    // Make the relationship optional and add the standalone customer fields.
+    $metaStmt = $pdo->query("SELECT COLUMN_NAME, IS_NULLABLE, COLUMN_TYPE FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'invoices' AND COLUMN_NAME IN ('booking_id','invoice_type')");
+    $invoiceMeta = [];
+    foreach ($metaStmt->fetchAll() as $meta) {
+        $invoiceMeta[(string)$meta['COLUMN_NAME']] = $meta;
+    }
+    if (($invoiceMeta['booking_id']['IS_NULLABLE'] ?? 'NO') !== 'YES' || !str_contains((string)($invoiceMeta['invoice_type']['COLUMN_TYPE'] ?? ''), "'custom'")) {
+        $pdo->exec("ALTER TABLE invoices MODIFY booking_id INT UNSIGNED NULL, MODIFY invoice_type ENUM('deposit','balance','full','custom') NOT NULL DEFAULT 'deposit'");
+    }
+    $invoiceColumns = [
+        'customer_name' => "VARCHAR(120) NOT NULL DEFAULT '' AFTER booking_id",
+        'customer_email' => "VARCHAR(190) NOT NULL DEFAULT '' AFTER customer_name",
+        'customer_phone' => "VARCHAR(30) NOT NULL DEFAULT '' AFTER customer_email",
+        'customer_address' => "VARCHAR(255) NOT NULL DEFAULT '' AFTER customer_phone",
+    ];
+    foreach ($invoiceColumns as $column => $definition) {
+        $check = $pdo->prepare("SELECT COUNT(*) FROM information_schema.COLUMNS WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'invoices' AND COLUMN_NAME = ?");
+        $check->execute([$column]);
+        if ((int)$check->fetchColumn() === 0) {
+            $pdo->exec('ALTER TABLE invoices ADD COLUMN `' . $column . '` ' . $definition);
+        }
+    }
 
     $columns = [
         'distance_miles' => "DECIMAL(10,2) NOT NULL DEFAULT 0.00 AFTER vehicle_reg",
@@ -136,6 +164,7 @@ function invoice_type_label(string $type): string
         'deposit' => 'Deposit',
         'balance' => 'Balance',
         'full' => 'Full amount',
+        'custom' => 'Invoice',
     ][$type] ?? ucfirst($type);
 }
 
@@ -216,7 +245,8 @@ function stripe_api_post(string $path, array $params): array
 function stripe_create_payment_link(array $invoice, array $booking): array
 {
     $amountPence = (int)round(((float)$invoice['amount_due']) * 100);
-    $description = invoice_type_label((string)$invoice['invoice_type']) . ' for booking ' . $booking['reference'];
+    $reference = trim((string)($booking['reference'] ?? ''));
+    $description = invoice_type_label((string)$invoice['invoice_type']) . ($reference !== '' ? ' for booking ' . $reference : ' from MancWay Recovery');
     $params = [
         'line_items[0][price_data][currency]' => 'gbp',
         'line_items[0][price_data][unit_amount]' => $amountPence,
@@ -225,11 +255,13 @@ function stripe_create_payment_link(array $invoice, array $booking): array
         'line_items[0][quantity]' => 1,
         'metadata[invoice_id]' => (string)$invoice['id'],
         'metadata[invoice_number]' => (string)$invoice['invoice_number'],
-        'metadata[booking_id]' => (string)$booking['id'],
         'after_completion[type]' => 'hosted_confirmation',
         'after_completion[hosted_confirmation][custom_message]' => 'Payment received. MancWay Recovery will confirm your recovery request.',
         'billing_address_collection' => 'auto',
     ];
+    if ((int)($booking['id'] ?? 0) > 0) {
+        $params['metadata[booking_id]'] = (string)$booking['id'];
+    }
     $result = stripe_api_post('/v1/payment_links', $params);
     if (!$result['ok']) {
         return ['ok' => false, 'id' => '', 'url' => '', 'error' => $result['error']];
@@ -246,8 +278,13 @@ function stripe_create_payment_link(array $invoice, array $booking): array
 function get_invoice(int $invoiceId): ?array
 {
     ensure_payment_schema();
-    $stmt = db()->prepare('SELECT i.*, b.reference, b.name, b.email, b.phone, b.vehicle_reg, b.address, b.postcode, b.quoted_total, b.distance_miles, s.title AS service_title
-        FROM invoices i JOIN bookings b ON b.id=i.booking_id LEFT JOIN services s ON s.id=b.service_id WHERE i.id=? LIMIT 1');
+    $stmt = db()->prepare("SELECT i.*, COALESCE(b.reference, '') AS reference,
+        COALESCE(NULLIF(i.customer_name, ''), b.name, '') AS name,
+        COALESCE(NULLIF(i.customer_email, ''), b.email, '') AS email,
+        COALESCE(NULLIF(i.customer_phone, ''), b.phone, '') AS phone,
+        COALESCE(NULLIF(i.customer_address, ''), NULLIF(CONCAT_WS(', ', b.address, b.postcode), ''), '') AS address,
+        b.vehicle_reg, b.quoted_total, b.distance_miles, s.title AS service_title
+        FROM invoices i LEFT JOIN bookings b ON b.id=i.booking_id LEFT JOIN services s ON s.id=b.service_id WHERE i.id=? LIMIT 1");
     $stmt->execute([$invoiceId]);
     $row = $stmt->fetch();
     return $row ?: null;
@@ -257,8 +294,13 @@ function get_invoice(int $invoiceId): ?array
 function get_invoice_by_public_reference(string $number, string $token): ?array
 {
     ensure_payment_schema();
-    $stmt = db()->prepare('SELECT i.*, b.reference, b.name, b.email, b.phone, b.vehicle_reg, b.address, b.postcode, b.quoted_total, b.distance_miles, s.title AS service_title
-        FROM invoices i JOIN bookings b ON b.id=i.booking_id LEFT JOIN services s ON s.id=b.service_id WHERE i.invoice_number=? AND i.public_token=? LIMIT 1');
+    $stmt = db()->prepare("SELECT i.*, COALESCE(b.reference, '') AS reference,
+        COALESCE(NULLIF(i.customer_name, ''), b.name, '') AS name,
+        COALESCE(NULLIF(i.customer_email, ''), b.email, '') AS email,
+        COALESCE(NULLIF(i.customer_phone, ''), b.phone, '') AS phone,
+        COALESCE(NULLIF(i.customer_address, ''), NULLIF(CONCAT_WS(', ', b.address, b.postcode), ''), '') AS address,
+        b.vehicle_reg, b.quoted_total, b.distance_miles, s.title AS service_title
+        FROM invoices i LEFT JOIN bookings b ON b.id=i.booking_id LEFT JOIN services s ON s.id=b.service_id WHERE i.invoice_number=? AND i.public_token=? LIMIT 1");
     $stmt->execute([$number, $token]);
     $row = $stmt->fetch();
     return $row ?: null;
@@ -275,6 +317,38 @@ function create_booking_deposit_invoice(int $bookingId): ?array
         return get_invoice($existingId);
     }
     return create_invoice_for_booking($bookingId, 'deposit', 50.00, '');
+}
+
+function invoice_payment_method(string $method = ''): string
+{
+    $method = $method !== '' ? $method : payment_default_method();
+    if (!in_array($method, ['stripe', 'bank_transfer'], true)) {
+        $method = payment_default_method();
+    }
+    return $method === 'stripe' && !stripe_is_configured() ? 'bank_transfer' : $method;
+}
+
+/** Create the Stripe link (when selected) and send the customer invoice email. */
+function finalize_invoice(int $invoiceId, array $paymentContext = []): ?array
+{
+    $invoice = get_invoice($invoiceId);
+    if (!$invoice) {
+        return null;
+    }
+    if ($invoice['payment_method'] === 'stripe') {
+        $link = stripe_create_payment_link($invoice, $paymentContext);
+        if ($link['ok'] && $link['id'] !== '' && $link['url'] !== '') {
+            db()->prepare('UPDATE invoices SET status=?, stripe_payment_link_id=?, stripe_payment_link_url=?, stripe_error=NULL WHERE id=?')
+                ->execute(['sent', $link['id'], $link['url'], $invoiceId]);
+        } else {
+            db()->prepare('UPDATE invoices SET status=?, stripe_error=? WHERE id=?')->execute(['failed', $link['error'], $invoiceId]);
+        }
+    }
+    $invoice = get_invoice($invoiceId);
+    if ($invoice && in_array($invoice['status'], ['sent', 'paid'], true) && valid_email((string)$invoice['email'])) {
+        send_invoice_email($invoiceId);
+    }
+    return get_invoice($invoiceId);
 }
 
 /** @return array<string,mixed>|null */
@@ -304,13 +378,7 @@ function create_invoice_for_booking(int $bookingId, string $type = 'deposit', fl
     if ($amountDue <= 0) {
         return null;
     }
-    $method = $method !== '' ? $method : payment_default_method();
-    if (!in_array($method, ['stripe', 'bank_transfer'], true)) {
-        $method = payment_default_method();
-    }
-    if ($method === 'stripe' && !stripe_is_configured()) {
-        $method = 'bank_transfer';
-    }
+    $method = invoice_payment_method($method);
     $description = invoice_type_label($type) . ' for booking ' . $booking['reference'];
     $invoiceNumber = invoice_number();
     $token = bin2hex(random_bytes(32));
@@ -320,22 +388,32 @@ function create_invoice_for_booking(int $bookingId, string $type = 'deposit', fl
         VALUES (?,?,?,?,?,?,?,?,?,?,?,NOW())');
     $insert->execute([$bookingId, $invoiceNumber, $token, $type, $description, $subtotal, $amountDue, 'GBP', $method, $status, $invoiceNumber]);
     $invoiceId = (int)db()->lastInsertId();
-    $invoice = get_invoice($invoiceId);
+    return finalize_invoice($invoiceId, $booking);
+}
 
-    if ($method === 'stripe' && $invoice) {
-        $link = stripe_create_payment_link($invoice, $booking);
-        if ($link['ok'] && $link['id'] !== '' && $link['url'] !== '') {
-            db()->prepare('UPDATE invoices SET status=?, stripe_payment_link_id=?, stripe_payment_link_url=?, stripe_error=NULL WHERE id=?')
-                ->execute(['sent', $link['id'], $link['url'], $invoiceId]);
-        } else {
-            db()->prepare('UPDATE invoices SET status=?, stripe_error=? WHERE id=?')->execute(['failed', $link['error'], $invoiceId]);
-        }
+/** Create a standalone invoice when there is no booking record to attach. */
+function create_standalone_invoice(string $name, string $email, string $phone, string $address, string $description, float $amount, string $method = ''): ?array
+{
+    ensure_payment_schema();
+    $name = trim($name);
+    $email = trim($email);
+    $phone = trim($phone);
+    $address = trim($address);
+    $description = trim($description);
+    $amount = round($amount, 2);
+    if ($name === '' || $amount <= 0 || ($email !== '' && !valid_email($email))) {
+        return null;
     }
-    $invoice = get_invoice($invoiceId);
-    if ($invoice && in_array($invoice['status'], ['sent', 'paid'], true) && (string)$booking['email'] !== '') {
-        send_invoice_email($invoiceId);
-    }
-    return get_invoice($invoiceId);
+    $description = mb_substr($description !== '' ? $description : 'MancWay Recovery service', 0, 255);
+    $method = invoice_payment_method($method);
+    $invoiceNumber = invoice_number();
+    $token = bin2hex(random_bytes(32));
+    $status = $method === 'bank_transfer' ? 'sent' : 'draft';
+    $insert = db()->prepare('INSERT INTO invoices
+        (booking_id, customer_name, customer_email, customer_phone, customer_address, invoice_number, public_token, invoice_type, description, subtotal, amount_due, currency, payment_method, status, bank_reference, created_at)
+        VALUES (NULL,?,?,?,?,?,?,?,?,?,?,?,?,?,?,NOW())');
+    $insert->execute([$name, $email, $phone, $address, $invoiceNumber, $token, 'custom', $description, $amount, $amount, 'GBP', $method, $status, $invoiceNumber]);
+    return finalize_invoice((int)db()->lastInsertId(), ['id' => 0, 'reference' => '']);
 }
 
 function invoice_email_body(array $invoice): string
@@ -343,7 +421,9 @@ function invoice_email_body(array $invoice): string
     $paymentUrl = $invoice['payment_method'] === 'stripe' ? (string)$invoice['stripe_payment_link_url'] : invoice_public_url($invoice);
     $body = '<h2>MancWay Recovery invoice ' . e($invoice['invoice_number']) . '</h2>';
     $body .= '<p>Hello ' . e($invoice['name']) . ',</p>';
-    $body .= '<p>Please find your ' . e(strtolower(invoice_type_label((string)$invoice['invoice_type']))) . ' for booking <strong>' . e($invoice['reference']) . '</strong>.</p>';
+    $body .= $invoice['reference'] !== ''
+        ? '<p>Please find your ' . e(strtolower(invoice_type_label((string)$invoice['invoice_type']))) . ' for booking <strong>' . e($invoice['reference']) . '</strong>.</p>'
+        : '<p>Please find your MancWay Recovery invoice below.</p>';
     $body .= '<p><strong>Description:</strong> ' . e($invoice['description']) . '<br><strong>Amount due:</strong> ' . e(format_price($invoice['amount_due'])) . '</p>';
     if ($invoice['payment_method'] === 'stripe' && $paymentUrl !== '') {
         $body .= '<p><a href="' . e($paymentUrl) . '" style="display:inline-block;padding:12px 18px;background:#f5a623;color:#0b1f3a;text-decoration:none;font-weight:700;border-radius:6px">Pay securely with Stripe</a></p>';
