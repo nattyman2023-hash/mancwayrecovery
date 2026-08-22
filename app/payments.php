@@ -681,48 +681,60 @@ function stripe_create_payment_link(array $invoice, array $booking): array
     ];
 }
 
+/** Add optional booking context without making secure invoice lookup depend on joins. */
+function invoice_with_context(?array $row): ?array
+{
+    if (!$row) return null;
+    $row['reference'] = '';
+    $row['name'] = (string)($row['customer_name'] ?? '');
+    $row['email'] = (string)($row['customer_email'] ?? '');
+    $row['phone'] = (string)($row['customer_phone'] ?? '');
+    $row['address'] = (string)($row['customer_address'] ?? '');
+    $row['display_vehicle_make'] = (string)($row['vehicle_make'] ?? '');
+    $row['display_vehicle_model'] = (string)($row['vehicle_model'] ?? '');
+    $row['display_vehicle_reg'] = (string)($row['vehicle_reg'] ?? '');
+    $row['display_collection_location'] = (string)($row['collection_location'] ?? '');
+    $row['display_destination'] = (string)($row['destination'] ?? '');
+    $row['display_recovery_date'] = (string)($row['recovery_date'] ?? '');
+    $row['service_title'] = '';
+    if ((int)($row['booking_id'] ?? 0) > 0) {
+        $stmt = db()->prepare('SELECT b.reference,b.name,b.email,b.phone,b.address,b.postcode,b.vehicle_make,b.vehicle_model,b.vehicle_reg,b.quoted_total,b.distance_miles,b.preferred_date,s.title AS service_title FROM bookings b LEFT JOIN services s ON s.id=b.service_id WHERE b.id=? LIMIT 1');
+        $stmt->execute([(int)$row['booking_id']]);
+        $booking = $stmt->fetch() ?: [];
+        $row['reference'] = (string)($booking['reference'] ?? '');
+        $row['name'] = (string)($row['customer_name'] ?: ($booking['name'] ?? ''));
+        $row['email'] = (string)($row['customer_email'] ?: ($booking['email'] ?? ''));
+        $row['phone'] = (string)($row['customer_phone'] ?: ($booking['phone'] ?? ''));
+        $row['address'] = (string)($row['customer_address'] ?: trim(($booking['address'] ?? '') . ', ' . ($booking['postcode'] ?? ''), ' ,'));
+        $row['display_vehicle_make'] = (string)($row['vehicle_make'] ?: ($booking['vehicle_make'] ?? ''));
+        $row['display_vehicle_model'] = (string)($row['vehicle_model'] ?: ($booking['vehicle_model'] ?? ''));
+        $row['display_vehicle_reg'] = (string)($row['vehicle_reg'] ?: ($booking['vehicle_reg'] ?? ''));
+        $row['display_collection_location'] = (string)($row['collection_location'] ?: trim(($booking['address'] ?? '') . ', ' . ($booking['postcode'] ?? ''), ' ,'));
+        $row['display_recovery_date'] = (string)($row['recovery_date'] ?: ($booking['preferred_date'] ?? ''));
+        $row['service_title'] = (string)($booking['service_title'] ?? '');
+        $row['quoted_total'] = (float)($booking['quoted_total'] ?? 0);
+        $row['distance_miles'] = (float)($booking['distance_miles'] ?? 0);
+        $row['vehicle_reg'] = (string)($booking['vehicle_reg'] ?? ($row['vehicle_reg'] ?? ''));
+    }
+    return $row;
+}
+
 /** @return array<string,mixed>|null */
 function get_invoice(int $invoiceId): ?array
 {
     ensure_payment_schema();
-    $stmt = db()->prepare("SELECT i.*, COALESCE(b.reference, '') AS reference,
-        COALESCE(NULLIF(i.customer_name, ''), b.name, '') AS name,
-        COALESCE(NULLIF(i.customer_email, ''), b.email, '') AS email,
-        COALESCE(NULLIF(i.customer_phone, ''), b.phone, '') AS phone,
-        COALESCE(NULLIF(i.customer_address, ''), NULLIF(CONCAT_WS(', ', b.address, b.postcode), ''), '') AS address,
-        COALESCE(NULLIF(i.vehicle_make, ''), b.vehicle_make, '') AS display_vehicle_make,
-        COALESCE(NULLIF(i.vehicle_model, ''), b.vehicle_model, '') AS display_vehicle_model,
-        COALESCE(NULLIF(i.vehicle_reg, ''), b.vehicle_reg, '') AS display_vehicle_reg,
-        COALESCE(NULLIF(i.collection_location, ''), NULLIF(CONCAT_WS(', ', b.address, b.postcode), ''), '') AS display_collection_location,
-        COALESCE(NULLIF(i.destination, ''), '') AS display_destination,
-        COALESCE(NULLIF(i.recovery_date, ''), b.preferred_date, '') AS display_recovery_date,
-        b.vehicle_reg, b.quoted_total, b.distance_miles, s.title AS service_title
-        FROM invoices i LEFT JOIN bookings b ON b.id=i.booking_id LEFT JOIN services s ON s.id=b.service_id WHERE i.id=? LIMIT 1");
+    $stmt = db()->prepare('SELECT * FROM invoices WHERE id=? LIMIT 1');
     $stmt->execute([$invoiceId]);
-    $row = $stmt->fetch();
-    return $row ?: null;
+    return invoice_with_context($stmt->fetch() ?: null);
 }
 
 /** @return array<string,mixed>|null */
 function get_invoice_by_public_reference(string $number, string $token): ?array
 {
     ensure_payment_schema();
-    $stmt = db()->prepare("SELECT i.*, COALESCE(b.reference, '') AS reference,
-        COALESCE(NULLIF(i.customer_name, ''), b.name, '') AS name,
-        COALESCE(NULLIF(i.customer_email, ''), b.email, '') AS email,
-        COALESCE(NULLIF(i.customer_phone, ''), b.phone, '') AS phone,
-        COALESCE(NULLIF(i.customer_address, ''), NULLIF(CONCAT_WS(', ', b.address, b.postcode), ''), '') AS address,
-        COALESCE(NULLIF(i.vehicle_make, ''), b.vehicle_make, '') AS display_vehicle_make,
-        COALESCE(NULLIF(i.vehicle_model, ''), b.vehicle_model, '') AS display_vehicle_model,
-        COALESCE(NULLIF(i.vehicle_reg, ''), b.vehicle_reg, '') AS display_vehicle_reg,
-        COALESCE(NULLIF(i.collection_location, ''), NULLIF(CONCAT_WS(', ', b.address, b.postcode), ''), '') AS display_collection_location,
-        COALESCE(NULLIF(i.destination, ''), '') AS display_destination,
-        COALESCE(NULLIF(i.recovery_date, ''), b.preferred_date, '') AS display_recovery_date,
-        b.vehicle_reg, b.quoted_total, b.distance_miles, s.title AS service_title
-        FROM invoices i LEFT JOIN bookings b ON b.id=i.booking_id LEFT JOIN services s ON s.id=b.service_id WHERE i.invoice_number=? AND i.public_token=? LIMIT 1");
+    $stmt = db()->prepare('SELECT * FROM invoices WHERE invoice_number=? AND public_token=? LIMIT 1');
     $stmt->execute([$number, $token]);
-    $row = $stmt->fetch();
-    return $row ?: null;
+    return invoice_with_context($stmt->fetch() ?: null);
 }
 
 /** Create the automatic £50 deposit invoice once per booking. */
