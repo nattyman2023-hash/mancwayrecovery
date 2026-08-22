@@ -63,6 +63,17 @@ if (!$crmReady) {
     exit;
 }
 
+// Website-chat handovers live beside enquiries in this CRM, without creating
+// a duplicate booking or charging a deposit before the customer confirms.
+$chatLeads = [];
+$chatLeadError = '';
+try {
+    $chatLeads = chat_handover_recent_leads(20);
+} catch (Throwable $e) {
+    $chatLeadError = 'WhatsApp handovers are not available until their CRM table can be created.';
+    error_log('MancWay CRM could not load chat handovers: ' . $e->getMessage());
+}
+
 /* --- Filters --- */
 $statusFilter  = is_string($_GET['status'] ?? null) ? $_GET['status'] : '';
 $vehicleFilter = (int)($_GET['vehicle'] ?? 0);
@@ -149,6 +160,40 @@ require APP_DIR . '/views/layout/admin_header.php';
         <?php endif; ?>
     </div>
 </div>
+
+<?php if ($chatLeadError): ?><div class="alert alert-error"><?= e($chatLeadError) ?></div><?php endif; ?>
+<?php if ($chatLeads): ?>
+<section class="panel" id="chat-handovers">
+    <div class="panel-head">
+        <div><h2>WhatsApp human handovers</h2><p class="muted" style="margin:.25rem 0 0">Saved website conversations moving to the team. These are CRM leads, not duplicate paid bookings.</p></div>
+        <span class="badge badge-new"><?= count($chatLeads) ?> saved</span>
+    </div>
+    <div class="chat-handover-list">
+    <?php foreach ($chatLeads as $lead):
+        $vehicle = trim((string)$lead['vehicle_make'] . ' ' . (string)$lead['vehicle_model']);
+        $events = chat_handover_events((int)$lead['id']);
+        $detail = trim((string)($lead['current_location'] ?: $lead['address']) . ((string)$lead['problem'] !== '' ? ' · ' . (string)$lead['problem'] : '')); ?>
+        <article class="chat-handover-card">
+            <div class="chat-handover-card-head">
+                <div><strong class="ref"><?= e($lead['reference']) ?></strong><span class="badge <?= $lead['status'] === 'callback_requested' ? 'badge-confirmed' : 'badge-new' ?>"><?= e(ucwords(str_replace('_', ' ', (string)$lead['status']))) ?></span><br><strong><?= e($lead['name'] ?: 'Website chat visitor') ?></strong></div>
+                <small class="muted"><?= e(date('j M Y H:i', strtotime((string)$lead['updated_at']))) ?></small>
+            </div>
+            <dl class="kv chat-handover-kv">
+                <dt>Phone</dt><dd><?= $lead['phone'] ? '<a href="tel:' . e(preg_replace('/[^0-9+]/', '', (string)$lead['phone'])) . '">' . e($lead['phone']) . '</a>' : '—' ?></dd>
+                <dt>Vehicle</dt><dd><?= e($vehicle !== '' ? $vehicle : ($lead['vehicle_reg'] ?: '—')) ?><?= $lead['vehicle_reg'] && $vehicle !== '' ? ' · <span class="reg">' . e($lead['vehicle_reg']) . '</span>' : '' ?></dd>
+                <dt>Details</dt><dd><?= e($detail !== '' ? $detail : 'Conversation saved; no structured details supplied yet.') ?></dd>
+            </dl>
+            <div class="chat-handover-card-foot">
+                <div class="chat-handover-timeline">
+                    <?php foreach (array_slice($events, -4) as $event): ?><span><?= e(date('H:i', strtotime((string)$event['created_at']))) ?> · <?= e($event['message']) ?></span><?php endforeach; ?>
+                </div>
+                <div class="msg-actions"><a class="btn btn-primary btn-sm" href="<?= e(chat_handover_whatsapp_url((string)$lead['handover_message'])) ?>" target="_blank" rel="noopener">Open WhatsApp</a><a class="btn btn-outline btn-sm" href="<?= e(chat_handover_phone_href()) ?>">Call <?= e(chat_handover_phone()) ?></a></div>
+            </div>
+        </article>
+    <?php endforeach; ?>
+    </div>
+</section>
+<?php endif; ?>
 
 <section class="panel">
     <form class="crm-search crm-search-wide" method="get" action="<?= e(url('/admin/crm.php')) ?>" role="search">

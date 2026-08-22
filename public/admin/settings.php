@@ -56,7 +56,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
         redirect(url('/admin/settings.php#password'));
     }
 
-    $fields = ['business_name','tagline','phone','phone_href','email','address','hours_weekday','hours_weekend','service_radius','google_maps_embed','facebook','instagram','whatsapp','admin_email','vat_number','company_number','payment_method_default','bank_account_name','bank_name','bank_sort_code','bank_account_number'];
+    $fields = ['business_name','tagline','phone','phone_href','email','address','hours_weekday','hours_weekend','service_radius','google_maps_embed','facebook','instagram','whatsapp','whatsapp_handover_phone','admin_email','vat_number','company_number','payment_method_default','bank_account_name','bank_name','bank_sort_code','bank_account_number'];
     $upd = db()->prepare('INSERT INTO settings (`key`, value) VALUES (?, ?) ON DUPLICATE KEY UPDATE value=VALUES(value)');
     foreach ($fields as $k) { $upd->execute([$k, trim($_POST[$k] ?? '')]); }
     if (isset($_POST['phone'])) {
@@ -228,6 +228,7 @@ require APP_DIR . '/views/layout/admin_header.php';
             <div class="field"><label for="instagram">Instagram URL</label><input type="url" id="instagram" name="instagram" value="<?= sv($s,'instagram') ?>"></div>
         </div>
         <div class="field"><label for="whatsapp">WhatsApp number/link</label><input type="text" id="whatsapp" name="whatsapp" value="<?= sv($s,'whatsapp') ?>"></div>
+        <div class="field"><label for="whatsapp_handover_phone">Human handover WhatsApp number</label><input type="text" id="whatsapp_handover_phone" name="whatsapp_handover_phone" value="<?= sv($s,'whatsapp_handover_phone') ?>" placeholder="07480 255634" inputmode="tel"><small class="muted">This is used for the chatbot human handover and callback fallback. It defaults to 07480 255634 when left blank.</small></div>
         <div class="field"><label for="google_maps_embed">Google Maps embed code</label><textarea id="google_maps_embed" name="google_maps_embed" rows="3" placeholder="Paste the full &lt;iframe&gt; embed from Google Maps"><?= e($s['google_maps_embed'] ?? '') ?></textarea></div>
         <div class="form-row">
             <div class="field"><label for="vat_number">VAT number (optional)</label><input type="text" id="vat_number" name="vat_number" value="<?= sv($s,'vat_number') ?>"></div>

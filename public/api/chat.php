@@ -29,7 +29,7 @@ function chat_fallback_reply(string $message, array $services): string
         $serviceLines[] = $service['title'] . ' from ' . format_price(booking_base_price_for_service((string)$service['slug'], (float)$service['price_from']));
     }
 
-    if (preg_match('/\b(book|booking|recover me|send someone|need help|breakdown|stranded|won.t start|won.t move)\b/i', $text)) {
+    if (preg_match('/\b(book|booking|recover me|send someone|breakdown|stranded|won.t start|won.t move)\b/i', $text)) {
         return 'I can take the essentials for a booking here. Tap “Book a recovery” below and our team will confirm the job by phone. For urgent help, call ' . $phone . '.';
     }
     if (preg_match('/\b(price|cost|how much|quote|charge|expensive)\b/i', $text)) {
@@ -87,6 +87,20 @@ if ($windowCount >= 40) {
 $_SESSION['chat_window_start'] = $windowStart;
 $_SESSION['chat_window_count'] = $windowCount + 1;
 
+// Human intent is handled before DeepSeek or the normal booking fallback so
+// phrases such as “I need help” always offer the saved WhatsApp handover.
+if (chat_handover_requested($message)) {
+    chat_json_response([
+        'ok' => true,
+        'reply' => 'I can connect you with the MancWay Recovery team on WhatsApp. I’ll save the details from this chat first, then prepare the handover so you do not have to start again.',
+        'actions' => [
+            ['type' => 'handover', 'label' => 'Speak to a Human'],
+            ['type' => 'call', 'label' => 'Call ' . chat_handover_phone(), 'href' => chat_handover_phone_href()],
+        ],
+        'ai' => false,
+    ]);
+}
+
 $services = [];
 try {
     $services = db()->query('SELECT slug, title, price_from FROM services WHERE is_active = 1 ORDER BY sort_order')->fetchAll();
@@ -110,6 +124,7 @@ if (isset($payload['history']) && is_array($payload['history'])) {
 $phone = site_phone();
 $actions = [
     ['type' => 'booking', 'label' => 'Book a recovery'],
+    ['type' => 'handover', 'label' => 'Speak to a Human'],
     ['type' => 'call', 'label' => 'Call ' . $phone, 'href' => 'tel:' . setting('phone_href', $phone)],
 ];
 $fallback = chat_fallback_reply($message, $services);

@@ -125,10 +125,27 @@
       var booking = widget.querySelector('[data-chat-booking]');
       var bookingForm = widget.querySelector('[data-chat-booking-form]');
       var bookingError = widget.querySelector('[data-chat-booking-error]');
+      var handover = widget.querySelector('[data-chat-handover]');
+      var handoverEndpoint = widget.getAttribute('data-chat-handover-endpoint') || '/api/chat-handover.php';
+      var handoverWhatsapp = widget.querySelector('[data-chat-whatsapp]');
+      var handoverCall = widget.querySelector('[data-chat-call]');
+      var handoverReference = widget.querySelector('[data-chat-handover-reference]');
+      var handoverStatus = widget.querySelector('[data-chat-handover-status]');
+      var callbackForm = widget.querySelector('[data-chat-callback-form]');
+      var callbackError = widget.querySelector('[data-chat-callback-error]');
       var composer = widget.querySelector('.mw-chat-composer');
       var history = [];
+      var handoverUrl = '';
+      var handoverBusy = false;
       var endpoint = widget.getAttribute('data-chat-endpoint') || '/api/chat.php';
       var bookingEndpoint = widget.getAttribute('data-chat-booking-endpoint') || '/api/chat-booking.php';
+      var conversationKey = '';
+
+      try { conversationKey = sessionStorage.getItem('mancway_chat_session_key') || ''; } catch (e) { conversationKey = ''; }
+      if (!conversationKey) {
+        conversationKey = 'mw-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 14);
+        try { sessionStorage.setItem('mancway_chat_session_key', conversationKey); } catch (e) { /* Server fallback remains available. */ }
+      }
 
       if (!panel || !openButton || !messages || !chatForm || !input) return;
 
@@ -157,12 +174,13 @@
               actionWrap.appendChild(link);
               return;
             }
-            var button = document.createElement('button');
-            button.type = 'button';
-            button.className = 'mw-chat-action' + (action.type === 'booking' ? ' is-primary' : '');
-            button.textContent = action.label;
-            if (action.type === 'booking') button.setAttribute('data-chat-booking-open', '');
-            actionWrap.appendChild(button);
+             var button = document.createElement('button');
+             button.type = 'button';
+             button.className = 'mw-chat-action' + (action.type === 'booking' || action.type === 'handover' ? ' is-primary' : '');
+             button.textContent = action.label;
+             if (action.type === 'booking') button.setAttribute('data-chat-booking-open', '');
+             if (action.type === 'handover') button.setAttribute('data-chat-handover-open', '');
+             actionWrap.appendChild(button);
           });
           row.appendChild(actionWrap);
         }
@@ -191,6 +209,7 @@
       function toggleBooking(open) {
         booking.hidden = !open;
         composer.hidden = open;
+        if (handover) handover.hidden = true;
         if (open) {
           bookingError.textContent = '';
           window.setTimeout(function () {
@@ -203,9 +222,134 @@
         }
       }
 
+      function toggleHandover(open) {
+        if (!handover) return;
+        handover.hidden = !open;
+        if (booking) booking.hidden = true;
+        composer.hidden = open;
+        if (open) {
+          window.setTimeout(function () {
+            if (handoverWhatsapp && handoverUrl) handoverWhatsapp.focus();
+            else if (callbackForm && !callbackForm.hidden) {
+              var handoverInput = callbackForm.querySelector('input');
+              if (handoverInput) handoverInput.focus();
+            }
+            scrollMessages();
+          }, 80);
+        } else {
+          input.focus();
+        }
+      }
+
+      function humanIntent(message) {
+        return /\b(human|agent|whatsapp|real person|speak to (a )?(human|someone|somebody|person)|talk to (the )?team|need help)\b/i.test(message || '');
+      }
+
+      function collectChatDetails() {
+        var details = {};
+        var allowed = ['name', 'email', 'phone', 'vehicle_make', 'vehicle_model', 'vehicle_reg', 'address', 'postcode', 'current_location', 'destination', 'problem', 'required_time', 'service', 'distance_miles', 'notes'];
+        if (bookingForm) {
+          var values = new FormData(bookingForm);
+          values.forEach(function (value, key) {
+            if (allowed.indexOf(key) !== -1 && String(value).trim() !== '') details[key] = String(value).trim();
+          });
+        }
+        if (!details.current_location && details.address) {
+          details.current_location = details.address + (details.postcode ? ', ' + details.postcode : '');
+        }
+        if (!details.problem && details.notes) details.problem = details.notes;
+        if (!details.vehicle_reg) {
+          for (var i = history.length - 1; i >= 0; i -= 1) {
+            var foundReg = String(history[i].content || '').match(/\b[A-Z]{2}\d{2}\s?[A-Z]{3}\b/i);
+            if (foundReg) { details.vehicle_reg = foundReg[0].toUpperCase(); break; }
+          }
+        }
+        if (!details.problem) {
+          for (var j = history.length - 1; j >= 0; j -= 1) {
+            if (history[j].role !== 'user') continue;
+            var candidate = String(history[j].content || '').trim();
+            if (candidate && !humanIntent(candidate) && !/^(what|which|where|how much|how quickly|our services|coverage)/i.test(candidate)) {
+              details.problem = candidate;
+              break;
+            }
+          }
+        }
+        return details;
+      }
+
+      function setHandoverStatus(text) {
+        if (handoverStatus) handoverStatus.textContent = text || '';
+      }
+
+      function launchWhatsApp() {
+        if (!handoverUrl) {
+          setHandoverStatus('Your details are still being saved. Please try again in a moment.');
+          return;
+        }
+        var popup = window.open(handoverUrl, '_blank', 'noopener,noreferrer');
+        setHandoverStatus(popup ? 'WhatsApp should open now. If it does not, use the green button again or call us.' : 'WhatsApp did not open automatically. Use the green button below, or call us instead.');
+      }
+
+      function showHandoverResult(data, openWhatsApp) {
+        handoverBusy = false;
+        handoverUrl = data.whatsapp_url || '';
+        if (handoverReference) handoverReference.textContent = data.reference || 'Saved';
+        if (handoverWhatsapp) handoverWhatsapp.href = handoverUrl || '#';
+        if (handoverCall) {
+          handoverCall.href = data.phone_url || 'tel:07480255634';
+          handoverCall.textContent = '☎ Call ' + (data.phone || '07480 255634');
+        }
+        toggleHandover(true);
+        setHandoverStatus(data.message || 'Your details are saved. WhatsApp is ready.');
+        if (openWhatsApp) launchWhatsApp();
+      }
+
+      function requestHandover(message) {
+        if (handoverBusy) return;
+        var csrf = chatForm.querySelector('input[name="csrf_token"]');
+        if (!csrf || !handover) return;
+        var handoverMessage = message || 'I would like to speak to a member of the team on WhatsApp.';
+        addMessage(handoverMessage, 'user');
+        history.push({ role: 'user', content: handoverMessage });
+        input.value = '';
+        handoverBusy = true;
+        toggleHandover(true);
+        setHandoverStatus('Saving your conversation and preparing the WhatsApp handover...');
+        fetch(handoverEndpoint, {
+          method: 'POST',
+          headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            csrf_token: csrf.value,
+            session_key: conversationKey,
+            history: history.slice(-30),
+            collected: collectChatDetails(),
+          })
+        })
+          .then(function (response) {
+            return response.json().catch(function () { return {}; }).then(function (data) {
+              return { ok: response.ok && data.ok === true, data: data };
+            });
+          })
+          .then(function (result) {
+            if (!result.ok) throw new Error(result.data.message || 'We could not save the handover just now.');
+            history.push({ role: 'assistant', content: result.data.message || 'Your details have been saved for the MancWay Recovery team.' });
+            addMessage(result.data.message || 'Your details have been saved for the MancWay Recovery team.', 'bot');
+            showHandoverResult(result.data, true);
+          })
+          .catch(function (error) {
+            handoverBusy = false;
+            toggleHandover(true);
+            setHandoverStatus(error.message || 'We could not save the handover. Please call 07480 255634.');
+          });
+      }
+
       function sendMessage(message) {
         var csrf = chatForm.querySelector('input[name="csrf_token"]');
         if (!message || !csrf) return;
+        if (humanIntent(message)) {
+          requestHandover(message);
+          return;
+        }
         addMessage(message, 'user');
         history.push({ role: 'user', content: message });
         input.value = '';
@@ -245,6 +389,12 @@
         sendMessage(input.value.trim());
       });
       messages.addEventListener('click', function (event) {
+        var handoverOpen = event.target.closest('[data-chat-handover-open]');
+        if (handoverOpen) {
+          event.stopPropagation();
+          requestHandover();
+          return;
+        }
         var prompt = event.target.closest('[data-chat-prompt]');
         if (prompt) {
           sendMessage(prompt.getAttribute('data-chat-prompt') || 'How can you help?');
@@ -255,7 +405,73 @@
       widget.addEventListener('click', function (event) {
         if (event.target.closest('[data-chat-booking-open]')) toggleBooking(true);
         if (event.target.closest('[data-chat-booking-close]')) toggleBooking(false);
+        if (event.target.closest('[data-chat-handover-open]')) requestHandover();
+        if (event.target.closest('[data-chat-handover-close]')) toggleHandover(false);
+        if (event.target.closest('[data-chat-whatsapp-retry]')) launchWhatsApp();
+        if (event.target.closest('[data-chat-callback-open]') && callbackForm) {
+          callbackForm.hidden = !callbackForm.hidden;
+          if (!callbackForm.hidden) {
+            var callbackInput = callbackForm.querySelector('input');
+            if (callbackInput) callbackInput.focus();
+          }
+        }
       });
+      if (handoverWhatsapp) {
+        handoverWhatsapp.addEventListener('click', function (event) {
+          if (!handoverUrl) event.preventDefault();
+        });
+      }
+      if (callbackForm) {
+        callbackForm.addEventListener('submit', function (event) {
+          event.preventDefault();
+          if (!handoverEndpoint || handoverBusy) return;
+          var csrf = chatForm.querySelector('input[name="csrf_token"]');
+          var callbackValues = new FormData(callbackForm);
+          var callbackName = String(callbackValues.get('callback_name') || '').trim();
+          var callbackPhone = String(callbackValues.get('callback_phone') || '').trim();
+          if (!callbackPhone) {
+            if (callbackError) callbackError.textContent = 'Please enter your phone number.';
+            return;
+          }
+          if (callbackError) callbackError.textContent = '';
+          handoverBusy = true;
+          var callbackSubmit = callbackForm.querySelector('button[type="submit"]');
+          if (callbackSubmit) { callbackSubmit.disabled = true; callbackSubmit.textContent = 'Saving...'; }
+          fetch(handoverEndpoint, {
+            method: 'POST',
+            headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              csrf_token: csrf ? csrf.value : '',
+              mode: 'callback',
+              session_key: conversationKey,
+              callback_name: callbackName,
+              callback_phone: callbackPhone,
+              history: history.slice(-30),
+              collected: collectChatDetails(),
+            })
+          })
+            .then(function (response) {
+              return response.json().catch(function () { return {}; }).then(function (data) {
+                return { ok: response.ok && data.ok === true, data: data };
+              });
+            })
+            .then(function (result) {
+              if (!result.ok) throw new Error(result.data.message || 'We could not save your callback request.');
+              callbackForm.reset();
+              callbackForm.hidden = true;
+              if (handoverReference) handoverReference.textContent = result.data.reference || 'Saved';
+              setHandoverStatus(result.data.message || 'Your callback request is saved.');
+              addMessage(result.data.message || 'Your callback request is saved.', 'bot');
+            })
+            .catch(function (error) {
+              if (callbackError) callbackError.textContent = error.message || 'Please call 07480 255634.';
+            })
+            .finally(function () {
+              handoverBusy = false;
+              if (callbackSubmit) { callbackSubmit.disabled = false; callbackSubmit.innerHTML = 'Request a callback <span aria-hidden="true">â†’</span>'; }
+            });
+        });
+      }
       if (bookingForm) {
         bookingForm.addEventListener('submit', function (event) {
           event.preventDefault();

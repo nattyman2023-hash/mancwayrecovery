@@ -56,6 +56,7 @@ INSERT IGNORE INTO settings (`key`, value) VALUES
 ('facebook',  ''),
 ('instagram', ''),
 ('whatsapp', ''),
+('whatsapp_handover_phone', '07480 255634'),
 ('admin_email', 'info@mancwayrecovery.co.uk'),
 ('vat_number', ''),
 ('company_number', '');

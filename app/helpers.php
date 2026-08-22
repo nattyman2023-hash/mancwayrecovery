@@ -244,6 +244,33 @@ function site_phone(): string
     return setting('phone', '0161 000 0000');
 }
 
+/** Phone number used for the primary human handover fallback. */
+function chat_handover_phone(): string
+{
+    $configured = trim((string) setting('whatsapp_handover_phone', ''));
+    return $configured !== '' ? $configured : '07480 255634';
+}
+
+/** Build a tel: link without exposing formatting characters to the browser. */
+function chat_handover_phone_href(): string
+{
+    $digits = preg_replace('/\D+/', '', chat_handover_phone()) ?? '';
+    return 'tel:' . $digits;
+}
+
+/** Build a WhatsApp handover link from the configured team number. */
+function chat_handover_whatsapp_url(string $message): string
+{
+    $digits = preg_replace('/\D+/', '', chat_handover_phone()) ?? '';
+    if (str_starts_with($digits, '0')) {
+        $digits = '44' . substr($digits, 1);
+    }
+    if ($digits === '') {
+        $digits = '447480255634';
+    }
+    return 'https://wa.me/' . $digits . '?text=' . rawurlencode($message);
+}
+
 /** Generate a URL-safe slug. */
 function slugify(string $text): string
 {

@@ -3,7 +3,7 @@ declare(strict_types=1);
 $chat_phone = site_phone();
 ?>
 
-<div class="mw-chat" data-chat-widget data-phone="<?= e(setting('phone_href', $chat_phone)) ?>" data-chat-endpoint="<?= e(url('/api/chat.php')) ?>" data-chat-booking-endpoint="<?= e(url('/api/chat-booking.php')) ?>">
+<div class="mw-chat" data-chat-widget data-phone="<?= e(setting('phone_href', $chat_phone)) ?>" data-chat-endpoint="<?= e(url('/api/chat.php')) ?>" data-chat-booking-endpoint="<?= e(url('/api/chat-booking.php')) ?>" data-chat-handover-endpoint="<?= e(url('/api/chat-handover.php')) ?>">
     <button type="button" class="mw-chat-launch" data-chat-open aria-controls="mw-chat-panel" aria-expanded="false">
         <span class="mw-chat-launch-icon" aria-hidden="true">✦</span>
         <span class="mw-chat-launch-copy"><strong>Need a recovery?</strong><small>Chat with MancWay</small></span>
@@ -27,6 +27,7 @@ $chat_phone = site_phone();
                     <button type="button" class="mw-chat-action is-primary" data-chat-booking-open>Book a recovery</button>
                     <button type="button" class="mw-chat-action" data-chat-prompt="What recovery services do you cover?">Our services</button>
                     <button type="button" class="mw-chat-action" data-chat-prompt="What areas do you cover and how quickly can you come?">Coverage &amp; response</button>
+                    <button type="button" class="mw-chat-action" data-chat-handover-open>Speak to a Human</button>
                 </div>
             </div>
         </div>
@@ -57,9 +58,34 @@ $chat_phone = site_phone();
                     </label>
                 </div>
                 <label>Estimated recovery miles <span>(optional · £2.50 per mile)</span><input type="number" name="distance_miles" min="0" max="10000" step="0.1" inputmode="decimal" placeholder="e.g. 18"></label>
+                <label>Destination <span>(optional)</span><input type="text" name="destination" maxlength="255" placeholder="Where does the vehicle need to go?"></label>
                 <label>What happened? <span>(optional)</span><textarea name="notes" rows="2" maxlength="1000" placeholder="Tell us briefly what you need help with"></textarea></label>
                 <p class="mw-chat-form-error" data-chat-booking-error role="alert"></p>
                 <button type="submit" class="mw-chat-submit">Send booking request <span aria-hidden="true">→</span></button>
+            </form>
+        </div>
+
+        <div class="mw-chat-handover" data-chat-handover hidden>
+            <div class="mw-chat-handover-head">
+                <div><strong>Speak to the MancWay Recovery Team</strong><span>Human handover</span></div>
+                <button type="button" data-chat-handover-close aria-label="Back to assistant">&times;</button>
+            </div>
+            <p>Continue your conversation with a member of our team on WhatsApp. We will carry over the details you&apos;ve already provided so you don&apos;t have to start again.</p>
+            <p class="mw-chat-handover-ref">Saved reference: <strong data-chat-handover-reference>Pending</strong></p>
+            <div class="mw-chat-handover-actions">
+                <a class="mw-chat-handover-primary" data-chat-whatsapp href="#" target="_blank" rel="noopener noreferrer">&#x1F7E2; Continue with a Human on WhatsApp</a>
+                <a class="mw-chat-action" data-chat-call href="tel:07480255634">&#x1F4DE; Call 07480 255634</a>
+            </div>
+            <p class="mw-chat-handover-status" data-chat-handover-status role="status" aria-live="polite"></p>
+            <div class="mw-chat-handover-fallbacks">
+                <button type="button" class="mw-chat-action" data-chat-whatsapp-retry>Try WhatsApp Again</button>
+                <button type="button" class="mw-chat-action" data-chat-callback-open>Leave Your Number for a Callback</button>
+            </div>
+            <form class="mw-chat-callback" data-chat-callback-form hidden novalidate>
+                <label>Your name <span>(optional)</span><input type="text" name="callback_name" maxlength="120" autocomplete="name"></label>
+                <label>Phone number *<input type="tel" name="callback_phone" required autocomplete="tel"></label>
+                <p class="mw-chat-form-error" data-chat-callback-error role="alert"></p>
+                <button type="submit" class="mw-chat-submit">Request a callback <span aria-hidden="true">&rarr;</span></button>
             </form>
         </div>
 

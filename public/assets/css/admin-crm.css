@@ -269,6 +269,16 @@ body.admin-body{font-family:var(--mw-font);background:var(--mw-surface-steel);co
 .admin-body .admin-main{flex:1;width:calc(100% - 236px);max-width:none;margin:0;padding:30px clamp(20px,3vw,44px) 64px}
 .admin-body .admin-head{margin-bottom:24px}
 .admin-body .admin-h1{font-size:clamp(1.7rem,3vw,2.15rem);letter-spacing:-.03em}
+.chat-handover-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.chat-handover-card{padding:16px;border:1px solid var(--mw-outline-var);border-radius:10px;background:var(--mw-white)}
+.chat-handover-card-head,.chat-handover-card-foot{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.chat-handover-card-head{padding-bottom:11px;border-bottom:1px solid var(--mw-line)}
+.chat-handover-card-head .ref{display:inline-block;margin-right:7px}
+.chat-handover-kv{margin:12px 0;font-size:.82rem}
+.chat-handover-card-foot{align-items:flex-end;flex-wrap:wrap;padding-top:11px;border-top:1px solid var(--mw-line)}
+.chat-handover-timeline{display:flex;flex-direction:column;gap:3px;color:var(--mw-on-surface-var);font-size:.7rem;line-height:1.35}
+.chat-handover-timeline span{max-width:32ch}
+@media(max-width:980px){.chat-handover-list{grid-template-columns:1fr}}
 
 @media(max-width:760px){
   .admin-body .admin-topbar-inner{min-height:60px;padding:0 14px}
