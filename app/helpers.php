@@ -244,6 +244,37 @@ function site_phone(): string
     return setting('phone', '0161 000 0000');
 }
 
+/**
+ * Upgrade the original placeholder contact number once, without overwriting
+ * a number that has already been set by the business in CRM settings.
+ */
+function migrate_legacy_phone_defaults(): void
+{
+    static $checked = false;
+    if ($checked) {
+        return;
+    }
+    $checked = true;
+    try {
+        $rows = db()->query("SELECT `key`, value FROM settings WHERE `key` IN ('phone', 'phone_href')")->fetchAll();
+        $values = [];
+        foreach ($rows as $row) {
+            $values[(string)$row['key']] = trim((string)$row['value']);
+        }
+        $phoneDigits = preg_replace('/\D+/', '', $values['phone'] ?? '') ?? '';
+        if (($values['phone'] ?? '') === '' || $phoneDigits === '01610000000') {
+            db()->prepare('UPDATE settings SET value=? WHERE `key`=?')->execute(['07480 255634', 'phone']);
+        }
+        $hrefDigits = preg_replace('/\D+/', '', $values['phone_href'] ?? '') ?? '';
+        if (($values['phone_href'] ?? '') === '' || $hrefDigits === '01610000000') {
+            db()->prepare('UPDATE settings SET value=? WHERE `key`=?')->execute(['07480255634', 'phone_href']);
+        }
+    } catch (Throwable $e) {
+        // Fresh/setup databases can be unavailable; helper fallbacks still work.
+        error_log('MancWay could not migrate the legacy phone placeholder.');
+    }
+}
+
 /** Phone number used for the primary human handover fallback. */
 function chat_handover_phone(): string
 {

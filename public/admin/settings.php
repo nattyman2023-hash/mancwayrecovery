@@ -142,7 +142,7 @@ require APP_DIR . '/views/layout/admin_header.php';
         </div>
         <div class="form-row">
             <div class="field"><label for="phone">Phone (display)</label><input type="text" id="phone" name="phone" value="<?= sv($s,'phone') ?>" placeholder="0161 000 0000"></div>
-            <div class="field"><label for="phone_href">Phone for tel: links (no spaces)</label><input type="text" id="phone_href" name="phone_href" value="<?= sv($s,'phone_href') ?>" placeholder="01610000000"></div>
+            <div class="field"><label for="phone_href">Phone for tel: links (no spaces)</label><input type="text" id="phone_href" name="phone_href" value="<?= sv($s,'phone_href') ?>" placeholder="07480255634"></div>
         </div>
         <div class="form-row">
             <div class="field"><label for="email">Public email</label><input type="email" id="email" name="email" value="<?= sv($s,'email') ?>"></div>

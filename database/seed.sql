@@ -45,8 +45,8 @@ INSERT IGNORE INTO areas (name, slug, postcodes, sort_order, is_active) VALUES
 INSERT IGNORE INTO settings (`key`, value) VALUES
 ('business_name', 'MancWay Recovery'),
 ('tagline',       'Manchester''s Trusted Vehicle Recovery — We Come to You'),
-('phone',         '0161 000 0000'),
-('phone_href',    '01610000000'),
+('phone',         '07480 255634'),
+('phone_href',    '07480255634'),
 ('email',         'info@mancwayrecovery.co.uk'),
 ('address',       'Upper Cyrus St, Manchester M40 7FD'),
 ('hours_weekday', 'Mon–Fri: 7:30am – 6:00pm'),

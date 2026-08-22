@@ -34,4 +34,5 @@ if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
+migrate_legacy_phone_defaults();
 csrf_init();
