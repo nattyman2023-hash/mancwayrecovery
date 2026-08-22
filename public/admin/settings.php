@@ -85,6 +85,15 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
         catch (Throwable $e) { error_log('Could not save the DeepSeek integration secret.'); }
     }
 
+    $submittedEmailitKey = trim((string)($_POST['emailit_api_key'] ?? ''));
+    if (!empty($_POST['clear_emailit_api_key'])) {
+        try { delete_integration_secret('emailit_api_key'); }
+        catch (Throwable $e) { error_log('Could not clear the Emailit integration secret.'); }
+    } elseif ($submittedEmailitKey !== '') {
+        try { save_integration_secret('emailit_api_key', $submittedEmailitKey); }
+        catch (Throwable $e) { error_log('Could not save the Emailit integration secret.'); }
+    }
+
     foreach ([
         'stripe_secret_key' => 'stripe_secret_key',
         'stripe_publishable_key' => 'stripe_publishable_key',
@@ -117,6 +126,9 @@ $serverDvlaConfigured = DVLA_API_KEY !== '' && !str_contains(DVLA_API_KEY, 'PAST
 $dvlaConfigured = dvla_api_key() !== '';
 $serverDeepseekConfigured = DEEPSEEK_API_KEY !== '' && !str_contains(DEEPSEEK_API_KEY, 'PASTE_') && !str_contains(DEEPSEEK_API_KEY, 'CHANGE_ME');
 $deepseekConfigured = deepseek_api_key() !== '';
+$serverEmailitConfigured = EMAILIT_API_KEY !== '' && !str_contains(EMAILIT_API_KEY, 'PASTE_') && !str_contains(EMAILIT_API_KEY, 'CHANGE_ME');
+$emailitKeySaved = emailit_api_key() !== '';
+$emailitConfigured = emailit_is_configured();
 $serverStripeConfigured = STRIPE_SECRET_KEY !== '' && !str_contains(STRIPE_SECRET_KEY, 'PASTE_') && !str_contains(STRIPE_SECRET_KEY, 'CHANGE_ME');
 $stripeConfigured = stripe_secret_key() !== '';
 $stripePublishableConfigured = stripe_publishable_key() !== '';
@@ -180,6 +192,18 @@ require APP_DIR . '/views/layout/admin_header.php';
             <small class="muted">Leave blank to keep the current key. The assistant uses <?= e(deepseek_model()) ?> through the server-side API proxy.</small>
         </div>
         <label class="field-check"><input type="checkbox" name="clear_deepseek_api_key" value="1"> Clear the saved DeepSeek key</label>
+        <hr>
+        <p class="muted">Emailit transactional email status: <strong><?= $emailitConfigured ? 'Configured' : ($emailitKeySaved ? 'Key saved; host mail fallback active' : 'Host mail fallback active') ?></strong>. Bookings, CRM notifications and invoice emails use Emailit first when a key is saved here.</p>
+        <?php if ($serverEmailitConfigured): ?><p class="muted">A server-level Emailit key is active and takes priority over this CRM setting.</p><?php endif; ?>
+        <div class="field">
+            <label for="emailit_api_key">Emailit API key</label>
+            <div class="password-field">
+                <input type="password" id="emailit_api_key" name="emailit_api_key" value="" autocomplete="new-password" placeholder="Paste a new Emailit API key to save or replace it">
+                <button type="button" class="password-toggle" data-password-toggle data-password-target="emailit_api_key" aria-controls="emailit_api_key" aria-pressed="false" aria-label="Show Emailit API key">Show</button>
+            </div>
+            <small class="muted">Leave blank to keep the current key. Keep the key server-side and make sure your sending domain/sender is verified in Emailit.</small>
+        </div>
+        <label class="field-check"><input type="checkbox" name="clear_emailit_api_key" value="1"> Clear the saved Emailit key</label>
     </section>
     <section class="panel" id="payments">
         <div class="panel-head"><h2>Payment &amp; invoicing</h2><span class="muted">Deposits, balances and payment links</span></div>

@@ -136,6 +136,22 @@ function deepseek_api_key(): string
     return trim(integration_secret('deepseek_api_key', ''));
 }
 
+/** Return the server-side Emailit key without exposing it to the browser. */
+function emailit_api_key(): string
+{
+    $serverKey = trim(EMAILIT_API_KEY);
+    if ($serverKey !== '' && !str_contains($serverKey, 'PASTE_') && !str_contains($serverKey, 'CHANGE_ME')) {
+        return $serverKey;
+    }
+    return trim(integration_secret('emailit_api_key', ''));
+}
+
+/** Whether Emailit can be used for transactional mail on this server. */
+function emailit_is_configured(): bool
+{
+    return emailit_api_key() !== '' && function_exists('curl_init');
+}
+
 /** Return the configured DeepSeek model, defaulting to the current fast model. */
 function deepseek_model(): string
 {
@@ -432,12 +448,77 @@ function generate_reference(): string
     return 'MW' . strtoupper(substr(bin2hex(random_bytes(4)), 0, 8));
 }
 
-/** Send an HTML email through the host's configured mail transport. */
-function send_email(string $to, string $subject, string $html_body, string $replyTo = ''): bool
+/** Send an HTML email through Emailit when configured. */
+function send_emailit_email(string $to, string $subject, string $html_body, string $replyTo = ''): bool
 {
-    if (!function_exists('mail') || !valid_email($to)) {
+    $apiKey = emailit_api_key();
+    if ($apiKey === '' || !function_exists('curl_init') || !valid_email($to)) {
         return false;
     }
+
+    $subject = trim(str_replace(["\r", "\n"], '', $subject));
+    $replyTo = trim(str_replace(["\r", "\n"], '', $replyTo));
+
+    $payload = [
+        'from'    => site_from_email(),
+        'to'      => $to,
+        'subject' => $subject,
+        'html'    => $html_body,
+    ];
+    if ($replyTo !== '' && valid_email($replyTo)) {
+        $payload['reply_to'] = $replyTo;
+    }
+
+    $ch = curl_init(EMAILIT_API_URL . '/emails');
+    if ($ch === false) {
+        return false;
+    }
+    curl_setopt_array($ch, [
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_POST           => true,
+        CURLOPT_POSTFIELDS     => json_encode($payload, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
+        CURLOPT_HTTPHEADER     => [
+            'Authorization: Bearer ' . $apiKey,
+            'Content-Type: application/json',
+            'Accept: application/json',
+        ],
+        CURLOPT_CONNECTTIMEOUT => 5,
+        CURLOPT_TIMEOUT        => 20,
+        CURLOPT_SSL_VERIFYPEER => true,
+        CURLOPT_SSL_VERIFYHOST => 2,
+    ]);
+    $response = curl_exec($ch);
+    $status = (int) curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $error = curl_error($ch);
+    curl_close($ch);
+
+    if ($response !== false && $status >= 200 && $status < 300) {
+        return true;
+    }
+
+    // Never include the API key or the full email body in logs.
+    error_log('Emailit delivery failed' . ($status ? ' with HTTP ' . $status : '') . ($error !== '' ? ': ' . $error : '.'));
+    return false;
+}
+
+/**
+ * Send an HTML email. Emailit is preferred when configured; host mail remains
+ * as a safe fallback for existing installations and temporary API failures.
+ */
+function send_email(string $to, string $subject, string $html_body, string $replyTo = ''): bool
+{
+    if (!valid_email($to)) {
+        return false;
+    }
+
+    if (emailit_is_configured() && send_emailit_email($to, $subject, $html_body, $replyTo)) {
+        return true;
+    }
+
+    if (!function_exists('mail')) {
+        return false;
+    }
+
     $subject = trim(str_replace(["\r", "\n"], '', $subject));
     $replyTo = trim(str_replace(["\r", "\n"], '', $replyTo));
     $from = site_from_email();

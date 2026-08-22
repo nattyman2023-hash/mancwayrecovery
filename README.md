@@ -170,6 +170,17 @@ In Stripe, add a webhook endpoint at
 `checkout.session.async_payment_succeeded`. The webhook signing secret is what
 lets the CRM mark Stripe invoices and booking payment statuses as paid.
 
+### Emailit transactional email
+
+Open **Admin → Settings → API integrations** and paste the Emailit API key into
+the masked Emailit field. The key is stored in the separate
+`integration_secrets` table and is never rendered back into the page or sent to
+the browser. Booking confirmations, CRM notifications and invoice emails use
+Emailit’s v2 `/emails` endpoint when the key and PHP cURL are available; the
+existing host mail transport remains a fallback if Emailit is not configured or
+temporarily unavailable. Verify the sending domain/sender in Emailit first and
+use the existing MancWay public email as the sender address.
+
 ### 5. Enable SSL & set the domain
 1. hPanel → **SSL** → install free **Let's Encrypt SSL** for your domain
 2. hPanel → **Domains** → make sure your domain points to `public_html`

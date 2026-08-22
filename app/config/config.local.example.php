@@ -46,6 +46,11 @@ return [
     'DEEPSEEK_API_URL' => 'https://api.deepseek.com',
     'DEEPSEEK_MODEL'   => 'deepseek-v4-flash',
 
+    // Optional Emailit transactional email key. You can also save this
+    // securely from CRM → Settings → API integrations.
+    'EMAILIT_API_KEY' => '',
+    'EMAILIT_API_URL' => 'https://api.emailit.com/v2',
+
     // Stripe is configured from CRM → Settings → Payment & invoicing, or
     // with these server-side values. Never add Stripe keys to public JS.
     'STRIPE_SECRET_KEY'      => '',
