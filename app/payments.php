@@ -1038,8 +1038,10 @@ function record_invoice_payment(int $invoiceId, float $amount, string $method = 
         ->execute([$invoiceId, $amount, $method, $date, trim($reference), trim($note), (int)($_SESSION['admin_id'] ?? 0) ?: null]);
     $newPaid = round((float)($invoice['amount_paid'] ?? 0) + $amount, 2);
     $status = $newPaid >= invoice_target_amount($invoice) ? 'paid' : 'part_paid';
-    db()->prepare('UPDATE invoices SET amount_paid=?, status=?, paid_at=CASE WHEN ? = "paid" THEN COALESCE(paid_at,NOW()) ELSE paid_at END WHERE id=?')
-        ->execute([$newPaid, $status, $status, $invoiceId]);
+    db()->prepare('UPDATE invoices SET amount_paid=?, status=? WHERE id=?')->execute([$newPaid, $status, $invoiceId]);
+    if ($status === 'paid') {
+        db()->prepare('UPDATE invoices SET paid_at=COALESCE(paid_at,NOW()) WHERE id=?')->execute([$invoiceId]);
+    }
     invoice_event($invoiceId, 'payment_recorded', 'Payment recorded: ' . format_price($amount), ['method' => $method, 'reference' => trim($reference)]);
     $updated = get_invoice($invoiceId);
     if ($updated && $status === 'paid') {

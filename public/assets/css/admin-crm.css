@@ -320,3 +320,5 @@ body.admin-body{font-family:var(--mw-font);background:var(--mw-surface-steel);co
   .admin-body .admin-sidebar{top:60px}
   .admin-body .admin-main{padding:24px 16px 76px}
 }
+
+.admin-body .invoice-item-tools{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:8px}.admin-body .invoice-item-tools select{min-width:190px;max-width:100%}

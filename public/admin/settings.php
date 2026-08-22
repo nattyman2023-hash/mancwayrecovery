@@ -56,7 +56,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
         redirect(url('/admin/settings.php#password'));
     }
 
-    $fields = ['business_name','tagline','phone','phone_href','email','address','hours_weekday','hours_weekend','service_radius','google_maps_embed','facebook','instagram','whatsapp','whatsapp_handover_phone','admin_email','vat_number','company_number','payment_method_default','bank_account_name','bank_name','bank_sort_code','bank_account_number'];
+    $fields = ['business_name','tagline','phone','phone_href','email','address','hours_weekday','hours_weekend','service_radius','google_maps_embed','facebook','instagram','whatsapp','whatsapp_handover_phone','admin_email','vat_number','vat_registered','vat_rate','company_number','payment_method_default','bank_account_name','bank_name','bank_sort_code','bank_account_number'];
     $upd = db()->prepare('INSERT INTO settings (`key`, value) VALUES (?, ?) ON DUPLICATE KEY UPDATE value=VALUES(value)');
     foreach ($fields as $k) { $upd->execute([$k, trim($_POST[$k] ?? '')]); }
     if (isset($_POST['phone'])) {
@@ -234,6 +234,7 @@ require APP_DIR . '/views/layout/admin_header.php';
         <label class="field-check"><input type="checkbox" name="clear_stripe_webhook_secret" value="1"> Clear saved webhook secret</label>
         <hr>
         <div class="field"><label for="payment_method_default">Default payment method for new invoices</label><select id="payment_method_default" name="payment_method_default"><option value="stripe" <?= (($s['payment_method_default'] ?? 'stripe') === 'stripe') ? 'selected' : '' ?>>Stripe payment link</option><option value="bank_transfer" <?= (($s['payment_method_default'] ?? '') === 'bank_transfer') ? 'selected' : '' ?>>Bank transfer</option></select><small class="muted">You can override this on each CRM invoice.</small></div>
+        <div class="form-row"><div class="field"><label for="vat_registered">VAT registered</label><select id="vat_registered" name="vat_registered"><option value="0" <?= (($s['vat_registered'] ?? '0') !== '1') ? 'selected' : '' ?>>No — do not show VAT</option><option value="1" <?= (($s['vat_registered'] ?? '') === '1') ? 'selected' : '' ?>>Yes — allow VAT on invoices</option></select></div><div class="field"><label for="vat_rate">Default VAT rate (%)</label><input type="number" id="vat_rate" name="vat_rate" min="0" max="100" step="0.01" value="<?= sv($s,'vat_rate','20') ?>"><small class="muted">Invoice-level VAT can still be switched off.</small></div></div>
         <h3>Bank transfer details</h3>
         <div class="form-row">
             <div class="field"><label for="bank_account_name">Account name</label><input type="text" id="bank_account_name" name="bank_account_name" value="<?= sv($s,'bank_account_name') ?>"></div>
