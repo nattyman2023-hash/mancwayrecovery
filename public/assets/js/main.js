@@ -588,6 +588,11 @@
       var form = lookup.closest('form');
       var make = form ? form.querySelector('#vehicle_make') : null;
       var model = form ? form.querySelector('#vehicle_model') : null;
+      var year = form ? form.querySelector('#vehicle_year') : null;
+      var colour = form ? form.querySelector('#vehicle_colour') : null;
+      var fuel = form ? form.querySelector('#vehicle_fuel') : null;
+      var mot = form ? form.querySelector('#vehicle_mot') : null;
+      var facts = form ? form.querySelectorAll('[data-vehicle-facts]') : [];
       var csrf = form ? form.querySelector('input[name="csrf_token"]') : null;
       var endpoint = lookup.getAttribute('data-endpoint') || '/api/dvla-vehicle.php';
 
@@ -595,7 +600,20 @@
 
       function showStatus(message, type) {
         status.textContent = message || '';
+        status.hidden = !message;
         status.className = 'vehicle-lookup-status' + (type ? ' is-' + type : '');
+      }
+
+      function setFact(input, value) {
+        if (input) input.value = value ? String(value) : '';
+      }
+
+      function clearVehicleFacts() {
+        setFact(year, '');
+        setFact(colour, '');
+        setFact(fuel, '');
+        setFact(mot, '');
+        Array.prototype.forEach.call(facts, function (fact) { fact.hidden = true; });
       }
 
       function vehicleSummary(vehicle) {
@@ -618,6 +636,7 @@
         button.disabled = true;
         button.setAttribute('aria-busy', 'true');
         button.dataset.originalText = button.dataset.originalText || button.textContent;
+        clearVehicleFacts();
         button.textContent = 'Checking…';
         showStatus('Checking DVLA vehicle details…', 'loading');
 
@@ -647,9 +666,13 @@
             if (make && vehicle.make) make.value = vehicle.make;
             if (model && vehicle.model) model.value = vehicle.model;
 
-            var message = data.message || 'Vehicle details found.';
-            if (!vehicle.model && model) message += ' DVLA does not provide the model here, so please add it if known.';
-            showStatus(message + vehicleSummary(vehicle), 'success');
+            setFact(year, vehicle.yearOfManufacture || '');
+            setFact(colour, vehicle.colour || '');
+            setFact(fuel, vehicle.fuelType || '');
+            setFact(mot, vehicle.motStatus || '');
+            var hasFacts = !!(vehicle.yearOfManufacture || vehicle.colour || vehicle.fuelType || vehicle.motStatus);
+            Array.prototype.forEach.call(facts, function (fact) { fact.hidden = !hasFacts; });
+            showStatus('', 'success');
           })
           .catch(function () {
             showStatus('Vehicle lookup is temporarily unavailable. You can enter the details manually.', 'error');

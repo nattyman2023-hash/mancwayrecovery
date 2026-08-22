@@ -165,5 +165,5 @@ $vehicle['registrationNumber'] = $vehicle['registrationNumber'] ?? $registration
 dvla_json_response([
     'ok' => true,
     'vehicle' => $vehicle,
-    'message' => 'Vehicle details found. You can edit them before sending your request.',
+    'message' => 'Vehicle details found.',
 ]);

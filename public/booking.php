@@ -29,6 +29,11 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
     $vmake     = trim($_POST['vehicle_make'] ?? '');
     $vmodel    = trim($_POST['vehicle_model'] ?? '');
     $vreg      = trim($_POST['vehicle_reg'] ?? '');
+    $vehicle_year_raw = trim((string)($_POST['vehicle_year'] ?? ''));
+    $vehicle_year = ($vehicle_year_raw !== '' && ctype_digit($vehicle_year_raw) && (int)$vehicle_year_raw >= 1880 && (int)$vehicle_year_raw <= ((int)date('Y') + 1)) ? (int)$vehicle_year_raw : null;
+    $vehicle_colour = trim((string)($_POST['vehicle_colour'] ?? ''));
+    $vehicle_fuel = trim((string)($_POST['vehicle_fuel'] ?? ''));
+    $vehicle_mot = trim((string)($_POST['vehicle_mot'] ?? ''));
     $distanceRaw = trim((string)($_POST['distance_miles'] ?? ''));
     $distanceMiles = $distanceRaw === '' ? 0.0 : (float)$distanceRaw;
     $serviceId = (int)($_POST['service_id'] ?? 0);
@@ -63,10 +68,10 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
         ensure_payment_schema();
         $reference = generate_reference();
         $ins = db()->prepare('INSERT INTO bookings
-            (reference, name, email, phone, vehicle_make, vehicle_model, vehicle_reg, distance_miles, quoted_total, deposit_amount, deposit_status, balance_status, service_id, address, postcode, preferred_date, preferred_time, notes, status, ip, created_at)
-            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,' . 'NOW())');
+            (reference, name, email, phone, vehicle_make, vehicle_model, vehicle_reg, vehicle_year, vehicle_colour, vehicle_fuel, vehicle_mot, distance_miles, quoted_total, deposit_amount, deposit_status, balance_status, service_id, address, postcode, preferred_date, preferred_time, notes, status, ip, created_at)
+            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,' . 'NOW())');
         $ins->execute([
-            $reference, $name, $email, $phone, $vmake, $vmodel, strtoupper($vreg), $distanceMiles, $quote['total'], 50.00, 'unpaid', 'not_due',
+            $reference, $name, $email, $phone, $vmake, $vmodel, strtoupper($vreg), $vehicle_year, mb_substr($vehicle_colour, 0, 40), mb_substr($vehicle_fuel, 0, 40), mb_substr($vehicle_mot, 0, 40), $distanceMiles, $quote['total'], 50.00, 'unpaid', 'not_due',
             $serviceId > 0 ? $serviceId : null, $address, strtoupper($postcode), $pdate, $ptime, mb_substr($notes, 0, 2000), 'new', client_ip()
         ]);
         $bookingId = (int)db()->lastInsertId();
@@ -81,6 +86,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
         $body .= '<p><strong>Service:</strong> ' . e($svcName) . '<br><strong>Name:</strong> ' . e($name) . '<br>';
         $body .= '<strong>Phone:</strong> ' . e($phone) . '<br><strong>Email:</strong> ' . e($email ?: '—') . '<br>';
         $body .= '<strong>Vehicle:</strong> ' . e($vmake) . ' ' . e($vmodel) . ' (' . e(strtoupper($vreg)) . ')<br>';
+        $body .= '<strong>DVLA details:</strong> ' . e($vehicle_year ?: '—') . ' · ' . e($vehicle_colour ?: '—') . ' · ' . e($vehicle_fuel ?: '—') . ' · MOT: ' . e($vehicle_mot ?: '—') . '<br>';
         $body .= '<strong>Address:</strong> ' . e($address) . ', ' . e(strtoupper($postcode)) . '<br>';
         $body .= '<strong>Preferred:</strong> ' . e($pdate) . ' ' . e($ptime) . '</p>';
         $body .= '<p><strong>Notes:</strong><br>' . nl2br(e($notes ?: '—')) . '</p>';
@@ -96,7 +102,7 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
         redirect_with(url('/booking.php?done=' . $reference), ['success' => $reference, 'invoice_id' => $depositInvoice ? (int)$depositInvoice['id'] : 0]);
     }
 
-    foreach (['name','email','phone','vehicle_make','vehicle_model','vehicle_reg','distance_miles','address','postcode','preferred_date','preferred_time','notes'] as $f) {
+    foreach (['name','email','phone','vehicle_make','vehicle_model','vehicle_reg','vehicle_year','vehicle_colour','vehicle_fuel','vehicle_mot','distance_miles','address','postcode','preferred_date','preferred_time','notes'] as $f) {
         $_SESSION['_flash']['input_' . $f] = $$f;
     }
     $_SESSION['_flash']['input_service_id'] = $serviceId;
@@ -108,6 +114,10 @@ $success = flash('success');
 $errors  = flash('errors', []);
 $invoiceId = (int)flash('invoice_id', 0);
 $depositInvoice = $invoiceId > 0 ? get_invoice($invoiceId) : null;
+$oldVehicleYear = old('vehicle_year');
+$oldVehicleColour = old('vehicle_colour');
+$oldVehicleFuel = old('vehicle_fuel');
+$oldVehicleMot = old('vehicle_mot');
 
 $page_title       = 'Book Vehicle Recovery — Manchester | ' . site_name();
 $page_description = 'Book vehicle recovery online. Breakdown, accident and specialist recovery, plus long-distance transport, across Greater Manchester.';
@@ -186,6 +196,14 @@ require APP_DIR . '/views/layout/header.php';
                     <label for="vehicle_model">Vehicle model <span class="muted">(optional)</span></label>
                     <input type="text" id="vehicle_model" name="vehicle_model" value="<?= old('vehicle_model') ?>" placeholder="e.g. Focus 1.6">
                 </div>
+            </div>
+            <div class="form-row vehicle-facts" data-vehicle-facts<?= ($oldVehicleYear !== '' || $oldVehicleColour !== '' || $oldVehicleFuel !== '' || $oldVehicleMot !== '') ? '' : ' hidden' ?>>
+                <div class="field"><label for="vehicle_year">Year</label><input type="text" id="vehicle_year" name="vehicle_year" value="<?= $oldVehicleYear ?>" inputmode="numeric" readonly></div>
+                <div class="field"><label for="vehicle_colour">Colour</label><input type="text" id="vehicle_colour" name="vehicle_colour" value="<?= $oldVehicleColour ?>" readonly></div>
+            </div>
+            <div class="form-row vehicle-facts" data-vehicle-facts<?= ($oldVehicleYear !== '' || $oldVehicleColour !== '' || $oldVehicleFuel !== '' || $oldVehicleMot !== '') ? '' : ' hidden' ?>>
+                <div class="field"><label for="vehicle_fuel">Fuel</label><input type="text" id="vehicle_fuel" name="vehicle_fuel" value="<?= $oldVehicleFuel ?>" readonly></div>
+                <div class="field"><label for="vehicle_mot">MOT</label><input type="text" id="vehicle_mot" name="vehicle_mot" value="<?= $oldVehicleMot ?>" readonly></div>
             </div>
             <div class="field">
                 <label for="service_id">Service required</label>

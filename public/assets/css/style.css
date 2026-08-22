@@ -291,11 +291,13 @@ p{margin:.5em 0}
 .vehicle-lookup-row input{flex:1;min-width:0}
 .vehicle-lookup-button{flex:none;white-space:nowrap}
 .vehicle-lookup-help,.vehicle-lookup-status{margin:0;font-size:.8rem;line-height:1.45}
+.vehicle-lookup-status[hidden],.vehicle-facts[hidden]{display:none}
 .vehicle-lookup-help{color:var(--muted)}
 .vehicle-lookup-status{min-height:1.15em;color:var(--muted)}
 .vehicle-lookup-status.is-loading{color:var(--navy)}
 .vehicle-lookup-status.is-success{color:#18794e}
 .vehicle-lookup-status.is-error{color:var(--err)}
+.vehicle-facts input[readonly]{background:var(--soft);color:var(--navy);font-weight:600}
 .pricing-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:14px;border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--soft)}
 .pricing-summary div{display:flex;flex-direction:column;gap:3px;min-width:0}
 .pricing-summary span{color:var(--muted);font-size:.76rem}

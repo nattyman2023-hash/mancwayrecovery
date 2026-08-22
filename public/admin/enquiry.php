@@ -21,6 +21,7 @@ try {
 if (!$crmReady) {
     redirect(url('/admin/crm.php'));
 }
+ensure_payment_schema();
 
 $viewId = (int)($_GET['view'] ?? 0);
 $flash  = flash('flash');
@@ -117,6 +118,16 @@ if ($flash) echo '<div class="alert alert-success">' . e($flash) . '</div>';
         <dl class="kv">
             <dt>Make / model</dt><dd><?= e(trim($b['vehicle_make'] . ' ' . $b['vehicle_model']) ?: '—') ?></dd>
             <dt>Reg</dt><dd class="mono"><?= e($b['vehicle_reg'] ?: '—') ?></dd>
+        </dl>
+    </div>
+
+    <div class="panel">
+        <h3><span class="mw-icon" style="vertical-align:-3px;margin-right:6px">fact_check</span>DVLA vehicle details</h3>
+        <dl class="kv">
+            <dt>Year</dt><dd><?= e($b['vehicle_year'] ?: '—') ?></dd>
+            <dt>Colour</dt><dd><?= e($b['vehicle_colour'] ?: '—') ?></dd>
+            <dt>Fuel</dt><dd><?= e($b['vehicle_fuel'] ?: '—') ?></dd>
+            <dt>MOT</dt><dd><?= e($b['vehicle_mot'] ?: '—') ?></dd>
         </dl>
     </div>
 

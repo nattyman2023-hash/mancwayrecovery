@@ -114,6 +114,10 @@ function ensure_payment_schema(): void
     }
 
     $columns = [
+        'vehicle_year' => "SMALLINT UNSIGNED NULL DEFAULT NULL AFTER vehicle_reg",
+        'vehicle_colour' => "VARCHAR(40) NOT NULL DEFAULT '' AFTER vehicle_year",
+        'vehicle_fuel' => "VARCHAR(40) NOT NULL DEFAULT '' AFTER vehicle_colour",
+        'vehicle_mot' => "VARCHAR(40) NOT NULL DEFAULT '' AFTER vehicle_fuel",
         'distance_miles' => "DECIMAL(10,2) NOT NULL DEFAULT 0.00 AFTER vehicle_reg",
         'quoted_total' => "DECIMAL(10,2) NOT NULL DEFAULT 0.00 AFTER distance_miles",
         'deposit_amount' => "DECIMAL(10,2) NOT NULL DEFAULT 50.00 AFTER quoted_total",
