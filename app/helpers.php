@@ -449,7 +449,7 @@ function generate_reference(): string
 }
 
 /** Send an HTML email through Emailit when configured. */
-function send_emailit_email(string $to, string $subject, string $html_body, string $replyTo = ''): bool
+function send_emailit_email(string $to, string $subject, string $html_body, string $replyTo = '', array $attachments = []): bool
 {
     $apiKey = emailit_api_key();
     if ($apiKey === '' || !function_exists('curl_init') || !valid_email($to)) {
@@ -467,6 +467,22 @@ function send_emailit_email(string $to, string $subject, string $html_body, stri
     ];
     if ($replyTo !== '' && valid_email($replyTo)) {
         $payload['reply_to'] = $replyTo;
+    }
+    if ($attachments) {
+        $safeAttachments = [];
+        foreach ($attachments as $attachment) {
+            if (!is_array($attachment)) continue;
+            $filename = trim(str_replace(["\r", "\n"], '', (string)($attachment['filename'] ?? '')));
+            $content = (string)($attachment['content'] ?? '');
+            if ($filename !== '' && $content !== '') {
+                $safeAttachments[] = [
+                    'filename' => $filename,
+                    'content' => $content,
+                    'content_type' => (string)($attachment['content_type'] ?? 'application/octet-stream'),
+                ];
+            }
+        }
+        if ($safeAttachments) $payload['attachments'] = $safeAttachments;
     }
 
     $ch = curl_init(EMAILIT_API_URL . '/emails');
@@ -505,13 +521,13 @@ function send_emailit_email(string $to, string $subject, string $html_body, stri
  * Send an HTML email. Emailit is preferred when configured; host mail remains
  * as a safe fallback for existing installations and temporary API failures.
  */
-function send_email(string $to, string $subject, string $html_body, string $replyTo = ''): bool
+function send_email(string $to, string $subject, string $html_body, string $replyTo = '', array $attachments = []): bool
 {
     if (!valid_email($to)) {
         return false;
     }
 
-    if (emailit_is_configured() && send_emailit_email($to, $subject, $html_body, $replyTo)) {
+    if (emailit_is_configured() && send_emailit_email($to, $subject, $html_body, $replyTo, $attachments)) {
         return true;
     }
 
@@ -539,9 +555,9 @@ function send_site_email(string $subject, string $html_body, string $replyTo = '
 }
 
 /** Send a customer-facing confirmation when the customer supplied an email. */
-function send_customer_email(string $to, string $subject, string $html_body): bool
+function send_customer_email(string $to, string $subject, string $html_body, array $attachments = []): bool
 {
-    return send_email($to, $subject, $html_body, site_email());
+    return send_email($to, $subject, $html_body, site_email(), $attachments);
 }
 
 /** Output an inline error message for a form field. */

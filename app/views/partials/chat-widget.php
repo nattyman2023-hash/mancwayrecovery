@@ -13,21 +13,22 @@ $chat_phone = site_phone();
     <section class="mw-chat-panel" id="mw-chat-panel" data-chat-panel hidden aria-label="MancWay Recovery assistant">
         <header class="mw-chat-header">
             <div class="mw-chat-identity">
-                <span class="mw-chat-avatar" aria-hidden="true">MW</span>
-                <span><strong>MancWay assistant</strong><small><span class="mw-chat-online-dot"></span> Online now</small></span>
+                <span class="mw-chat-avatar"><img src="<?= e(asset('img/chat-avatar.png')) ?>" alt=""></span>
+                <span><strong>MancWay Assistant</strong><small><span class="mw-chat-online-dot"></span> Virtual Recovery Assistant · Online</small></span>
             </div>
             <button type="button" class="mw-chat-close" data-chat-close aria-label="Close chat">×</button>
         </header>
-        <div class="mw-chat-trust"><span>24/7 recovery</span><span>Greater Manchester</span><span>Fast replies</span></div>
+        <div class="mw-chat-trust"><span>24/7 recovery</span><span>Greater Manchester</span><span>Fast replies</span><button type="button" class="mw-chat-whatsapp-bar" data-chat-whatsapp-direct><span aria-hidden="true">&#x1F7E2;</span> WhatsApp Us</button></div>
 
         <div class="mw-chat-messages" data-chat-messages role="log" aria-live="polite" aria-relevant="additions">
             <div class="mw-chat-message is-bot">
                 <div class="mw-chat-bubble">Hi, I’m the MancWay assistant. I can answer questions about recovery, help with your vehicle and take the details for a booking.</div>
                 <div class="mw-chat-actions">
-                    <button type="button" class="mw-chat-action is-primary" data-chat-booking-open>Book a recovery</button>
-                    <button type="button" class="mw-chat-action" data-chat-prompt="What recovery services do you cover?">Our services</button>
-                    <button type="button" class="mw-chat-action" data-chat-prompt="What areas do you cover and how quickly can you come?">Coverage &amp; response</button>
-                    <button type="button" class="mw-chat-action" data-chat-handover-open>Speak to a Human</button>
+                    <button type="button" class="mw-chat-action is-primary" data-chat-booking-open>🚨 Book a Recovery</button>
+                    <button type="button" class="mw-chat-action is-whatsapp" data-chat-whatsapp-direct>💬 WhatsApp Us</button>
+                    <button type="button" class="mw-chat-action" data-chat-prompt="What recovery services do you cover?">🛠 Our Services</button>
+                    <button type="button" class="mw-chat-action" data-chat-prompt="What areas do you cover and how quickly can you come?">📍 Coverage &amp; Response</button>
+                    <button type="button" class="mw-chat-action" data-chat-handover-open>👤 Speak to a Human</button>
                 </div>
             </div>
         </div>
@@ -71,19 +72,11 @@ $chat_phone = site_phone();
                 <button type="button" data-chat-handover-close aria-label="Back to assistant">&times;</button>
             </div>
             <p>Continue your conversation with a member of our team on WhatsApp. We will carry over the details you&apos;ve already provided so you don&apos;t have to start again.</p>
-            <form class="mw-chat-contact" data-chat-contact-form novalidate>
-                <div class="mw-chat-form-grid">
-                    <label>Your name *<input type="text" name="chat_name" maxlength="120" required autocomplete="name"></label>
-                    <label>Email address *<input type="email" name="chat_email" maxlength="190" required autocomplete="email"></label>
-                </div>
-                <p class="mw-chat-form-error" data-chat-contact-error role="alert"></p>
-                <button type="submit" class="mw-chat-submit">Save details &amp; continue to WhatsApp <span aria-hidden="true">&rarr;</span></button>
-            </form>
             <p class="mw-chat-handover-status" data-chat-handover-status role="status" aria-live="polite"></p>
             <div class="mw-chat-handover-saved" data-chat-handover-saved hidden>
                 <p class="mw-chat-handover-ref">Saved reference: <strong data-chat-handover-reference>Pending</strong></p>
                 <div class="mw-chat-handover-actions">
-                    <a class="mw-chat-handover-primary" data-chat-whatsapp href="#" target="_blank" rel="noopener noreferrer">&#x1F7E2; Continue with a Human on WhatsApp</a>
+                    <a class="mw-chat-handover-primary" data-chat-whatsapp href="#" target="_blank" rel="noopener noreferrer">&#x1F7E2; Open WhatsApp</a>
                     <a class="mw-chat-action" data-chat-call href="tel:07480255634">&#x1F4DE; Call 07480 255634</a>
                 </div>
                 <div class="mw-chat-handover-fallbacks">
@@ -98,6 +91,7 @@ $chat_phone = site_phone();
             </div>
         </div>
 
+        <div class="mw-chat-quick-tools"><button type="button" class="mw-chat-whatsapp-bar" data-chat-whatsapp-direct><span aria-hidden="true">&#x1F7E2;</span> WhatsApp the team</button></div>
         <form class="mw-chat-composer" data-chat-form>
             <?= csrf_field() ?>
             <label class="sr-only" for="mw-chat-input">Message MancWay assistant</label>

@@ -141,6 +141,7 @@
       var handoverUrl = '';
       var handoverBusy = false;
       var pendingHandoverMessage = '';
+      var pendingWhatsAppWindow = null;
       var endpoint = widget.getAttribute('data-chat-endpoint') || '/api/chat.php';
       var bookingEndpoint = widget.getAttribute('data-chat-booking-endpoint') || '/api/chat-booking.php';
       var conversationKey = '';
@@ -305,10 +306,17 @@
       function launchWhatsApp() {
         if (!handoverUrl) {
           setHandoverStatus('Your details are still being saved. Please try again in a moment.');
-          return;
+          return false;
         }
-        var popup = window.open(handoverUrl, '_blank', 'noopener,noreferrer');
+        var popup = pendingWhatsAppWindow;
+        pendingWhatsAppWindow = null;
+        if (popup && !popup.closed) {
+          popup.location.href = handoverUrl;
+        } else {
+          popup = window.open(handoverUrl, '_blank', 'noopener,noreferrer');
+        }
         setHandoverStatus(popup ? 'WhatsApp should open now. If it does not, use the green button again or call us.' : 'WhatsApp did not open automatically. Use the green button below, or call us instead.');
+        return Boolean(popup);
       }
 
       function showHandoverResult(data, openWhatsApp) {
@@ -322,9 +330,9 @@
           handoverCall.href = data.phone_url || 'tel:07480255634';
           handoverCall.textContent = '☎ Call ' + (data.phone || '07480 255634');
         }
-        toggleHandover(true);
+        toggleHandover(false);
         setHandoverStatus(data.message || 'Your details are saved. WhatsApp is ready.');
-        if (openWhatsApp) launchWhatsApp();
+        if (openWhatsApp && !launchWhatsApp()) toggleHandover(true);
       }
 
       function requestHandover(message) {
@@ -333,23 +341,17 @@
         if (!csrf || !handover) return;
         var handoverMessage = message || 'I would like to speak to a member of the team on WhatsApp.';
         var collected = collectChatDetails();
-        if (!validContactDetails(collected)) {
-          pendingHandoverMessage = handoverMessage;
-          toggleHandover(true);
-          if (handoverContactError) handoverContactError.textContent = 'Please enter your name and a valid email address so the team can follow up.';
-          setHandoverStatus('Before we connect you, please add your name and email address.');
-          return;
-        }
-        if (handoverContactError) handoverContactError.textContent = '';
         addMessage(handoverMessage, 'user');
         history.push({ role: 'user', content: handoverMessage });
         pendingHandoverMessage = '';
         input.value = '';
         handoverBusy = true;
-        toggleHandover(true);
-        if (handoverContact) handoverContact.hidden = true;
+        addMessage('Taking you to our MancWay Recovery team on WhatsApp…', 'bot');
+        toggleHandover(false);
         if (handoverSaved) handoverSaved.hidden = true;
-        setHandoverStatus('Saving your conversation and preparing the WhatsApp handover...');
+        // Reserve the popup during the click gesture. The URL is only set
+        // after the CRM save completes, so browsers do not block the handover.
+        try { pendingWhatsAppWindow = window.open('about:blank', '_blank'); } catch (e) { pendingWhatsAppWindow = null; }
         fetch(handoverEndpoint, {
           method: 'POST',
           headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
@@ -373,6 +375,8 @@
           })
           .catch(function (error) {
             handoverBusy = false;
+            if (pendingWhatsAppWindow && !pendingWhatsAppWindow.closed) pendingWhatsAppWindow.close();
+            pendingWhatsAppWindow = null;
             toggleHandover(true);
             setHandoverStatus(error.message || 'We could not save the handover. Please call 07480 255634.');
           });
@@ -424,6 +428,12 @@
         sendMessage(input.value.trim());
       });
       messages.addEventListener('click', function (event) {
+        var directWhatsApp = event.target.closest('[data-chat-whatsapp-direct]');
+        if (directWhatsApp) {
+          event.stopPropagation();
+          requestHandover('I am contacting you from your website and need help with vehicle recovery.');
+          return;
+        }
         var handoverOpen = event.target.closest('[data-chat-handover-open]');
         if (handoverOpen) {
           event.stopPropagation();
@@ -438,6 +448,7 @@
         if (event.target.closest('[data-chat-booking-open]')) toggleBooking(true);
       });
       widget.addEventListener('click', function (event) {
+        if (event.target.closest('[data-chat-whatsapp-direct]')) requestHandover('I am contacting you from your website and need help with vehicle recovery.');
         if (event.target.closest('[data-chat-booking-open]')) toggleBooking(true);
         if (event.target.closest('[data-chat-booking-close]')) toggleBooking(false);
         if (event.target.closest('[data-chat-handover-open]')) requestHandover();
