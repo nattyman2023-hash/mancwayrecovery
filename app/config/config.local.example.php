@@ -33,7 +33,7 @@ return [
 
     // Where booking / contact notifications are sent. If blank, the
     // admin_email setting in the database is used instead.
-    'MAIL_TO'        => 'info@mancwayrecovery.co.uk',
+    'MAIL_TO'        => 'contact@mancwayrecovery.co.uk',
     'MAIL_FROM'      => 'no-reply@mancwayrecovery.co.uk',
 
     // DVLA Vehicle Enquiry Service key. Keep this server-side; never add it

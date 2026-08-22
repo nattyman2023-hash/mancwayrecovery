@@ -152,7 +152,7 @@ function site_name(): string
 /** Public business email address. */
 function site_email(): string
 {
-    return trim((string) setting('email', 'info@mancwayrecovery.co.uk'));
+    return trim((string) setting('email', 'contact@mancwayrecovery.co.uk'));
 }
 
 /** Notification destination: explicit config first, then the admin setting. */
@@ -256,7 +256,7 @@ function migrate_legacy_phone_defaults(): void
     }
     $checked = true;
     try {
-        $rows = db()->query("SELECT `key`, value FROM settings WHERE `key` IN ('phone', 'phone_href')")->fetchAll();
+        $rows = db()->query("SELECT `key`, value FROM settings WHERE `key` IN ('phone', 'phone_href', 'email', 'admin_email')")->fetchAll();
         $values = [];
         foreach ($rows as $row) {
             $values[(string)$row['key']] = trim((string)$row['value']);
@@ -268,6 +268,12 @@ function migrate_legacy_phone_defaults(): void
         $hrefDigits = preg_replace('/\D+/', '', $values['phone_href'] ?? '') ?? '';
         if (($values['phone_href'] ?? '') === '' || $hrefDigits === '01610000000') {
             db()->prepare('UPDATE settings SET value=? WHERE `key`=?')->execute(['07480255634', 'phone_href']);
+        }
+        if (strcasecmp($values['email'] ?? '', 'info@mancwayrecovery.co.uk') === 0 || ($values['email'] ?? '') === '') {
+            db()->prepare('UPDATE settings SET value=? WHERE `key`=?')->execute(['contact@mancwayrecovery.co.uk', 'email']);
+        }
+        if (strcasecmp($values['admin_email'] ?? '', 'info@mancwayrecovery.co.uk') === 0 || ($values['admin_email'] ?? '') === '') {
+            db()->prepare('UPDATE settings SET value=? WHERE `key`=?')->execute(['contact@mancwayrecovery.co.uk', 'admin_email']);
         }
     } catch (Throwable $e) {
         // Fresh/setup databases can be unavailable; helper fallbacks still work.

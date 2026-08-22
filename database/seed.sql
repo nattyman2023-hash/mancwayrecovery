@@ -47,7 +47,7 @@ INSERT IGNORE INTO settings (`key`, value) VALUES
 ('tagline',       'Manchester''s Trusted Vehicle Recovery — We Come to You'),
 ('phone',         '07480 255634'),
 ('phone_href',    '07480255634'),
-('email',         'info@mancwayrecovery.co.uk'),
+('email',         'contact@mancwayrecovery.co.uk'),
 ('address',       'Upper Cyrus St, Manchester M40 7FD'),
 ('hours_weekday', 'Mon–Fri: 7:30am – 6:00pm'),
 ('hours_weekend', 'Sat: 8:00am – 2:00pm · Sun: Closed'),
@@ -57,7 +57,7 @@ INSERT IGNORE INTO settings (`key`, value) VALUES
 ('instagram', ''),
 ('whatsapp', ''),
 ('whatsapp_handover_phone', '07480 255634'),
-('admin_email', 'info@mancwayrecovery.co.uk'),
+('admin_email', 'contact@mancwayrecovery.co.uk'),
 ('vat_number', ''),
 ('company_number', '');
 
