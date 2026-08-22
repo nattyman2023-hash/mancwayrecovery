@@ -130,7 +130,7 @@ function chat_handover_message(string $reference, array $details): string
         'Reference: ' . $reference,
     ];
     $fields = [
-        'Name' => 'name',
+        'Name' => 'name', 'Email' => 'email', 'Phone' => 'phone',
         'Vehicle' => 'vehicle',
         'Registration' => 'vehicle_reg',
         'Current location' => 'current_location',
@@ -167,6 +167,21 @@ function chat_handover_detail_lines(array $details): array
         if (!empty($details[$key])) {
             $lines[] = $label . ': ' . $details[$key];
         }
+    }
+    return $lines;
+}
+
+/** @param array<int,array{role:string,content:string}> $history */
+function chat_handover_history_lines(array $history): array
+{
+    $lines = [];
+    foreach (array_slice($history, -12) as $item) {
+        $content = chat_handover_clean_value($item['content'] ?? '', 600);
+        if ($content === '') {
+            continue;
+        }
+        $speaker = ($item['role'] ?? '') === 'assistant' ? 'Assistant' : 'Visitor';
+        $lines[] = $speaker . ': ' . $content;
     }
     return $lines;
 }
@@ -238,10 +253,14 @@ function chat_handover_save(array $details, array $history, string $sessionKey, 
 
     $detailLines = chat_handover_detail_lines($merged);
     $plainDetails = $detailLines ? implode("\n", $detailLines) : 'No customer details were supplied yet.';
+    $historyLines = chat_handover_history_lines($history);
     $alertTitle = $mode === 'callback' ? 'CALLBACK REQUESTED' : 'WHATSAPP HUMAN HANDOVER';
     $alert = "🟢 {$alertTitle}\n\n" . $plainDetails . "\nReference: {$reference}\n\n" . ($mode === 'callback'
         ? 'The customer has asked MancWay Recovery to call them back.'
         : 'Customer is moving from the website chatbot to WhatsApp.');
+    if ($historyLines) {
+        $alert .= "\n\nConversation log:\n" . implode("\n", $historyLines);
+    }
     try {
         db()->prepare('INSERT INTO messages (name, email, phone, subject, message, is_read, ip) VALUES (?,?,?,?,?,0,?)')->execute([
             $merged['name'] !== '' ? $merged['name'] : 'Website chat visitor',
@@ -251,6 +270,9 @@ function chat_handover_save(array $details, array $history, string $sessionKey, 
         error_log('MancWay chat handover could not create CRM alert: ' . $e->getMessage());
     }
     $htmlDetails = $detailLines ? '<ul><li>' . implode('</li><li>', array_map('e', $detailLines)) . '</li></ul>' : '<p>No customer details were supplied yet.</p>';
+    if ($historyLines) {
+        $htmlDetails .= '<h3>Conversation log</h3><p>' . nl2br(e(implode("\n", $historyLines))) . '</p>';
+    }
     send_site_email($alertTitle . ' — ' . $reference, '<h2>🟢 ' . e($alertTitle) . '</h2><p><strong>Reference:</strong> ' . e($reference) . '</p>' . $htmlDetails . '<p>' . e($mode === 'callback' ? 'The customer has requested a callback.' : 'Customer is moving from the website chatbot to WhatsApp.') . '</p>', $merged['email']);
 
     return [

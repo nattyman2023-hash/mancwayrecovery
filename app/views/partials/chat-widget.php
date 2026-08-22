@@ -42,7 +42,7 @@ $chat_phone = site_phone();
                     <label>Full name *<input type="text" name="name" maxlength="120" required autocomplete="name"></label>
                     <label>Phone *<input type="tel" name="phone" required autocomplete="tel"></label>
                 </div>
-                <label>Email <span>(optional)</span><input type="email" name="email" autocomplete="email"></label>
+                <label>Email address *<input type="email" name="email" required autocomplete="email"></label>
                 <label>Vehicle registration *<input type="text" name="vehicle_reg" maxlength="20" required autocapitalize="characters" spellcheck="false" placeholder="e.g. AB12 CDE"></label>
                 <label>Pickup address *<input type="text" name="address" maxlength="255" required autocomplete="street-address"></label>
                 <div class="mw-chat-form-grid">
@@ -71,22 +71,31 @@ $chat_phone = site_phone();
                 <button type="button" data-chat-handover-close aria-label="Back to assistant">&times;</button>
             </div>
             <p>Continue your conversation with a member of our team on WhatsApp. We will carry over the details you&apos;ve already provided so you don&apos;t have to start again.</p>
-            <p class="mw-chat-handover-ref">Saved reference: <strong data-chat-handover-reference>Pending</strong></p>
-            <div class="mw-chat-handover-actions">
-                <a class="mw-chat-handover-primary" data-chat-whatsapp href="#" target="_blank" rel="noopener noreferrer">&#x1F7E2; Continue with a Human on WhatsApp</a>
-                <a class="mw-chat-action" data-chat-call href="tel:07480255634">&#x1F4DE; Call 07480 255634</a>
-            </div>
-            <p class="mw-chat-handover-status" data-chat-handover-status role="status" aria-live="polite"></p>
-            <div class="mw-chat-handover-fallbacks">
-                <button type="button" class="mw-chat-action" data-chat-whatsapp-retry>Try WhatsApp Again</button>
-                <button type="button" class="mw-chat-action" data-chat-callback-open>Leave Your Number for a Callback</button>
-            </div>
-            <form class="mw-chat-callback" data-chat-callback-form hidden novalidate>
-                <label>Your name <span>(optional)</span><input type="text" name="callback_name" maxlength="120" autocomplete="name"></label>
-                <label>Phone number *<input type="tel" name="callback_phone" required autocomplete="tel"></label>
-                <p class="mw-chat-form-error" data-chat-callback-error role="alert"></p>
-                <button type="submit" class="mw-chat-submit">Request a callback <span aria-hidden="true">&rarr;</span></button>
+            <form class="mw-chat-contact" data-chat-contact-form novalidate>
+                <div class="mw-chat-form-grid">
+                    <label>Your name *<input type="text" name="chat_name" maxlength="120" required autocomplete="name"></label>
+                    <label>Email address *<input type="email" name="chat_email" maxlength="190" required autocomplete="email"></label>
+                </div>
+                <p class="mw-chat-form-error" data-chat-contact-error role="alert"></p>
+                <button type="submit" class="mw-chat-submit">Save details &amp; continue to WhatsApp <span aria-hidden="true">&rarr;</span></button>
             </form>
+            <p class="mw-chat-handover-status" data-chat-handover-status role="status" aria-live="polite"></p>
+            <div class="mw-chat-handover-saved" data-chat-handover-saved hidden>
+                <p class="mw-chat-handover-ref">Saved reference: <strong data-chat-handover-reference>Pending</strong></p>
+                <div class="mw-chat-handover-actions">
+                    <a class="mw-chat-handover-primary" data-chat-whatsapp href="#" target="_blank" rel="noopener noreferrer">&#x1F7E2; Continue with a Human on WhatsApp</a>
+                    <a class="mw-chat-action" data-chat-call href="tel:07480255634">&#x1F4DE; Call 07480 255634</a>
+                </div>
+                <div class="mw-chat-handover-fallbacks">
+                    <button type="button" class="mw-chat-action" data-chat-whatsapp-retry>Try WhatsApp Again</button>
+                    <button type="button" class="mw-chat-action" data-chat-callback-open>Leave Your Number for a Callback</button>
+                </div>
+                <form class="mw-chat-callback" data-chat-callback-form hidden novalidate>
+                    <label>Phone number *<input type="tel" name="callback_phone" required autocomplete="tel"></label>
+                    <p class="mw-chat-form-error" data-chat-callback-error role="alert"></p>
+                    <button type="submit" class="mw-chat-submit">Request a callback <span aria-hidden="true">&rarr;</span></button>
+                </form>
+            </div>
         </div>
 
         <form class="mw-chat-composer" data-chat-form>

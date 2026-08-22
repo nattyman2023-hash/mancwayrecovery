@@ -58,6 +58,12 @@ if ($mode === 'callback') {
         $details['name'] = $callbackName;
     }
 }
+if (trim((string)($details['name'] ?? '')) === '') {
+    chat_handover_json_response(['ok' => false, 'message' => 'Please enter your name so the team can follow up.'], 422);
+}
+if (!valid_email((string)($details['email'] ?? ''))) {
+    chat_handover_json_response(['ok' => false, 'message' => 'Please enter a valid email address so we can follow up.'], 422);
+}
 $history = chat_handover_clean_history($payload['history'] ?? []);
 $sessionKey = chat_handover_clean_value($payload['session_key'] ?? '', 64);
 

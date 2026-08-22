@@ -21,6 +21,24 @@ if (($_SERVER['REQUEST_METHOD'] ?? 'GET') === 'POST') {
 $filter = $_GET['filter'] ?? '';
 $where = $filter === 'unread' ? 'WHERE is_read=0' : '';
 $msgs = db()->query("SELECT * FROM messages $where ORDER BY created_at DESC")->fetchAll();
+$handoverWhatsappUrls = [];
+foreach ($msgs as $message) {
+    $subject = (string)($message['subject'] ?? '');
+    if (stripos($subject, 'WHATSAPP HUMAN HANDOVER') !== 0 || !preg_match('/\b(MW[A-Z0-9]+)\b/i', $subject, $match)) {
+        continue;
+    }
+    try {
+        ensure_chat_handover_schema();
+        $handover = db()->prepare('SELECT handover_message FROM chat_leads WHERE reference=? LIMIT 1');
+        $handover->execute([strtoupper($match[1])]);
+        $lead = $handover->fetch();
+        if ($lead && !empty($lead['handover_message'])) {
+            $handoverWhatsappUrls[(int)$message['id']] = chat_handover_whatsapp_url((string)$lead['handover_message']);
+        }
+    } catch (Throwable $e) {
+        error_log('MancWay could not load the WhatsApp link for a message.');
+    }
+}
 
 $admin_title = 'Messages';
 $active_admin = 'messages';
@@ -44,6 +62,7 @@ require APP_DIR . '/views/layout/admin_header.php';
                 </div>
                 <div class="msg-actions">
                     <?php if ($m['email']): ?><a class="btn btn-outline btn-sm" href="mailto:<?= e($m['email']) ?>">Reply</a><?php endif; ?>
+                    <?php if (!empty($handoverWhatsappUrls[(int)$m['id']])): ?><a class="btn btn-primary btn-sm" href="<?= e($handoverWhatsappUrls[(int)$m['id']]) ?>" target="_blank" rel="noopener">Open WhatsApp</a><?php endif; ?>
                     <form method="post" class="inline-form">
                         <?= csrf_field() ?>
                         <input type="hidden" name="id" value="<?= (int)$m['id'] ?>">

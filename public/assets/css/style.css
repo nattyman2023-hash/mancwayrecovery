@@ -158,7 +158,7 @@ p{margin:.5em 0}
 .mw-chat-launch-dot,.mw-chat-online-dot{width:8px;height:8px;border-radius:50%;background:#35d28a;box-shadow:0 0 0 3px rgba(53,210,138,.14);flex:none}
 .mw-chat-launch-dot{margin-left:auto}
 .mw-chat-panel{position:absolute;right:0;bottom:calc(100% + 12px);display:flex;flex-direction:column;width:min(410px,calc(100vw - 24px));max-width:calc(100vw - 24px);max-height:min(720px,calc(100vh - 92px));max-height:min(720px,calc(100dvh - 92px));min-width:0;overflow:hidden;background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:0 18px 55px rgba(11,31,58,.26)}
-.mw-chat-panel[hidden],.mw-chat-booking[hidden],.mw-chat-handover[hidden],.mw-chat-composer[hidden],.mw-chat-callback[hidden]{display:none}
+.mw-chat-panel[hidden],.mw-chat-booking[hidden],.mw-chat-handover[hidden],.mw-chat-composer[hidden],.mw-chat-contact[hidden],.mw-chat-handover-saved[hidden],.mw-chat-callback[hidden]{display:none}
 .mw-chat-header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:15px 17px;background:var(--navy);color:#fff}
 .mw-chat-identity{display:flex;align-items:center;gap:10px;min-width:0}
 .mw-chat-avatar{display:grid;place-items:center;width:38px;height:38px;border-radius:12px;background:var(--amber);color:var(--navy);font-size:.72rem;font-weight:900;flex:none}
@@ -204,6 +204,11 @@ p{margin:.5em 0}
 .mw-chat-handover-head button{border:0;background:transparent;color:var(--muted);font-size:1.3rem;line-height:1;cursor:pointer;padding:2px 4px}
 .mw-chat-handover>p{margin:.55rem 0;color:var(--muted);font-size:.78rem;line-height:1.45}
 .mw-chat-handover-ref{color:var(--navy)!important;font-size:.74rem!important}
+.mw-chat-contact{display:flex;flex-direction:column;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+.mw-chat-contact label{display:flex;flex-direction:column;gap:3px;color:var(--navy);font-size:.72rem;font-weight:800}
+.mw-chat-contact input{width:100%;min-width:0;padding:.58rem .64rem;border:1px solid var(--line);border-radius:7px;background:#fff;color:var(--ink);font:inherit;font-size:.84rem}
+.mw-chat-contact input:focus{outline:none;border-color:var(--amber);box-shadow:0 0 0 3px rgba(245,166,35,.15)}
+.mw-chat-handover-saved{min-width:0}
 .mw-chat-handover-actions,.mw-chat-handover-fallbacks{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
 .mw-chat-handover-primary{display:flex;align-items:center;justify-content:center;width:100%;max-width:100%;padding:.72rem .8rem;border-radius:8px;background:#1fa463;color:#fff;font-size:.82rem;font-weight:800;text-decoration:none;text-align:center;overflow-wrap:anywhere;box-shadow:0 5px 12px rgba(31,164,99,.2)}
 .mw-chat-handover-primary:hover{background:#188953;color:#fff}

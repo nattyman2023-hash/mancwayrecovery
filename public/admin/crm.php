@@ -179,6 +179,7 @@ require APP_DIR . '/views/layout/admin_header.php';
                 <small class="muted"><?= e(date('j M Y H:i', strtotime((string)$lead['updated_at']))) ?></small>
             </div>
             <dl class="kv chat-handover-kv">
+                <dt>Email</dt><dd><?= $lead['email'] ? '<a href="mailto:' . e($lead['email']) . '">' . e($lead['email']) . '</a>' : '—' ?></dd>
                 <dt>Phone</dt><dd><?= $lead['phone'] ? '<a href="tel:' . e(preg_replace('/[^0-9+]/', '', (string)$lead['phone'])) . '">' . e($lead['phone']) . '</a>' : '—' ?></dd>
                 <dt>Vehicle</dt><dd><?= e($vehicle !== '' ? $vehicle : ($lead['vehicle_reg'] ?: '—')) ?><?= $lead['vehicle_reg'] && $vehicle !== '' ? ' · <span class="reg">' . e($lead['vehicle_reg']) . '</span>' : '' ?></dd>
                 <dt>Details</dt><dd><?= e($detail !== '' ? $detail : 'Conversation saved; no structured details supplied yet.') ?></dd>

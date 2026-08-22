@@ -131,12 +131,16 @@
       var handoverCall = widget.querySelector('[data-chat-call]');
       var handoverReference = widget.querySelector('[data-chat-handover-reference]');
       var handoverStatus = widget.querySelector('[data-chat-handover-status]');
+      var handoverContact = widget.querySelector('[data-chat-contact-form]');
+      var handoverContactError = widget.querySelector('[data-chat-contact-error]');
+      var handoverSaved = widget.querySelector('[data-chat-handover-saved]');
       var callbackForm = widget.querySelector('[data-chat-callback-form]');
       var callbackError = widget.querySelector('[data-chat-callback-error]');
       var composer = widget.querySelector('.mw-chat-composer');
       var history = [];
       var handoverUrl = '';
       var handoverBusy = false;
+      var pendingHandoverMessage = '';
       var endpoint = widget.getAttribute('data-chat-endpoint') || '/api/chat.php';
       var bookingEndpoint = widget.getAttribute('data-chat-booking-endpoint') || '/api/chat-booking.php';
       var conversationKey = '';
@@ -227,9 +231,15 @@
         handover.hidden = !open;
         if (booking) booking.hidden = true;
         composer.hidden = open;
+        if (handoverContact && !handoverUrl) handoverContact.hidden = false;
+        if (handoverSaved && !handoverUrl) handoverSaved.hidden = true;
         if (open) {
           window.setTimeout(function () {
             if (handoverWhatsapp && handoverUrl) handoverWhatsapp.focus();
+            else if (handoverContact && !handoverContact.hidden) {
+              var contactInput = handoverContact.querySelector('input');
+              if (contactInput) contactInput.focus();
+            }
             else if (callbackForm && !callbackForm.hidden) {
               var handoverInput = callbackForm.querySelector('input');
               if (handoverInput) handoverInput.focus();
@@ -254,6 +264,13 @@
             if (allowed.indexOf(key) !== -1 && String(value).trim() !== '') details[key] = String(value).trim();
           });
         }
+        if (handoverContact) {
+          var contactValues = new FormData(handoverContact);
+          var contactName = String(contactValues.get('chat_name') || '').trim();
+          var contactEmail = String(contactValues.get('chat_email') || '').trim();
+          if (contactName) details.name = contactName;
+          if (contactEmail) details.email = contactEmail;
+        }
         if (!details.current_location && details.address) {
           details.current_location = details.address + (details.postcode ? ', ' + details.postcode : '');
         }
@@ -277,6 +294,10 @@
         return details;
       }
 
+      function validContactDetails(details) {
+        return Boolean(details && details.name && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(details.email || ''));
+      }
+
       function setHandoverStatus(text) {
         if (handoverStatus) handoverStatus.textContent = text || '';
       }
@@ -293,6 +314,8 @@
       function showHandoverResult(data, openWhatsApp) {
         handoverBusy = false;
         handoverUrl = data.whatsapp_url || '';
+        if (handoverContact) handoverContact.hidden = true;
+        if (handoverSaved) handoverSaved.hidden = false;
         if (handoverReference) handoverReference.textContent = data.reference || 'Saved';
         if (handoverWhatsapp) handoverWhatsapp.href = handoverUrl || '#';
         if (handoverCall) {
@@ -309,11 +332,23 @@
         var csrf = chatForm.querySelector('input[name="csrf_token"]');
         if (!csrf || !handover) return;
         var handoverMessage = message || 'I would like to speak to a member of the team on WhatsApp.';
+        var collected = collectChatDetails();
+        if (!validContactDetails(collected)) {
+          pendingHandoverMessage = handoverMessage;
+          toggleHandover(true);
+          if (handoverContactError) handoverContactError.textContent = 'Please enter your name and a valid email address so the team can follow up.';
+          setHandoverStatus('Before we connect you, please add your name and email address.');
+          return;
+        }
+        if (handoverContactError) handoverContactError.textContent = '';
         addMessage(handoverMessage, 'user');
         history.push({ role: 'user', content: handoverMessage });
+        pendingHandoverMessage = '';
         input.value = '';
         handoverBusy = true;
         toggleHandover(true);
+        if (handoverContact) handoverContact.hidden = true;
+        if (handoverSaved) handoverSaved.hidden = true;
         setHandoverStatus('Saving your conversation and preparing the WhatsApp handover...');
         fetch(handoverEndpoint, {
           method: 'POST',
@@ -322,7 +357,7 @@
             csrf_token: csrf.value,
             session_key: conversationKey,
             history: history.slice(-30),
-            collected: collectChatDetails(),
+            collected: collected,
           })
         })
           .then(function (response) {
@@ -419,6 +454,18 @@
       if (handoverWhatsapp) {
         handoverWhatsapp.addEventListener('click', function (event) {
           if (!handoverUrl) event.preventDefault();
+        });
+      }
+      if (handoverContact) {
+        handoverContact.addEventListener('submit', function (event) {
+          event.preventDefault();
+          var details = collectChatDetails();
+          if (!validContactDetails(details)) {
+            if (handoverContactError) handoverContactError.textContent = 'Please enter your name and a valid email address.';
+            return;
+          }
+          if (handoverContactError) handoverContactError.textContent = '';
+          requestHandover(pendingHandoverMessage || 'I would like to speak to a member of the team on WhatsApp.');
         });
       }
       if (callbackForm) {

@@ -45,7 +45,7 @@ $notes = trim((string)($payload['notes'] ?? ''));
 $errors = [];
 
 if ($name === '' || mb_strlen($name) > 120) $errors['name'] = 'Please enter your name.';
-if ($email !== '' && !valid_email($email)) $errors['email'] = 'Please enter a valid email address.';
+if (!valid_email($email)) $errors['email'] = 'Please enter a valid email address.';
 if (!valid_phone($phone)) $errors['phone'] = 'Please enter a valid phone number.';
 if ($vehicleReg === '' || mb_strlen($vehicleReg) > 20) $errors['vehicle_reg'] = 'Please enter the vehicle registration.';
 if ($address === '') $errors['address'] = 'Please enter the pickup address.';
